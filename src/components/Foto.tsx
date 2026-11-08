@@ -42,7 +42,7 @@ export const Foto = ({ id, className, cianotipia, blancoYNegro, prioridad, posic
         </span>
       ) : (
         <img
-          src={`/fotos/${info.archivo}`}
+          src={`${import.meta.env.BASE_URL}fotos/${info.archivo}`}
           alt={info.descripcion}
           loading={prioridad ? 'eager' : 'lazy'}
           decoding='async'
