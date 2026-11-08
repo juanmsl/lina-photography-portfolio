@@ -37,7 +37,11 @@ export const Servicios = () => (
               <Foto id={s.foto} className='aspect-[280/180] w-full md:w-70' />
               <span className='hidden items-center gap-2 t-label font-medium text-gris transition-colors group-hover:text-hueso md:inline-flex'>
                 <span className='sr-only'>Cotizar {s.nombre}</span>
-                <LuArrowRight size={28} aria-hidden className='transition-transform group-hover:translate-x-1 motion-reduce:transition-none' />
+                <LuArrowRight
+                  size={28}
+                  aria-hidden
+                  className='transition-transform group-hover:translate-x-1 motion-reduce:transition-none'
+                />
               </span>
             </Link>
           </li>

@@ -1,13 +1,13 @@
 import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
+import { Foto } from './Foto';
+
 import type { FotoId } from '../content/fotos';
 import type { Fila } from '../content/proyectos';
 
-import { Foto } from './Foto';
-
 type GaleriaProps = {
-  filas: Fila[];
+  filas: Array<Fila>;
   /** Si se da, cada foto enlaza a su vista ampliada dentro del proyecto. */
   proyecto?: { slug: string; indice: (id: FotoId) => number };
   cianotipia?: boolean;
@@ -24,6 +24,7 @@ export const Galeria = ({ filas, proyecto, cianotipia, className }: GaleriaProps
     {filas.map((fila, f) => {
       const total = fila.fotos.reduce((s, x) => s + x.ancho, 0);
       const varias = fila.fotos.length > 1;
+
       return (
         <div
           key={f}
@@ -41,6 +42,7 @@ export const Galeria = ({ filas, proyecto, cianotipia, className }: GaleriaProps
               fila.fotos.length === 3 && i === 0 && 'aspect-[4/3]',
             );
             const estilo = { flex: `${x.ancho} 1 0%` };
+
             if (cianotipia) {
               return (
                 <div key={i} className={caja} style={estilo}>
@@ -48,6 +50,7 @@ export const Galeria = ({ filas, proyecto, cianotipia, className }: GaleriaProps
                 </div>
               );
             }
+
             if (proyecto) {
               return (
                 <Link
@@ -63,6 +66,7 @@ export const Galeria = ({ filas, proyecto, cianotipia, className }: GaleriaProps
                 </Link>
               );
             }
+
             return (
               <div key={i} className={caja} style={estilo}>
                 <Foto id={x.id} className='size-full' />

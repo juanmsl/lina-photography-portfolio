@@ -9,7 +9,7 @@ export type FotoEnFila = {
 export type Fila = {
   /** Alto de la fila en el diseño de escritorio (px a 1360 de ancho). */
   alto: number;
-  fotos: FotoEnFila[];
+  fotos: Array<FotoEnFila>;
 };
 
 export type Dato = { etiqueta: string; valor: string };
@@ -29,14 +29,14 @@ export type Proyecto = {
   subtitulo: string;
   resumen: string;
   /** Párrafos extra de la página del proyecto. */
-  texto?: string[];
-  ficha: Dato[];
+  texto?: Array<string>;
+  ficha: Array<Dato>;
   /** Filas en el portafolio (página de inicio). */
-  portada: Fila[];
+  portada: Array<Fila>;
   /** Foto a sangre en la página del proyecto. */
   principal: FotoId;
   /** Filas en la página del proyecto. */
-  galeria: Fila[];
+  galeria: Array<Fila>;
   /** Muestra la misma foto en cianotipia y en color. */
   delAzulAlColor?: FotoId;
   /** La serie se revela de azul a color al pasar el cursor. */
@@ -45,7 +45,7 @@ export type Proyecto = {
   ejemplo?: boolean;
 };
 
-export const categorias: Categoria[] = [
+export const categorias: Array<Categoria> = [
   { id: 'paisaje', titulo: 'Fotografía', voz: 'de paisaje' },
   { id: 'arquitectura', titulo: 'Fotografía', voz: 'de arquitectura' },
   { id: 'personas', titulo: 'Fotografía', voz: 'de personas' },
@@ -53,7 +53,7 @@ export const categorias: Categoria[] = [
   { id: 'personales', titulo: 'Proyectos', voz: 'personales' },
 ];
 
-export const proyectos: Proyecto[] = [
+export const proyectos: Array<Proyecto> = [
   {
     slug: 'cordillera',
     categoria: 'paisaje',
@@ -107,8 +107,7 @@ export const proyectos: Proyecto[] = [
     categoria: 'arquitectura',
     titulo: 'La Candelaria',
     subtitulo: 'Serie personal',
-    resumen:
-      'Muros de ladrillo, escaleras y patios del centro de Bogotá. Composición limpia y luz de media tarde.',
+    resumen: 'Muros de ladrillo, escaleras y patios del centro de Bogotá. Composición limpia y luz de media tarde.',
     ficha: [
       { etiqueta: 'Lugar', valor: 'La Candelaria, Bogotá' },
       { etiqueta: 'Coordenadas', valor: '4°35′N 74°04′O' },
@@ -141,8 +140,7 @@ export const proyectos: Proyecto[] = [
     categoria: 'personas',
     titulo: 'Invernadero',
     subtitulo: 'Retrato · proyecto de ejemplo',
-    resumen:
-      'Retrato con luz natural entre plantas: una sesión tranquila, sin flash, donde la persona marca el ritmo.',
+    resumen: 'Retrato con luz natural entre plantas: una sesión tranquila, sin flash, donde la persona marca el ritmo.',
     ficha: [
       { etiqueta: 'Lugar', valor: 'Bogotá' },
       { etiqueta: 'Luz', valor: 'Natural' },
@@ -210,8 +208,7 @@ export const proyectos: Proyecto[] = [
     categoria: 'producto',
     titulo: 'Bodegón',
     subtitulo: 'Producto · proyecto de ejemplo',
-    resumen:
-      'Producto en estudio con luz suave y fondos limpios, pensado para tienda en línea, catálogo y redes.',
+    resumen: 'Producto en estudio con luz suave y fondos limpios, pensado para tienda en línea, catálogo y redes.',
     ficha: [
       { etiqueta: 'Lugar', valor: 'Estudio, Chapinero' },
       { etiqueta: 'Formato', valor: 'Catálogo y tienda en línea' },
@@ -295,12 +292,12 @@ export const proyectos: Proyecto[] = [
 export const buscarProyecto = (slug?: string) => proyectos.find(p => p.slug === slug);
 
 /** Fotos únicas del proyecto, en el orden en que aparecen en su página. */
-export const fotosDeProyecto = (p: Proyecto): FotoId[] => {
+export const fotosDeProyecto = (p: Proyecto): Array<FotoId> => {
   const todas = [p.principal, ...p.galeria.flatMap(f => f.fotos.map(x => x.id))];
+
   return todas.filter((id, i) => todas.indexOf(id) === i);
 };
 
-export const siguienteProyecto = (p: Proyecto) =>
-  proyectos[(proyectos.indexOf(p) + 1) % proyectos.length];
+export const siguienteProyecto = (p: Proyecto) => proyectos[(proyectos.indexOf(p) + 1) % proyectos.length];
 
 export const categoriaDe = (p: Proyecto) => categorias.find(c => c.id === p.categoria)!;

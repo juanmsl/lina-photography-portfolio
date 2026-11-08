@@ -41,7 +41,9 @@ export const Cotizar = () => {
   const enviar = methods.handleSubmit(async datos => {
     setEnviando(true);
     // Pendiente: conectar con el servicio que reciba las solicitudes (correo o formulario).
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => {
+      setTimeout(r, 600);
+    });
     navigate('/cotizar/enviada', { state: datos });
   });
 
@@ -86,7 +88,10 @@ export const Cotizar = () => {
                   variant='line'
                   rules={{
                     required: 'Escribe tu correo para poder responderte.',
-                    pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Escribe un correo válido, por ejemplo ana@marca.co' },
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Escribe un correo válido, por ejemplo ana@marca.co',
+                    },
                   }}
                 />
               </div>

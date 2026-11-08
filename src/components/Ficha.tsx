@@ -16,7 +16,15 @@ export const DatoFicha = ({ etiqueta, valor, className }: Dato & { className?: s
 );
 
 /** Ficha en rejilla de 1 o 2 columnas. */
-export const Ficha = ({ datos, columnas = 2, className }: { datos: Dato[]; columnas?: 1 | 2 | 3; className?: string }) => (
+export const Ficha = ({
+  datos,
+  columnas = 2,
+  className,
+}: {
+  datos: Array<Dato>;
+  columnas?: 1 | 2 | 3;
+  className?: string;
+}) => (
   <dl
     className={cn(
       'm-0 grid gap-x-10 gap-y-2',

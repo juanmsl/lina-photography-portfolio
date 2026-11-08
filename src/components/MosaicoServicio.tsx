@@ -1,11 +1,11 @@
 import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
-import { LuCheck } from 'react-icons/lu';
 import { useController, type Control, type FieldValues, type Path } from 'react-hook-form';
-
-import type { FotoId } from '../content/fotos';
+import { LuCheck } from 'react-icons/lu';
 
 import { Foto } from './Foto';
+
+import type { FotoId } from '../content/fotos';
 
 type Opcion = { valor: string; foto: FotoId };
 
@@ -13,7 +13,7 @@ type MosaicoServicioProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   etiqueta: string;
-  opciones: Opcion[];
+  opciones: Array<Opcion>;
   requerido?: string;
 };
 
@@ -22,16 +22,21 @@ type MosaicoServicioProps<T extends FieldValues> = {
  * casilla nativa (accesible con teclado) con la foto, un velo y el nombre;
  * el activo lleva filete y marca en oro.
  */
-export const MosaicoServicio = <T extends FieldValues>({ name, control, etiqueta, opciones, requerido }: MosaicoServicioProps<T>) => {
+export const MosaicoServicio = <T extends FieldValues>({
+  name,
+  control,
+  etiqueta,
+  opciones,
+  requerido,
+}: MosaicoServicioProps<T>) => {
   const { field, fieldState } = useController({
     name,
     control,
-    rules: { validate: (v: string[]) => (v?.length ? true : (requerido ?? true)) },
+    rules: { validate: (v: Array<string>) => (v?.length ? true : (requerido ?? true)) },
   });
-  const valor: string[] = field.value ?? [];
+  const valor: Array<string> = field.value ?? [];
 
-  const alternar = (v: string) =>
-    field.onChange(valor.includes(v) ? valor.filter(x => x !== v) : [...valor, v]);
+  const alternar = (v: string) => field.onChange(valor.includes(v) ? valor.filter(x => x !== v) : [...valor, v]);
 
   return (
     <fieldset className='m-0 min-w-0 border-0 p-0' aria-invalid={fieldState.invalid || undefined}>
@@ -39,6 +44,7 @@ export const MosaicoServicio = <T extends FieldValues>({ name, control, etiqueta
       <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4'>
         {opciones.map(o => {
           const activo = valor.includes(o.valor);
+
           return (
             <label
               key={o.valor}
@@ -56,7 +62,11 @@ export const MosaicoServicio = <T extends FieldValues>({ name, control, etiqueta
                 onChange={() => alternar(o.valor)}
                 onBlur={field.onBlur}
               />
-              <Foto id={o.foto} marcadorMudo className='absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none' />
+              <Foto
+                id={o.foto}
+                marcadorMudo
+                className='absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none'
+              />
               <span
                 aria-hidden
                 className={cn(
@@ -66,7 +76,10 @@ export const MosaicoServicio = <T extends FieldValues>({ name, control, etiqueta
               />
               <span className='absolute bottom-3 left-3.5 font-medium text-hueso'>{o.valor}</span>
               {activo && (
-                <span aria-hidden className='absolute top-3 right-3 grid size-6 place-content-center rounded-full bg-oro text-negro'>
+                <span
+                  aria-hidden
+                  className='absolute top-3 right-3 grid size-6 place-content-center rounded-full bg-oro text-negro'
+                >
                   <LuCheck size={14} strokeWidth={3} />
                 </span>
               )}

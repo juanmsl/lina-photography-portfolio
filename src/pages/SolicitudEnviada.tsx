@@ -36,7 +36,11 @@ export const SolicitudEnviada = () => {
         </span>
         <Typography variant='header2' as='h1' noPadding className='m-0 flex flex-col items-center'>
           <span>Recibí tu solicitud</span>
-          {primerNombre && <span className='voz-serif -mt-[0.1em] pl-[min(12.5rem,30vw)] text-[clamp(2.25rem,4vw,3.5rem)]'>gracias, {primerNombre}</span>}
+          {primerNombre && (
+            <span className='voz-serif -mt-[0.1em] pl-[min(12.5rem,30vw)] text-[clamp(2.25rem,4vw,3.5rem)]'>
+              gracias, {primerNombre}
+            </span>
+          )}
         </Typography>
         <Typography noPadding className='m-0 max-w-[35rem] t-lead text-gris'>
           {datos?.correo

@@ -1,5 +1,6 @@
-import { cn } from 'polpo/helpers';
 import type { ReactNode } from 'react';
+
+import { cn } from 'polpo/helpers';
 
 type MarcoPlanchaProps = {
   /** [latG, latM, lonG, lonM] de la foto; si falta, el marco va sin rótulos. */
@@ -10,7 +11,9 @@ type MarcoPlanchaProps = {
 
 const minutos = (grados: number, min: number, delta: number) => {
   let total = grados * 60 + min + delta;
+
   if (total < 0) total = 0;
+
   return `${Math.floor(total / 60)}°${String(total % 60).padStart(2, '0')}′`;
 };
 
@@ -26,6 +29,7 @@ export const MarcoPlancha = ({ coordenadas, children, className }: MarcoPlanchaP
     <div aria-hidden className='pointer-events-none absolute inset-0 border border-white/80'>
       {LON.map((d, i) => {
         const x = `${10.5 + i * 15.9}%`;
+
         return (
           <span key={`lon-${d}`}>
             <span className='absolute top-0 h-2 w-px bg-white/55' style={{ left: x }} />
@@ -43,6 +47,7 @@ export const MarcoPlancha = ({ coordenadas, children, className }: MarcoPlanchaP
       })}
       {LAT.map((d, i) => {
         const y = `${15.7 + i * 23.15}%`;
+
         return (
           <span key={`lat-${d}`}>
             <span className='absolute left-0 h-px w-2 bg-white/55' style={{ top: y }} />

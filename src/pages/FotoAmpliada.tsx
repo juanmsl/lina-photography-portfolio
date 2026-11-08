@@ -10,7 +10,17 @@ import { buscarProyecto, fotosDeProyecto } from '../content/proyectos';
 
 import { NoEncontrada } from './NoEncontrada';
 
-const BotonCirculo = ({ etiqueta, onClick, children, className }: { etiqueta: string; onClick: () => void; children: React.ReactNode; className?: string }) => (
+const BotonCirculo = ({
+  etiqueta,
+  onClick,
+  children,
+  className,
+}: {
+  etiqueta: string;
+  onClick: () => void;
+  children: React.ReactNode;
+  className?: string;
+}) => (
   <Button
     forIcon
     variant='outlined'
@@ -32,6 +42,7 @@ export const FotoAmpliada = () => {
 
   const ir = (i: number) => {
     if (!p) return;
+
     const siguiente = ((i - 1 + lista.length) % lista.length) + 1;
     navigate(`/proyectos/${p.slug}/foto/${siguiente}`, { replace: true });
   };
@@ -39,23 +50,31 @@ export const FotoAmpliada = () => {
 
   useEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') ir(actual - 1);
+
     if (e.key === 'ArrowRight') ir(actual + 1);
+
     if (e.key === 'Escape') cerrar();
   });
 
   if (!p) return <NoEncontrada />;
+
   if (!Number.isInteger(actual) || actual < 1 || actual > lista.length) {
     return <Navigate to={`/proyectos/${p.slug}/foto/1`} replace />;
   }
 
   const id = lista[actual - 1];
   const info = fotos[id];
-  const rotulo = [info.titulo, info.coordenadas && formatoCoordenadas(info.coordenadas), info.altitud].filter(Boolean).join(' · ');
+  const rotulo = [info.titulo, info.coordenadas && formatoCoordenadas(info.coordenadas), info.altitud]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <main className='flex min-h-dvh flex-col px-5 pt-4 pb-8 md:px-10 md:pt-7 md:pb-10'>
       <div className='flex items-center justify-between'>
-        <Link to={`/proyectos/${p.slug}`} className='inline-flex items-center gap-2.5 t-label font-medium hover:text-gris'>
+        <Link
+          to={`/proyectos/${p.slug}`}
+          className='inline-flex items-center gap-2.5 t-label font-medium hover:text-gris'
+        >
           <LuArrowLeft size={18} aria-hidden />
           {p.titulo}
         </Link>

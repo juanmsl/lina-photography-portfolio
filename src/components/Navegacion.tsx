@@ -16,13 +16,20 @@ const enlaces = [
 
 const esActivo = (a: string, pathname: string, hash: string) => {
   const [ruta, ancla] = a.split('#');
+
   if (ancla) return pathname === ruta && hash === `#${ancla}`;
+
   if (ruta === '/') return pathname === '/' && !hash;
+
   return pathname.startsWith(ruta);
 };
 
 const Marca = ({ className, onClick }: { className?: string; onClick?: () => void }) => (
-  <Link to='/' onClick={onClick} className={cn('font-title t-header4 font-extrabold tracking-[-0.01em] text-hueso', className)}>
+  <Link
+    to='/'
+    onClick={onClick}
+    className={cn('font-title t-header4 font-extrabold tracking-[-0.01em] text-hueso', className)}
+  >
     Lina Nieto
   </Link>
 );
@@ -103,7 +110,11 @@ export const Navegacion = ({ className }: NavegacionProps) => {
           <ul className='m-0 mt-32 grid list-none gap-1 p-0'>
             {enlaces.map(e => (
               <li key={e.a}>
-                <Link to={e.a} onClick={() => setMenuAbierto(false)} className='font-title text-[3.25rem] leading-[0.94] font-extrabold tracking-[-0.03em]'>
+                <Link
+                  to={e.a}
+                  onClick={() => setMenuAbierto(false)}
+                  className='font-title text-[3.25rem] leading-[0.94] font-extrabold tracking-[-0.03em]'
+                >
                   {e.etiqueta}
                 </Link>
               </li>

@@ -13,6 +13,7 @@ import { categorias, fotosDeProyecto, proyectos, type Proyecto } from '../conten
 
 const BloqueProyecto = ({ p }: { p: Proyecto }) => {
   const orden = fotosDeProyecto(p);
+
   return (
     <article aria-labelledby={`proyecto-${p.slug}`} className='px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-30'>
       <div id={`proyecto-${p.slug}`}>
@@ -37,7 +38,10 @@ const BloqueProyecto = ({ p }: { p: Proyecto }) => {
 export const Portafolio = () => (
   <>
     {/* Portada */}
-    <section aria-labelledby='titulo-portada' className='relative flex min-h-[48.75rem] flex-col md:min-h-[min(100dvh,58.75rem)]'>
+    <section
+      aria-labelledby='titulo-portada'
+      className='relative flex min-h-[48.75rem] flex-col md:min-h-[min(100dvh,58.75rem)]'
+    >
       <div className='absolute inset-x-0 top-0 h-[38.75rem] md:inset-y-0 md:left-[40%] md:h-auto'>
         <Foto id='lina' blancoYNegro prioridad posicion='50% 30%' className='size-full' />
         <div
@@ -63,13 +67,17 @@ export const Portafolio = () => (
     </section>
 
     {/* ¿Quién soy? */}
-    <section id='quien-soy' aria-labelledby='titulo-quien' className='scroll-mt-8 px-5 pt-24 pb-18 md:px-10 md:pt-45 md:pb-40'>
+    <section
+      id='quien-soy'
+      aria-labelledby='titulo-quien'
+      className='scroll-mt-8 px-5 pt-24 pb-18 md:px-10 md:pt-45 md:pb-40'
+    >
       <Typography id='titulo-quien' variant='header1' as='h2' noPadding align='center' className='m-0'>
         ¿Quién soy?
       </Typography>
       <Typography noPadding align='center' className='mx-auto mt-6 max-w-[45rem] t-lead md:mt-10'>
-        Soy Lina Nieto, fotógrafa en Bogotá. Empecé fotografiando montaña, páramo y ciudad; de ahí viene mi forma de mirar:
-        paciencia, luz natural y composición limpia.
+        Soy Lina Nieto, fotógrafa en Bogotá. Empecé fotografiando montaña, páramo y ciudad; de ahí viene mi forma de
+        mirar: paciencia, luz natural y composición limpia.
       </Typography>
       <Ficha
         columnas={3}
@@ -85,7 +93,9 @@ export const Portafolio = () => (
     {/* Proyectos por tipo */}
     {categorias.map(c => {
       const deCategoria = proyectos.filter(p => p.categoria === c.id);
+
       if (!deCategoria.length) return null;
+
       return (
         <Fragment key={c.id}>
           <div className='px-5 pt-30 pb-6 md:px-10 md:pt-50 md:pb-10'>

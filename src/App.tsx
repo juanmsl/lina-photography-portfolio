@@ -15,10 +15,13 @@ const Desplazamiento = () => {
   useEffect(() => {
     if (hash) {
       document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView();
+
       return;
     }
+
     if (!pathname.includes('/foto/')) window.scrollTo(0, 0);
   }, [pathname, hash]);
+
   return null;
 };
 

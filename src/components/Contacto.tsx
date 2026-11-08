@@ -11,6 +11,7 @@ const ANIO = new Date().getFullYear();
 /** Acciones de contacto: Cotizar (primario) y WhatsApp (contorno). */
 export const AccionesContacto = () => {
   const navigate = useNavigate();
+
   return (
     <div className='flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4'>
       <Button color='primary' radius='full' onClick={() => navigate('/cotizar')}>
@@ -27,7 +28,11 @@ type BloqueContactoProps = { conCanales?: boolean; conTexto?: boolean };
 
 /** Cierre "¿Hablamos?" de las páginas. */
 export const BloqueContacto = ({ conCanales = true, conTexto = true }: BloqueContactoProps) => (
-  <section id='contacto' aria-labelledby='titulo-contacto' className='scroll-mt-8 px-5 pt-28 pb-18 md:px-10 md:pt-52 md:pb-30'>
+  <section
+    id='contacto'
+    aria-labelledby='titulo-contacto'
+    className='scroll-mt-8 px-5 pt-28 pb-18 md:px-10 md:pt-52 md:pb-30'
+  >
     <Rotulo id='titulo-contacto' titulo='¿Hablamos?' voz='cuéntame tu proyecto' nivel='hero' />
     {conTexto && (
       <Typography noPadding align='center' className='mx-auto mt-8 max-w-[35rem] t-lead text-gris'>

@@ -2,7 +2,7 @@ import type { FotoId } from './fotos';
 
 export type Servicio = { nombre: string; descripcion: string; foto: FotoId };
 
-export const servicios: Servicio[] = [
+export const servicios: Array<Servicio> = [
   {
     nombre: 'Paisaje y naturaleza',
     descripcion: 'Campañas de turismo, hoteles y proyectos que necesitan mostrar un lugar.',
@@ -63,7 +63,7 @@ export const preguntas = [
 ];
 
 /** Opciones del selector con fotos de Cotizar. */
-export const opcionesCotizar: { valor: string; foto: FotoId }[] = [
+export const opcionesCotizar: Array<{ valor: string; foto: FotoId }> = [
   { valor: 'Paisaje', foto: 'paramo' },
   { valor: 'Naturaleza', foto: 'bosque' },
   { valor: 'Arquitectura', foto: 'ladrillo' },

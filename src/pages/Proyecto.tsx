@@ -16,6 +16,7 @@ import { NoEncontrada } from './NoEncontrada';
 export const Proyecto = () => {
   const { slug } = useParams();
   const p = buscarProyecto(slug);
+
   if (!p) return <NoEncontrada />;
 
   const c = categoriaDe(p);
@@ -34,11 +35,23 @@ export const Proyecto = () => {
             Portafolio · {c.titulo} {c.voz}
           </Link>
         </div>
-        <Rotulo id='titulo-proyecto' as='h1' nivel='hero' titulo={p.titulo} voz={p.subtitulo.toLowerCase()} className='mt-10' />
+        <Rotulo
+          id='titulo-proyecto'
+          as='h1'
+          nivel='hero'
+          titulo={p.titulo}
+          voz={p.subtitulo.toLowerCase()}
+          className='mt-10'
+        />
       </section>
 
       <Link to={`/proyectos/${p.slug}/foto/1`} aria-label='Ver la foto principal ampliada' className='block'>
-        <Foto id={p.principal} prioridad cianotipia={p.cianotipia ? 'fija' : undefined} className='aspect-[4/3] w-full md:aspect-[1440/820]' />
+        <Foto
+          id={p.principal}
+          prioridad
+          cianotipia={p.cianotipia ? 'fija' : undefined}
+          className='aspect-[4/3] w-full md:aspect-[1440/820]'
+        />
       </Link>
 
       <section className='px-5 py-16 md:px-10 md:py-30'>

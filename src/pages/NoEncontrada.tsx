@@ -7,6 +7,7 @@ import { Rotulo } from '../components/Rotulo';
 
 export const NoEncontrada = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <Navegacion />
