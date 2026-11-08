@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 
+import { Metadatos } from './components/Metadatos';
 import { Cotizar } from './pages/Cotizar';
 import { FotoAmpliada } from './pages/FotoAmpliada';
 import { NoEncontrada } from './pages/NoEncontrada';
@@ -28,6 +29,7 @@ const Desplazamiento = () => {
 export const App = () => (
   <>
     <Desplazamiento />
+    <Metadatos />
     <Routes>
       <Route path='/' element={<Portafolio />} />
       <Route path='/proyectos/:slug' element={<Proyecto />} />
