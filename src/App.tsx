@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 
-import { Metadatos } from './components/Metadatos';
-import { Cotizar } from './pages/Cotizar';
-import { FotoAmpliada } from './pages/FotoAmpliada';
-import { NoEncontrada } from './pages/NoEncontrada';
-import { Portafolio } from './pages/Portafolio';
-import { Proyecto } from './pages/Proyecto';
-import { Servicios } from './pages/Servicios';
-import { SolicitudEnviada } from './pages/SolicitudEnviada';
+import { PageMeta } from './components/PageMeta';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { PhotoViewerPage } from './pages/PhotoViewerPage';
+import { PortfolioPage } from './pages/PortfolioPage';
+import { ProjectPage } from './pages/ProjectPage';
+import { QuotePage } from './pages/QuotePage';
+import { QuoteSentPage } from './pages/QuoteSentPage';
+import { ServicesPage } from './pages/ServicesPage';
 
-/** Vuelve arriba al cambiar de página y respeta los anclas (#quien-soy, #contacto). */
-const Desplazamiento = () => {
+/** Scrolls to the top on page change and honors anchors (#quien-soy, #contacto). */
+const ScrollManager = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
     if (hash) {
@@ -28,16 +28,16 @@ const Desplazamiento = () => {
 
 export const App = () => (
   <>
-    <Desplazamiento />
-    <Metadatos />
+    <ScrollManager />
+    <PageMeta />
     <Routes>
-      <Route path='/' element={<Portafolio />} />
-      <Route path='/proyectos/:slug' element={<Proyecto />} />
-      <Route path='/proyectos/:slug/foto/:n' element={<FotoAmpliada />} />
-      <Route path='/servicios' element={<Servicios />} />
-      <Route path='/cotizar' element={<Cotizar />} />
-      <Route path='/cotizar/enviada' element={<SolicitudEnviada />} />
-      <Route path='*' element={<NoEncontrada />} />
+      <Route path='/' element={<PortfolioPage />} />
+      <Route path='/proyectos/:slug' element={<ProjectPage />} />
+      <Route path='/proyectos/:slug/foto/:n' element={<PhotoViewerPage />} />
+      <Route path='/servicios' element={<ServicesPage />} />
+      <Route path='/cotizar' element={<QuotePage />} />
+      <Route path='/cotizar/enviada' element={<QuoteSentPage />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   </>
 );

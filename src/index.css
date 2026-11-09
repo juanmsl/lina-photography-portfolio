@@ -10,30 +10,30 @@
 @import "@fontsource/geist-mono/400.css";
 
 /*
- * D · Cuarto oscuro — tema de Polpo.
- * Los valores salen de los estilos D/ del archivo de Figma (w3WthJXOQOkFUEW9wKw6Gy).
+ * D · Cuarto oscuro — Polpo theme.
+ * Values come from the D/ styles in the Figma file (w3WthJXOQOkFUEW9wKw6Gy).
  */
 @theme {
-  /* Paleta D */
-  --color-negro: #0a0a0b;
-  --color-carbon: #151517;
-  --color-grafito: #2a2a2e;
-  --color-hueso: #f2efea;
-  --color-gris: #a3a3a8;
-  --color-prusia: #5b8fc0;
-  --color-oro: #c49a4e;
+  /* D palette */
+  --color-ink: #0a0a0b;
+  --color-charcoal: #151517;
+  --color-graphite: #2a2a2e;
+  --color-bone: #f2efea;
+  --color-ash: #a3a3a8;
+  --color-prussian: #5b8fc0;
+  --color-gold: #c49a4e;
 
-  /* Superficies y texto de Polpo */
-  --color-background: var(--color-negro);
-  --color-background-paper: var(--color-carbon);
-  --color-background-disabled: var(--color-carbon);
-  --color-foreground: var(--color-hueso);
-  --color-foreground-disabled: var(--color-gris);
-  --color-border: var(--color-grafito);
+  /* Polpo surfaces and text */
+  --color-background: var(--color-ink);
+  --color-background-paper: var(--color-charcoal);
+  --color-background-disabled: var(--color-charcoal);
+  --color-foreground: var(--color-bone);
+  --color-foreground-disabled: var(--color-ash);
+  --color-border: var(--color-graphite);
 
   /*
-   * "primary" es el hueso: botón primario relleno hueso con texto negro,
-   * secundario en contorno hueso.
+   * "primary" is bone: the primary button is filled bone with ink text,
+   * the secondary one is outlined in bone.
    */
   --color-primary: #f2efea;
   --color-primary-50: #151517;
@@ -45,21 +45,21 @@
   --color-primary-700: #f2efea;
   --color-primary-foreground: #0a0a0b;
 
-  /* Foco de campos en hueso, error en el coral del diseño */
+  /* Field focus in bone, errors in the design's coral */
   --color-info: #f2efea;
   --color-info-500: #f2efea;
   --color-alert: #e07a6a;
   --color-alert-500: #e07a6a;
   --color-accent: #c49a4e;
 
-  /* Tipografía */
+  /* Typography */
   --font-main: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
   --font-title: 'Bricolage Grotesque', 'Hanken Grotesk', sans-serif;
   --font-brand: 'Bricolage Grotesque', 'Hanken Grotesk', sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
   --font-code: 'Geist Mono', ui-monospace, monospace;
 
-  /* hero = D/Display 160 · header1 = D/Divisor 112 · header2 = D/Título de proyecto 80 · header3 = D/Título S 40 */
+  /* hero = D/Display 160 · header1 = D/Divider 112 · header2 = D/Project title 80 · header3 = D/Title S 40 */
   --text-hero: clamp(4.25rem, 11.2vw, 10rem);
   --text-hero--line-height: 0.92;
   --text-hero--font-weight: 800;
@@ -87,7 +87,7 @@
   --text-small: 0.75rem;
   --text-small--line-height: 1.4;
 
-  /* Tamaños propios del diseño D */
+  /* Sizes specific to design D */
   --text-lead: clamp(1.0625rem, 1.4vw, 1.25rem);
   --text-lead--line-height: 1.6;
   --text-serif-xl: clamp(2.75rem, 6.7vw, 6rem);
@@ -102,37 +102,37 @@
   }
 
   ::selection {
-    background: var(--color-hueso);
-    color: var(--color-negro);
+    background: var(--color-bone);
+    color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-hueso);
+    outline: 2px solid var(--color-bone);
     outline-offset: 3px;
   }
 }
 
 @layer components {
-  /* Voz secundaria: Instrument Serif itálica bajo cada titular */
-  .voz-serif {
+  /* Second voice: Instrument Serif italic under each heading */
+  .serif-voice {
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
     letter-spacing: -0.01em;
-    color: var(--color-gris);
+    color: var(--color-ash);
   }
 
-  /* Etiqueta D: Hanken SemiBold 12, +8 % */
-  .etiqueta {
+  /* D label: Hanken SemiBold 12, +8 % */
+  .meta-label {
     font-size: var(--text-small);
     font-weight: 600;
     letter-spacing: 0.08em;
     line-height: 1.4;
-    color: var(--color-gris);
+    color: var(--color-ash);
   }
 
-  /* D/Campo: solo línea inferior, etiqueta pequeña, valor grande */
-  .campo-d {
+  /* D/Field: bottom line only, small label, large value */
+  .line-fields {
     .form-field {
       gap: 0.625rem;
     }
@@ -142,14 +142,14 @@
       font-size: var(--text-small);
       font-weight: 600;
       letter-spacing: 0.08em;
-      color: var(--color-gris);
+      color: var(--color-ash);
     }
     .field-content {
-      border-bottom: 1px solid var(--color-grafito);
+      border-bottom: 1px solid var(--color-graphite);
       padding: 0.875rem 0;
     }
     .form-field.focus .field-content {
-      border-bottom: 2px solid var(--color-hueso);
+      border-bottom: 2px solid var(--color-bone);
       padding-bottom: calc(0.875rem - 1px);
     }
     .form-field.error .field-content {
@@ -159,11 +159,11 @@
     textarea {
       font-size: var(--text-lead);
       line-height: 1.6;
-      color: var(--color-hueso);
+      color: var(--color-bone);
     }
     input::placeholder,
     textarea::placeholder {
-      color: var(--color-gris);
+      color: var(--color-ash);
     }
     .field-message {
       font-size: var(--text-body);
@@ -172,9 +172,9 @@
 }
 
 /*
- * Tamaños como utilidades propias (t-*): el `cn` de Polpo (tailwind-merge) toma
- * `text-<token>` como color y lo descarta al combinarlo con otro color, y en la
- * capa de utilidades ganan a los tamaños de las variantes de Typography.
+ * Sizes as custom utilities (t-*): Polpo's `cn` (tailwind-merge) treats
+ * `text-<token>` as a color and drops it when combined with another color, and
+ * in the utilities layer they win over the Typography variant sizes.
  */
 @utility t-lead {
   font-size: var(--text-lead);

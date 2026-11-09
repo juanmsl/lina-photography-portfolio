@@ -5,9 +5,9 @@ primary_target: "figma/portafolio"
 related_targets: []
 ---
 
-# Portafolio Lina María Nieto Gómez — sitio público
+# Lina María Nieto Gómez portfolio — public site
 
-Scope: whole public site (inicio, categoría, foto ampliada, servicios, sobre mí, cotizar) desktop 1440 + mobile 390, designed in Figma. Mode: Experience (the work leads). Two directions built side by side at the user's request for comparison.
+Scope: whole public site (home, category, enlarged photo, services, about me, quote) desktop 1440 + mobile 390, designed in Figma. Mode: Experience (the work leads). Two directions built side by side at the user's request for comparison.
 
 Audience: brands (product/fashion), private clients (portraits), editorial/tourism. Action: quote form or WhatsApp. Proof: her photographs only (provisional generated images until real ones arrive).
 
@@ -19,13 +19,14 @@ FIRST VIEWPORT: Full-width brushed plate of the páramo with coordinate ticks on
 FORM: User-pinned fusion of A and B (no roll). seed:dea7aa8db2631a0a (original roll, kept for trace). Signature interaction: the reveal slider on hero and on hover over every plate.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, docs/DESIGN.md, and every shipping raster carrying its provenance
 
-## D · Cuarto oscuro (dirección nueva, página propia)
-- Referencia del cliente: portafolio largo de una sola página, fondo negro, proyectos uno tras otro (título grande, subtítulo cursivo, párrafo centrado, ficha en dos columnas, filas de fotos), divisores por tipo de fotografía, contacto al final.
-- Modo: Experience. La foto manda; la interfaz es negro, hueso y gris.
-- Tipografía: Bricolage Grotesque ExtraBold (display, tracking -3%), Instrument Serif Italic (subtítulos y segunda voz), Hanken Grotesk (texto, ficha, navegación), Geist Mono solo para coordenadas.
-- Color: negro #0A0A0B, carbón #151517, grafito #2A2A2E (líneas), hueso #F2EFEA (texto), gris #A3A3A8 (secundario), azul prusia #5B8FC0 (enlaces/acentos mínimos), oro #C49A4E (un punto por bloque como máximo).
-- Firma: la serie "Cianotipias" en proyectos personales conserva el revelado azul de las direcciones anteriores.
-- Prohibido: eyebrows sobre títulos, números de sección, tarjetas de vidrio, degradados de color.
+## D · Cuarto oscuro (new direction, its own page)
+- Client reference: a long single-page portfolio, black background, projects one after another (large title, italic subtitle, centered paragraph, two-column fact sheet, photo rows), dividers by type of photography, contact at the end.
+- Mode: Experience. The photo leads; the interface is black, bone and gray.
+- Typography: Bricolage Grotesque ExtraBold (display, -3% tracking), Instrument Serif Italic (subtitles and second voice), Hanken Grotesk (text, fact sheet, navigation), Geist Mono for coordinates only.
+- Color: ink #0A0A0B, charcoal #151517, graphite #2A2A2E (rules), bone #F2EFEA (text), ash #A3A3A8 (secondary), Prussian blue #5B8FC0 (minimal links/accents), gold #C49A4E (at most one touch per block).
+- Signature: the "Cianotipias" series in personal projects keeps the blue reveal from the earlier directions.
+- Not allowed: eyebrows above titles, section numbers, glass cards, color gradients.
+- Code (November 2026): direction D is implemented in this repository with React + Vite + Polpo; see README.md.
 
 
-Nota: las direcciones A · Plancha y B · Cianotipia se retiraron (octubre 2026). Finales: C · Fusión y D · Cuarto oscuro.
+Note: directions A · Plancha and B · Cianotipia were retired (October 2026). Finals: C · Fusión and D · Cuarto oscuro.
