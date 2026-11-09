@@ -1,86 +1,88 @@
-# Lina Nieto · Portafolio
+# Lina Nieto · Portfolio
 
-Sitio del portafolio de Lina María Nieto Gómez, dirección **D · Cuarto oscuro** del archivo de Figma
-`w3WthJXOQOkFUEW9wKw6Gy`. React 19 + TypeScript + Vite, con la librería de UI [Polpo](https://ui.juanmsl.com)
-y Tailwind CSS v4.
+Portfolio site for Lina María Nieto Gómez, built from direction **D · Cuarto oscuro** in Figma file
+`w3WthJXOQOkFUEW9wKw6Gy`. React 19 + TypeScript + Vite, with the [Polpo](https://ui.juanmsl.com) UI library and
+Tailwind CSS v4.
 
-Sistema de diseño en `docs/DESIGN.md` y contexto de producto en `docs/PRODUCT.md`.
+Design system in `docs/DESIGN.md` and product context in `docs/PRODUCT.md`.
 
-## Comandos
+**Language convention:** code, file names, comments and docs are in English; everything the visitor sees
+(copy, URLs, aria labels, alt text) is in Spanish.
 
-Requiere Node 24 (`.nvmrc`) y pnpm 11.10.0 (`packageManager`; con `corepack enable` se activa sola). `engines` en `package.json` y `engineStrict` en `pnpm-workspace.yaml` hacen que `pnpm install` se niegue a correr con otra versión.
+## Commands
+
+Requires Node 24 (`.nvmrc`) and pnpm 11.10.0 (`packageManager`; `corepack enable` activates it). `engines` in
+`package.json` plus `engineStrict` in `pnpm-workspace.yaml` make `pnpm install` refuse to run on other versions.
 
 ```sh
 pnpm install
-pnpm dev       # servidor de desarrollo
-pnpm build     # tipos + compilación a dist/
+pnpm dev       # dev server
+pnpm build     # type check + build to dist/
 pnpm lint      # ESLint (polpo-eslint-config)
-pnpm lint:fix  # ESLint con correcciones automáticas
-pnpm preview   # sirve dist/
+pnpm lint:fix  # ESLint with automatic fixes
+pnpm preview   # serve dist/
 ```
 
-## Despliegue
+## Deployment
 
-Cada push a `main` (por ejemplo, al hacer merge de un PR) publica el sitio en GitHub Pages con
-`.github/workflows/deploy.yml`: instala con pnpm, corre `pnpm lint`, compila y sube `dist/`. También se puede
-lanzar a mano desde la pestaña **Actions** (Run workflow).
+Every push to `main` (for example, merging a PR) publishes the site to GitHub Pages through
+`.github/workflows/deploy.yml`: it installs with pnpm, runs `pnpm lint`, builds and uploads `dist/`. It can also be
+run manually from the **Actions** tab (Run workflow).
 
-- Una sola vez: en el repositorio, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- URL: **https://linanieto.com** (dominio propio). Configuración, una sola vez:
-  - **Settings → Pages → Custom domain:** `linanieto.com` y, cuando el DNS responda, **Enforce HTTPS**.
-  - DNS de `linanieto.com`: registros **A** a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y
-    `185.199.111.153` (opcional, **AAAA** a `2606:50c0:8000::153` … `2606:50c0:8003::153`) y un **CNAME** de
-    `www` a `juanmsl.github.io`.
-  - No hace falta archivo `CNAME`: con despliegue por Actions, GitHub lo ignora y guarda el dominio en Settings.
-  - Después de configurar el dominio hay que volver a desplegar (Actions → Run workflow) para que el sitio se
-    compile para la raíz.
-- La ruta base sale de `actions/configure-pages`: con dominio propio es `/`; sin él sería `/<repositorio>/`.
-  `vite.config.ts` la toma de `BASE_PATH` (en local es `/`), el router usa `import.meta.env.BASE_URL` como
-  `basename` y las fotos de `public/` se piden con esa misma base.
-- Como GitHub Pages no conoce las rutas de la app, el workflow copia `index.html` a `404.html` para que los
-  enlaces directos (p. ej. `linanieto.com/servicios`) también abran.
+- Once: in the repository, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+- URL: **https://linanieto.com** (custom domain). One-time setup:
+  - **Settings → Pages → Custom domain:** `linanieto.com` and, once DNS resolves, **Enforce HTTPS**.
+  - DNS for `linanieto.com`: **A** records to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
+    `185.199.111.153` (optionally **AAAA** to `2606:50c0:8000::153` … `2606:50c0:8003::153`) and a **CNAME** from
+    `www` to `juanmsl.github.io`.
+  - No `CNAME` file is needed: with Actions deployments GitHub ignores it and stores the domain in Settings.
+  - After setting the domain, redeploy (Actions → Run workflow) so the site is built for the root path.
+- The base path comes from `actions/configure-pages`: `/` with a custom domain, `/<repository>/` without one.
+  `vite.config.ts` reads it from `BASE_PATH` (`/` locally), the router uses `import.meta.env.BASE_URL` as its
+  `basename`, and photos in `public/` are requested with the same base.
+- GitHub Pages does not know the app's routes, so the workflow copies `index.html` to `404.html` and direct links
+  (e.g. `linanieto.com/servicios`) still open.
 
-## Buscadores y enlaces compartidos
+## Search engines and link previews
 
-- `index.html`: descripción, URL canónica y etiquetas Open Graph / X con `public/og.jpg` (1200×630, con la foto
-  de Lina en blanco y negro).
-- `src/components/Metadatos.tsx`: título, descripción y URL canónica de cada ruta; marca `noindex` en
-  "Solicitud enviada" y en la página 404.
-- `public/robots.txt` y `public/sitemap.xml` (portafolio, servicios, cotizar y los proyectos). Si cambia el
-  dominio o se agregan proyectos, actualizar estos dos archivos, `index.html` y `SITIO_URL` en
-  `src/content/contacto.ts`.
+- `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, Lina's photo in
+  black and white).
+- `src/components/PageMeta.tsx`: title, description and canonical URL for each route; `noindex` on "Solicitud
+  enviada" and the 404 page.
+- `public/robots.txt` and `public/sitemap.xml` (portfolio, services, quote and the projects). If the domain changes
+  or projects are added, update both files, `index.html` and `SITE_URL` in `src/content/contact.ts`.
 
-## Estructura
+## Structure
 
 ```
 src/
-  content/      Textos y datos: proyectos, servicios, fotos, contacto, cotización
-  components/   Piezas del diseño D (Navegación, Rótulo, Ficha, Foto, Galería, Marco de plancha, Mosaico de servicio…) y Metadatos (título y URL canónica por ruta)
-  pages/        Portafolio, Proyecto, Foto ampliada, Servicios, Cotizar, Solicitud enviada, 404
-  index.css     Tema de Polpo con los tokens D/ (colores, tipografías, tamaños)
-.claude/skills/polpo   Instrucciones de Polpo para agentes (npx polpo init-ai --claude)
-docs/                  DESIGN.md (sistema de diseño) y PRODUCT.md (contexto de producto)
+  content/      Copy and data: projects, services, photos, contact, quote
+  components/   Design D pieces (Navigation, DualTitle, FactSheet, Photo, Gallery, PlateFrame, ServiceTilePicker…) and PageMeta (title and canonical URL per route)
+  pages/        PortfolioPage, ProjectPage, PhotoViewerPage, ServicesPage, QuotePage, QuoteSentPage, NotFoundPage
+  index.css     Polpo theme with the D/ tokens (colors, typefaces, sizes)
+.claude/skills/polpo   Polpo instructions for agents (npx polpo init-ai --claude)
+docs/                  DESIGN.md (design system) and PRODUCT.md (product context)
 ```
 
-Rutas: `/`, `/proyectos/:slug`, `/proyectos/:slug/foto/:n`, `/servicios`, `/cotizar`, `/cotizar/enviada`.
+Routes (kept in Spanish because visitors see them): `/`, `/proyectos/:slug`, `/proyectos/:slug/foto/:n`,
+`/servicios`, `/cotizar`, `/cotizar/enviada`.
 
-## Tema
+## Theme
 
-`src/index.css` sobrescribe las variables de Polpo: fondo negro `#0A0A0B`, texto hueso `#F2EFEA`, filetes grafito
-`#2A2A2E`, gris `#A3A3A8`; `primary` es el hueso (botón primario relleno, secundario en contorno). Tipografías
-autoalojadas con Fontsource: Bricolage Grotesque ExtraBold (titulares), Instrument Serif itálica (segunda voz),
-Hanken Grotesk (texto) y Geist Mono (coordenadas).
+`src/index.css` overrides Polpo's variables: `ink` background `#0A0A0B`, `bone` text `#F2EFEA`, `graphite` rules
+`#2A2A2E`, `ash` secondary text `#A3A3A8`, `prussian` blue `#5B8FC0` and `gold` `#C49A4E`; `primary` is bone (filled
+primary button, outlined secondary). Self-hosted Fontsource typefaces: Bricolage Grotesque ExtraBold (headings),
+Instrument Serif italic (second voice), Hanken Grotesk (text) and Geist Mono (coordinates).
 
-Componentes propios (Polpo no los trae): Mosaico de servicio (selector con fotos, usa react-hook-form),
-Marco de plancha, revelado cianotipia → color y Galería en filas. Todo lo demás usa Polpo.
+Custom components (Polpo does not ship them): ServiceTilePicker (photo tile selector, uses react-hook-form),
+PlateFrame, the cyanotype → color reveal and the row Gallery. Everything else uses Polpo.
 
-## Pendiente antes de publicar
+## Pending before launch
 
-- **Fotos**: solo `public/fotos/lina.jpg` es real. Las demás están en el catálogo `src/content/fotos.ts` y se
-  esperan en `public/fotos/` (`paramo.jpg`, `cocora.jpg`, `nubes.jpg`, `bosque.jpg`, `ladrillo.jpg`,
-  `escalera.jpg`, `retrato.jpg`, `moda.jpg`, `producto.jpg`, `camara.jpg`). Mientras falten, se ve un marcador
-  oscuro con la descripción. Lo ideal es poner las fotos reales de Lina.
-- **Contacto**: WhatsApp, correo e Instagram en `src/content/contacto.ts` son los del mockup.
-- **Formulario**: `Cotizar` simula el envío; falta conectarlo a un servicio que reciba las solicitudes.
-- Invernadero, Campaña textil y Bodegón son proyectos de ejemplo.
-- Al desplegar, el servidor debe redirigir todas las rutas a `index.html` (rutas del navegador).
+- **Photos**: only `public/photos/lina.jpg` is real. The rest are listed in `src/content/photos.ts` and expected in
+  `public/photos/` (`paramo.jpg`, `cocora.jpg`, `clouds.jpg`, `forest.jpg`, `brick.jpg`, `stairs.jpg`,
+  `portrait.jpg`, `fashion.jpg`, `product.jpg`, `camera.jpg`). While they are missing, a dark placeholder with the
+  description is shown. Ideally, use Lina's real photographs.
+- **Contact**: WhatsApp, email and Instagram in `src/content/contact.ts` come from the mockup.
+- **Form**: the quote page simulates the submission; it still needs a service that receives the requests.
+- Invernadero, Campaña textil and Bodegón are example projects.

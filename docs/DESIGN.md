@@ -323,32 +323,33 @@ A 48px glass knob on a vertical split line. It sits at 58% on the hero.
 
 **Rule — Continuous Gradient (C).** Sections never carry their own background fill; colour changes live in a single page-length gradient whose stops sit at section midpoints, softened by blurred light orbs at the seams. **Rule — Plates vs. cards (C).** Portfolio photos are brushed plates with fichas; service photos are UI cards with radius 28 and no brushed edge.
 
-## Hero "Hola, soy Lina" (Fusión, Inicio) — incluye Sobre mí
-- Foto de Lina a sangre, nítida y centrada (no desenfocada). El lado izquierdo se revela en cianotipia con una máscara de degradado suave (sin corte duro) que pasa a color hacia la derecha; el deslizador sigue indicado con "Desliza: cianotipia ← → color".
-- Velo petróleo para lectura, viñeta lateral, luz cálida dorada, grano; el borde inferior se funde a neblina (#EEF2F1) para que la siguiente sección entre sin salto.
-- Texto centrado: "¡Hola!" en Anta; "Soy Lina Nieto" con "Lina Nieto" en Moirai One, dorado claro (#E2C07E). Debajo, el texto de Sobre mí con palabras clave en verde, oro y lavanda claros, la fila de categorías con sus puntos de color y la píldora de vidrio con Cotizar + Explorar.
-- La sección independiente "Sobre Lina" se eliminó; su contenido vive en el hero.
-- Moirai One se usa solo para el nombre de Lina; el resto de titulares sigue en Anta.
-- Toda aparición de la foto es instancia del componente "Foto de Lina" (página Fotos provisionales).
+## Hero "Hola, soy Lina" (Fusión, Home) — includes About me
+- Lina's photo full-bleed, sharp and centered (not blurred). The left side reveals as a cyanotype through a soft gradient mask (no hard cut) that turns to color towards the right; the slider is still hinted with "Desliza: cianotipia ← → color".
+- Petrol veil for legibility, side vignette, warm golden light, grain; the bottom edge fades into mist (#EEF2F1) so the next section comes in without a jump.
+- Centered text: "¡Hola!" in Anta; "Soy Lina Nieto" with "Lina Nieto" in Moirai One, light gold (#E2C07E). Below it, the About me text with key words in light green, gold and lavender, the category row with its color dots, and the glass pill with Cotizar + Explorar.
+- The standalone "Sobre Lina" section was removed; its content lives in the hero.
+- Moirai One is used only for Lina's name; every other heading stays in Anta.
+- Every appearance of the photo is an instance of the "Foto de Lina" component ("Fotos provisionales" page).
 
-## Pantallas Fusión (escritorio)
-- Inicio (editado a mano por el equipo: texto del hero alineado a la izquierda, nombre en Anta).
-- Portafolio — Paisaje: cabecera con foto (revelado cianotipia → color por máscara suave), filtros "Ítem de categoría", mosaico de Tarjetas de revelado en 3 columnas, tarjeta de vidrio "Sobre esta serie", banda "Siguiente categoría".
-- Foto ampliada: lámina con borde de emulsión y asa de revelado, anterior/siguiente en círculos de vidrio, ficha lateral (coordenadas, altitud, serie), miniaturas con la activa en filete dorado.
-- Servicios: 6 Tarjetas de servicio, "Cómo trabajamos" en 4 pasos, preguntas frecuentes, banda de llamado a cotizar.
-- Sobre mí: cabecera con la foto de Lina, historia, "Cómo miro" (paciencia, luz natural, composición limpia), "Con quién trabajo".
-- Cotizar: cabecera corta, formulario + canales (mismo bloque que Contacto en Inicio), "Qué pasa después".
-- Solicitud enviada: foto desenfocada con velo, tarjeta de vidrio con resumen y acciones.
-- Regla de cabecera (desde la portada rediseñada por el equipo): toda pantalla abre con la "Lámina principal": degradado petróleo que se disuelve hacia abajo, nombre/título en Anta 104 blanco a la izquierda, "Etiqueta de espécimen" (filete dorado superior + tres líneas en Courier Prime 13), acciones, y a la derecha una lámina fotográfica 779×623 con tinte prusia en SCREEN sobre la parte izquierda y un "Filete de oro" de 4 px marcando el corte. Debajo: rótulo de lámina (lugar en Courier Prime Bold + coordenadas en JetBrains Mono) e indicación con ramita en dorado.
-- Courier Prime entra como tipografía de rótulos e indicaciones (máquina de escribir de espécimen); JetBrains Mono queda para coordenadas.
-- El revelado se marca con el filete dorado, no con la línea blanca y el asa (Foto ampliada actualizada así).
+## Fusión screens (desktop)
+- Home (edited by hand by the team: hero text aligned left, name in Anta).
+- Portfolio — Landscape: header with a photo (cyanotype → color reveal through a soft mask), "Ítem de categoría" filters, a 3-column mosaic of reveal cards, a "Sobre esta serie" glass card, a "Siguiente categoría" band.
+- Enlarged photo: plate with an emulsion edge and reveal handle, previous/next in glass circles, side fact sheet (coordinates, altitude, series), thumbnails with the active one in a gold rule.
+- Services: 6 service cards, "Cómo trabajamos" in 4 steps, FAQ, call-to-quote band.
+- About me: header with Lina's photo, story, "Cómo miro" (patience, natural light, clean composition), "Con quién trabajo".
+- Quote: short header, form + channels (same block as Contact on Home), "Qué pasa después".
+- Request sent: blurred photo with a veil, glass card with a summary and actions.
+- Header rule (from the team's redesigned home): every screen opens with the "Lámina principal": a petrol gradient dissolving downwards, name/title in white Anta 104 on the left, a "specimen label" (gold top rule + three lines in Courier Prime 13), actions, and on the right a 779×623 photo plate with a Prussian tint in SCREEN over its left part and a 4 px "gold rule" marking the split. Below: the plate caption (place in Courier Prime Bold + coordinates in JetBrains Mono) and a hint with a gold sprig.
+- Courier Prime comes in for captions and hints (specimen typewriter); JetBrains Mono stays for coordinates.
+- The reveal is marked with the gold rule, not the white line and handle (Enlarged photo updated accordingly).
 
-## D · Cuarto oscuro (página "D · Cuarto oscuro")
-- Portafolio de una sola página sobre negro (#0A0A0B), siguiendo la referencia de proyectos en secuencia.
-- Tipografía: Bricolage Grotesque ExtraBold (Display 160, Divisor 112, Título de proyecto 80), Instrument Serif Italic como segunda voz bajo cada título, Hanken Grotesk para texto y ficha, Geist Mono solo en coordenadas.
-- Color: hueso #F2EFEA para texto, gris #A3A3A8 secundario, grafito #2A2A2E para filetes; azul prusia solo en la serie Cianotipias.
-- Estructura: Portada (Lina en blanco y negro con fundido, "Portafolio / fotográfico") → ¿Quién soy? → Divisor por tipo (paisaje, arquitectura, personas, producto, proyectos personales) → Proyecto (encabezado centrado, párrafo, ficha 2 columnas, filas de fotos a 1360 con 16 px de separación) → Contacto → pie.
-- Componentes: D/Botón (Primario hueso, Secundario contorno; Reposo/Hover), D/Dato de ficha (filete superior grafito, etiqueta + valor), D/Encabezado de proyecto (título + subtítulo serif).
-- Pantallas D (escritorio y móvil 390): Portafolio, Proyecto (Cordillera, con "Del azul al color" y siguiente proyecto), Foto ampliada, Servicios (lista editorial con filetes), Cotizar (campos de línea inferior, chips, columna WhatsApp), Solicitud enviada; en móvil además el Menú (overlay).
-- Componentes añadidos: D/Navegación (Escritorio/Móvil), D/Campo (Reposo/Foco/Error/Párrafo; solo línea inferior, error en #E07A6A con mensaje), D/Chip (Inactivo/Activo).
-- Puntos de inicio del prototipo: "Cuarto oscuro · Escritorio" y "Cuarto oscuro · Móvil".
+## D · Cuarto oscuro ("D · Cuarto oscuro" page) — implemented in this repository
+- Single-page portfolio on black (#0A0A0B), following the reference of projects in sequence.
+- Typography: Bricolage Grotesque ExtraBold (Display 160, Divider 112, Project title 80), Instrument Serif Italic as the second voice under each title, Hanken Grotesk for text and fact sheets, Geist Mono for coordinates only.
+- Color (code tokens in `src/index.css`): `bone` #F2EFEA for text, `ash` #A3A3A8 secondary, `graphite` #2A2A2E for rules, `ink` #0A0A0B ground, `charcoal` #151517 surfaces; `prussian` blue only in the Cianotipias series; `gold` #C49A4E for the active photo tile.
+- Structure: Hero (Lina in black and white with a fade, "Portafolio / fotográfico") → ¿Quién soy? → divider per type (landscape, architecture, people, product, personal projects) → Project (centered heading, paragraph, 2-column fact sheet, photo rows at 1360 with a 16 px gap) → Contact → footer.
+- Components: D/Botón (bone primary, outlined secondary; rest/hover), D/Dato de ficha (graphite top rule, label + value), D/Encabezado de proyecto (title + serif subtitle).
+- D screens (desktop and 390 mobile): Portfolio, Project (Cordillera, with "Del azul al color" and next project), Enlarged photo, Services (editorial list with rules), Quote (bottom-line fields, chips, WhatsApp column), Request sent; on mobile also the Menu (overlay).
+- Added components: D/Navegación (desktop/mobile), D/Campo (rest/focus/error/paragraph; bottom line only, error in #E07A6A with a message), D/Chip (inactive/active).
+- Prototype starting points: "Cuarto oscuro · Escritorio" and "Cuarto oscuro · Móvil".
+- Code names: `DualTitle` (two-voice heading), `FactSheet`/`FactItem`, `ProjectHeading`, `Navigation`, `PlateFrame` (white plate frame on the enlarged photo), `ServiceTilePicker` (D/Mosaico de servicio), `Gallery`, `Photo` (with the cyanotype reveal).

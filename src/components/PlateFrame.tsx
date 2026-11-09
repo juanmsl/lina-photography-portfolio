@@ -2,15 +2,15 @@ import type { ReactNode } from 'react';
 
 import { cn } from 'polpo/helpers';
 
-type MarcoPlanchaProps = {
-  /** [latG, latM, lonG, lonM] de la foto; si falta, el marco va sin rótulos. */
-  coordenadas?: [number, number, number, number];
+type PlateFrameProps = {
+  /** The photo's [latG, latM, lonG, lonM]; without it the frame has no labels. */
+  coordinates?: [number, number, number, number];
   children: ReactNode;
   className?: string;
 };
 
-const minutos = (grados: number, min: number, delta: number) => {
-  let total = grados * 60 + min + delta;
+const formatMinutes = (degrees: number, min: number, delta: number) => {
+  let total = degrees * 60 + min + delta;
 
   if (total < 0) total = 0;
 
@@ -21,10 +21,10 @@ const LON = [5, 3, 1, -1, -3, -5];
 const LAT = [4, 2, 0, -2];
 
 /**
- * Marco de plancha: filete blanco alrededor de la foto con marcas y rótulos de
- * coordenadas, como una plancha cartográfica. Puramente decorativo.
+ * Plate frame: a white rule around the photo with tick marks and coordinate
+ * labels, like a map plate. Purely decorative.
  */
-export const MarcoPlancha = ({ coordenadas, children, className }: MarcoPlanchaProps) => (
+export const PlateFrame = ({ coordinates, children, className }: PlateFrameProps) => (
   <div className={cn('relative p-3 md:p-7', className)}>
     <div aria-hidden className='pointer-events-none absolute inset-0 border border-white/80'>
       {LON.map((d, i) => {
@@ -34,12 +34,12 @@ export const MarcoPlancha = ({ coordenadas, children, className }: MarcoPlanchaP
           <span key={`lon-${d}`}>
             <span className='absolute top-0 h-2 w-px bg-white/55' style={{ left: x }} />
             <span className='absolute bottom-0 h-2 w-px bg-white/55' style={{ left: x }} />
-            {coordenadas && (
+            {coordinates && (
               <span
                 className='font-code absolute top-[0.4rem] hidden pl-1.5 whitespace-nowrap text-[0.6875rem] leading-none text-white/75 md:block'
                 style={{ left: x }}
               >
-                {minutos(coordenadas[2], coordenadas[3], d)}
+                {formatMinutes(coordinates[2], coordinates[3], d)}
               </span>
             )}
           </span>
@@ -52,12 +52,12 @@ export const MarcoPlancha = ({ coordenadas, children, className }: MarcoPlanchaP
           <span key={`lat-${d}`}>
             <span className='absolute left-0 h-px w-2 bg-white/55' style={{ top: y }} />
             <span className='absolute right-0 h-px w-2 bg-white/55' style={{ top: y }} />
-            {coordenadas && (
+            {coordinates && (
               <span
                 className='font-code absolute left-[0.45rem] hidden -translate-y-[130%] whitespace-nowrap text-[0.6875rem] leading-none text-white/75 md:block'
                 style={{ top: y }}
               >
-                {minutos(coordenadas[0], coordenadas[1], d)}
+                {formatMinutes(coordinates[0], coordinates[1], d)}
               </span>
             )}
           </span>
