@@ -2,6 +2,9 @@
  * Datos de contacto. Los tres valores son los del mockup y están PENDIENTES:
  * reemplazar por los reales de Lina antes de publicar.
  */
+/** Dominio público del sitio (GitHub Pages con dominio propio). */
+export const SITIO_URL = 'https://lina.aureostudio.co';
+
 export const contacto = {
   whatsappVisible: '+57 300 000 0000',
   /** Solo dígitos, con indicativo de país, para wa.me. */
