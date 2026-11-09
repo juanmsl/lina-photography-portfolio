@@ -281,7 +281,11 @@ Desktop is 1440px with 12 columns and 40px margins. Mobile is 390px with 20px ma
 ### Ítem de categoría (legend / index row)
 In C, it is a glass legend row with a category dot (see Category colours), the name, and a count.
 
+### Logo
+The LN monogram: "LN" in a single-line script inside a broken circle, with a viewfinder corner at the top right. It is a single-colour mark (`currentColor`): bone `#F2EFEA` on ink, ink `#0A0A0B` on bone. In the navigation it sits to the left of the name "Lina Nieto" (40 px tall on mobile, 44 px on desktop, 12 px gap); in the footer it appears alone at 28 px. Minimum height 24 px. Do not recolour, outline, rotate, add effects or place it over busy areas of a photo. Source: `public/logo-ln.svg`; code: `src/components/Logo.tsx`.
+
 ### Navigation
+- **D (shipping):** LN monogram plus the name, links and the Cotizar button; on mobile the monogram, the name and a round menu button.
 - **C:** A floating glass pill with the name, links, and the primary Cotizar button.
 - **Mobile:** Name block and a menu icon. The menu opens full-screen on fondo/base.
 
