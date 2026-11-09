@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lina.aureostudio.co/sitemap.xml
+Sitemap: https://linanieto.com/sitemap.xml

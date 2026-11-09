@@ -74,7 +74,7 @@ const fijar = (selector: string, crear: () => HTMLElement, atributo: string, val
 };
 
 /**
- * Título, descripción, URL canónica (lina.aureostudio.co) y robots de cada ruta.
+ * Título, descripción, URL canónica (linanieto.com) y robots de cada ruta.
  * index.html trae los del portafolio y las etiquetas para compartir el enlace.
  */
 export const Metadatos = () => {

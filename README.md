@@ -26,9 +26,11 @@ Cada push a `main` (por ejemplo, al hacer merge de un PR) publica el sitio en Gi
 lanzar a mano desde la pestaña **Actions** (Run workflow).
 
 - Una sola vez: en el repositorio, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- URL: **https://lina.aureostudio.co** (subdominio de `aureostudio.co`). Configuración, una sola vez:
-  - **Settings → Pages → Custom domain:** `lina.aureostudio.co` y, cuando el DNS responda, **Enforce HTTPS**.
-  - DNS de `aureostudio.co`: un registro **CNAME** de `lina` a `juanmsl.github.io`.
+- URL: **https://linanieto.com** (dominio propio). Configuración, una sola vez:
+  - **Settings → Pages → Custom domain:** `linanieto.com` y, cuando el DNS responda, **Enforce HTTPS**.
+  - DNS de `linanieto.com`: registros **A** a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y
+    `185.199.111.153` (opcional, **AAAA** a `2606:50c0:8000::153` … `2606:50c0:8003::153`) y un **CNAME** de
+    `www` a `juanmsl.github.io`.
   - No hace falta archivo `CNAME`: con despliegue por Actions, GitHub lo ignora y guarda el dominio en Settings.
   - Después de configurar el dominio hay que volver a desplegar (Actions → Run workflow) para que el sitio se
     compile para la raíz.
@@ -36,7 +38,7 @@ lanzar a mano desde la pestaña **Actions** (Run workflow).
   `vite.config.ts` la toma de `BASE_PATH` (en local es `/`), el router usa `import.meta.env.BASE_URL` como
   `basename` y las fotos de `public/` se piden con esa misma base.
 - Como GitHub Pages no conoce las rutas de la app, el workflow copia `index.html` a `404.html` para que los
-  enlaces directos (p. ej. `lina.aureostudio.co/servicios`) también abran.
+  enlaces directos (p. ej. `linanieto.com/servicios`) también abran.
 
 ## Buscadores y enlaces compartidos
 

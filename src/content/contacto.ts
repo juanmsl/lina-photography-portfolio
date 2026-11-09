@@ -3,7 +3,7 @@
  * reemplazar por los reales de Lina antes de publicar.
  */
 /** Dominio público del sitio (GitHub Pages con dominio propio). */
-export const SITIO_URL = 'https://lina.aureostudio.co';
+export const SITIO_URL = 'https://linanieto.com';
 
 export const contacto = {
   whatsappVisible: '+57 300 000 0000',
