@@ -5,6 +5,7 @@ import { openWhatsApp, contact } from '../content/contact';
 
 import { DualTitle } from './DualTitle';
 import { FactItem } from './FactSheet';
+import { Logo } from './Logo';
 
 const YEAR = new Date().getFullYear();
 
@@ -54,8 +55,8 @@ export const ContactSection = ({ withChannels = true, withText = true }: Contact
 
 export const Footer = () => (
   <footer className='flex flex-col gap-2 border-t border-graphite px-5 pt-7 pb-9 sm:flex-row sm:items-center sm:justify-between md:px-10 md:pt-8 md:pb-10'>
-    <Typography noPadding className='m-0 text-ash'>
-      © {YEAR} Lina María Nieto Gómez
+    <Typography noPadding className='m-0 flex items-center gap-3 text-ash'>
+      <Logo className='h-7 w-auto text-bone' title='Lina Nieto' />© {YEAR} Lina María Nieto Gómez
     </Typography>
     <Typography variant='small' noPadding className='font-code m-0 tracking-[0.02em] text-ash'>
       {contact.base} · {contact.baseCoordinates}

@@ -46,7 +46,7 @@ run manually from the **Actions** tab (Run workflow).
 ## Search engines and link previews
 
 - `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, Lina's photo in
-  black and white).
+  black and white with the LN monogram).
 - `src/components/PageMeta.tsx`: title, description and canonical URL for each route; `noindex` on "Solicitud
   enviada" and the 404 page.
 - `public/robots.txt` and `public/sitemap.xml` (portfolio, services, quote and the projects). If the domain changes
@@ -66,6 +66,18 @@ docs/                  DESIGN.md (design system) and PRODUCT.md (product context
 
 Routes (kept in Spanish because visitors see them): `/`, `/proyectos/:slug`, `/proyectos/:slug/foto/:n`,
 `/servicios`, `/cotizar`, `/cotizar/enviada`.
+
+## Logo
+
+The LN monogram (script "LN" inside a broken circle with a viewfinder corner) lives in two places:
+
+- `src/components/Logo.tsx`: inline SVG that takes the text color (`currentColor`). Used in the navigation (with
+  the name "Lina Nieto"), in the mobile menu and in the footer.
+- `public/logo-ln.svg` (source file, `currentColor`), `public/favicon.svg` (bone monogram on an ink square),
+  `public/apple-touch-icon.png` (180×180) and `public/og.jpg` (link preview with the monogram).
+
+Use it in bone on dark backgrounds and in ink on light ones; never in color, outlined or distorted. Keep at least
+24 px of height on screen so the script stays legible.
 
 ## Theme
 
