@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+import { seoPlugin } from './build/seo-plugin';
+
 export default defineConfig({
   /*
    * Site base path. On GitHub Pages the deploy workflow sets it
@@ -12,6 +14,8 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    // One HTML file per indexable route, 404.html and sitemap.xml (see build/seo-plugin.ts).
+    seoPlugin(),
     /*
      * Installable PWA: the plugin writes manifest.webmanifest, links it from
      * index.html and generates the service worker (Workbox). start_url and
