@@ -90,6 +90,22 @@ logotype in script. Both are single-colour SVGs that take the text color (`curre
 Use them in bone on dark backgrounds and in ink on light ones; never in color, outlined or distorted. Keep the
 monogram at least 24 px tall and the logotype at least 20 px tall so the script stays legible.
 
+## Light and dark theme
+
+The site opens in the dark theme, always, unless the visitor turns the light on. The system preference
+(`prefers-color-scheme`) is ignored on purpose.
+
+- **Switch:** `src/components/ThemeToggle.tsx`, a light bulb in the navigation (off = dark, on = light). The change is
+  animated like a camera flash when the light turns on and dims when it turns off (`theme-to-light` /
+  `theme-to-dark` view transitions in `src/index.css`).
+- **Memory:** `src/theme.ts` stores the choice in `localStorage` (`lina-theme`). An inline script in `index.html`
+  applies it before the first paint (also to the loader) so there is no flash of the wrong theme.
+- **Tokens:** the light theme overrides the same color variables on `:root[data-theme='light']` in `src/index.css`:
+  bone becomes the paper (`#F2EFEA`), black becomes the ink, and gray, lines, surfaces and the Polpo `primary` scale
+  change accordingly. Components keep using `text-bone`, `bg-ink`, etc. Text that sits on a photo uses
+  `text-on-photo` / `text-on-photo-ink`, which never change; Prussian blue and gold are not overridden.
+- Figma: page "D · Cuarto claro" with every screen in the light theme and the `D Claro/` paint styles.
+
 ## Loader and page transitions
 
 - **Initial loader:** `#splash` in `index.html` (inline CSS, so it shows before the JS arrives): the LN monogram

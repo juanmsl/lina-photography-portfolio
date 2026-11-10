@@ -158,6 +158,24 @@ Polpo mapping: `background` = ink, `background-paper` = charcoal, `foreground` =
 
 **The Prussian Series Rule.** Prussian blue belongs to the Cianotipias series and its reveal. It is not a link or UI colour.
 
+### Light theme ("light on")
+
+A second palette for visitors who turn the light on with the bulb switch in the navigation. Dark stays the default and the system preference is ignored. Figma: page "D · Cuarto claro", paint styles `D Claro/`.
+
+| Role                 | Dark    | Light           |
+| -------------------- | ------- | --------------- |
+| Ground (`ink`)       | #0A0A0B | #F2EFEA (paper) |
+| Surface (`charcoal`) | #151517 | #E7E2DA         |
+| Rules (`graphite`)   | #2A2A2E | #D3CCC1         |
+| Text (`bone`)        | #F2EFEA | #0A0A0B         |
+| Second voice (`ash`) | #A3A3A8 | #66666C         |
+| Errors (`alert`)     | #E07A6A | #B4503D         |
+| Plate frame lines    | white   | #66666C         |
+
+Text and marks on top of photos (service tiles, photo captions), the Prussian blue tint and the gold selection keep their dark-theme values. The hero photo fades into the paper instead of the black.
+
+**Theme switch motion.** Turning the light on flashes the new view (brightness 2.2 → normal, 520ms); turning it off fades the dark view in (380ms). Reduced motion: instant.
+
 ## Typography
 
 **Display:** Bricolage Grotesque ExtraBold. **Second voice:** Instrument Serif italic. **Text and controls:** Hanken Grotesk 400/500/600. **Data:** Geist Mono. All self-hosted with Fontsource.

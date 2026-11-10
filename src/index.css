@@ -23,6 +23,13 @@
   --color-prussian: #5b8fc0;
   --color-gold: #c49a4e;
 
+  /* Frame lines around the enlarged photo (white on dark, soft gray on light) */
+  --color-plate: #ffffff;
+
+  /* Text and marks that sit on top of a photo: the same in both themes */
+  --color-on-photo: #f2efea;
+  --color-on-photo-ink: #0a0a0b;
+
   /* Polpo surfaces and text */
   --color-background: var(--color-ink);
   --color-background-paper: var(--color-charcoal);
@@ -147,9 +154,89 @@
   }
 }
 
+/*
+ * Light theme ("light on"): the bone becomes the paper and the black becomes
+ * the ink. Set with data-theme="light" on <html> by the theme toggle (see
+ * src/theme.ts); dark is the default and the system preference is ignored.
+ * Prussian blue and gold are not overridden: they only appear on photos
+ * (cyanotype tint, selected photo tile).
+ */
+:root[data-theme='light'] {
+  --color-ink: #f2efea;
+  --color-charcoal: #e7e2da;
+  --color-graphite: #d3ccc1;
+  --color-bone: #0a0a0b;
+  --color-ash: #66666c;
+  --color-plate: #66666c;
+
+  --color-primary: #0a0a0b;
+  --color-primary-50: #e7e2da;
+  --color-primary-200: #d3ccc1;
+  --color-primary-300: #2a2a2e;
+  --color-primary-400: #0a0a0b;
+  --color-primary-500: #0a0a0b;
+  --color-primary-600: #0a0a0b;
+  --color-primary-700: #0a0a0b;
+  --color-primary-foreground: #f2efea;
+
+  --color-info: #0a0a0b;
+  --color-info-500: #0a0a0b;
+  --color-alert: #b4503d;
+  --color-alert-500: #b4503d;
+}
+
+/*
+ * Theme switch animation (src/theme.ts wraps the change in a view
+ * transition): turning the light on is a camera flash, turning it off dims.
+ */
+@keyframes flash-on {
+  0% {
+    filter: brightness(2.2) saturate(0.6);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes lights-off {
+  from {
+    opacity: 0;
+  }
+}
+
+:root.theme-to-light::view-transition-old(root),
+:root.theme-to-light::view-transition-old(site-header),
+:root.theme-to-dark::view-transition-old(root),
+:root.theme-to-dark::view-transition-old(site-header) {
+  animation: none;
+}
+
+:root.theme-to-light::view-transition-new(root),
+:root.theme-to-light::view-transition-new(site-header) {
+  animation: flash-on 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+:root.theme-to-dark::view-transition-new(root),
+:root.theme-to-dark::view-transition-new(site-header) {
+  animation: lights-off 380ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root.theme-to-light::view-transition-new(root),
+  :root.theme-to-light::view-transition-new(site-header),
+  :root.theme-to-dark::view-transition-new(root),
+  :root.theme-to-dark::view-transition-new(site-header) {
+    animation: none;
+  }
+}
+
 @layer base {
   :root {
     color-scheme: dark;
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
   }
 
   ::selection {

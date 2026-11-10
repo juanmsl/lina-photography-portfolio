@@ -9,6 +9,7 @@ import { contact } from '../content/contact';
 
 import { Logo } from './Logo';
 import { Logotype } from './Logotype';
+import { ThemeToggle } from './ThemeToggle';
 
 const links = [
   { label: 'Portafolio', a: '/' },
@@ -72,26 +73,30 @@ export const Navigation = ({ className }: NavigationProps) => {
           ))}
         </ul>
 
-        <Button
-          color='primary'
-          radius='full'
-          className='hidden lg:flex'
-          onClick={() => navigate('/cotizar', { viewTransition: true })}
-        >
-          Cotizar
-        </Button>
+        <div className='flex items-center gap-3'>
+          <ThemeToggle />
 
-        <Button
-          forIcon
-          variant='outlined'
-          radius='full'
-          aria-label='Abrir menú'
-          aria-expanded={menuOpen}
-          className='size-11 border-graphite text-bone lg:hidden'
-          onClick={() => setMenuOpen(true)}
-        >
-          <LuMenu size={20} aria-hidden />
-        </Button>
+          <Button
+            color='primary'
+            radius='full'
+            className='hidden lg:flex'
+            onClick={() => navigate('/cotizar', { viewTransition: true })}
+          >
+            Cotizar
+          </Button>
+
+          <Button
+            forIcon
+            variant='outlined'
+            radius='full'
+            aria-label='Abrir menú'
+            aria-expanded={menuOpen}
+            className='size-11 border-graphite text-bone lg:hidden'
+            onClick={() => setMenuOpen(true)}
+          >
+            <LuMenu size={20} aria-hidden />
+          </Button>
+        </div>
       </nav>
 
       <AsideModal
