@@ -1,359 +1,291 @@
 ---
 name: Lina María Nieto Gómez · Fotografía
-description: Portfolio and services site for a Bogotá photographer. Two final directions: C · Fusión (light) and D · Cuarto oscuro (dark).
+description: Portfolio and services site for a Bogotá photographer. Direction D · Cuarto oscuro (dark), the only one in use.
 colors:
-  fusion-fondo-base: "#F4F7F6"
-  fusion-fondo-elevado: "#FFFFFF"
-  fusion-fondo-banda: "#DDEAE4"
-  fusion-fondo-lavanda: "#ECE7F4"
-  fusion-fondo-invertido: "#1F4F63"
-  fusion-fondo-profundo: "#163B47"
-  fusion-texto-primario: "#18323D"
-  fusion-texto-secundario: "#4A626C"
-  fusion-texto-invertido: "#F7FAF9"
-  fusion-texto-agua: "#2F6F92"
-  fusion-acento-azul: "#7DB6D3"
-  fusion-acento-verde: "#4C8667"
-  fusion-acento-oro: "#C49A4E"
-  fusion-acento-morado: "#8C78B4"
-  fusion-borde-fino: "#7A9A90"
-  fusion-borde-fuerte: "#18323D"
-  fusion-estado-error: "#B4473A"
-  fusion-estado-exito: "#4C8667"
-  fusion-vidrio: "rgba(255, 255, 255, 0.55)"
-  fusion-vidrio-borde: "rgba(255, 255, 255, 0.85)"
+  ink: "#0A0A0B"
+  charcoal: "#151517"
+  graphite: "#2A2A2E"
+  bone: "#F2EFEA"
+  ash: "#A3A3A8"
+  prussian: "#5B8FC0"
+  gold: "#C49A4E"
+  alert: "#E07A6A"
 typography:
-  fusion-display-xl:
-    fontFamily: "Anta, Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "104px"
-    fontWeight: 400
+  display:
+    fontFamily: "Bricolage Grotesque"
+    fontWeight: 800
+    fontSize: "160px"
+    lineHeight: 0.92
+    letterSpacing: "-0.03em"
+  divider:
+    fontFamily: "Bricolage Grotesque"
+    fontWeight: 800
+    fontSize: "112px"
+    lineHeight: 0.94
+    letterSpacing: "-0.03em"
+  project-title:
+    fontFamily: "Bricolage Grotesque"
+    fontWeight: 800
+    fontSize: "80px"
+    lineHeight: 0.96
+    letterSpacing: "-0.025em"
+  title-s:
+    fontFamily: "Bricolage Grotesque"
+    fontWeight: 800
+    fontSize: "40px"
+    lineHeight: 1
+    letterSpacing: "-0.015em"
+  brand:
+    fontFamily: "Bricolage Grotesque"
+    fontWeight: 800
+    fontSize: "24px"
     lineHeight: 1
     letterSpacing: "-0.01em"
-  fusion-display-l:
-    fontFamily: "Anta, Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "64px"
+  serif-xl:
+    fontFamily: "Instrument Serif"
+    fontStyle: italic
     fontWeight: 400
-    lineHeight: 1.05
-  fusion-titular:
-    fontFamily: "Anta, Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "40px"
+    fontSize: "96px"
+    lineHeight: 1
+  serif:
+    fontFamily: "Instrument Serif"
+    fontStyle: italic
     fontWeight: 400
-    lineHeight: 1.15
-  fusion-subtitulo:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "22px"
-    fontWeight: 500
-  fusion-cuerpo:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "17px"
+    fontSize: "32px"
+    lineHeight: 1.1
+  lead:
+    fontFamily: "Hanken Grotesk"
     fontWeight: 400
+    fontSize: "20px"
     lineHeight: 1.6
-  fusion-cuerpo-s:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "15px"
+  body:
+    fontFamily: "Hanken Grotesk"
     fontWeight: 400
-  fusion-lugar:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
     fontSize: "16px"
+    lineHeight: 1.6
+  nav:
+    fontFamily: "Hanken Grotesk"
     fontWeight: 500
-  fusion-etiqueta:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
-    fontSize: "12px"
-    fontWeight: 600
-    letterSpacing: "0.12em"
-  fusion-boton:
-    fontFamily: "Archivo, Helvetica Neue, Arial, sans-serif"
     fontSize: "15px"
+    lineHeight: 1.4
+  label:
+    fontFamily: "Hanken Grotesk"
     fontWeight: 600
-  fusion-coordenada:
-    fontFamily: "JetBrains Mono, ui-monospace, monospace"
     fontSize: "12px"
+    lineHeight: 1.4
+    letterSpacing: "0.08em"
+  coordinate:
+    fontFamily: "Geist Mono"
     fontWeight: 400
+    fontSize: "12px"
+    lineHeight: 1.4
+    letterSpacing: "0.02em"
 rounded:
-  recto: "0px"
-  foto: "2px"
-  campo: "6px"
-  campo-fusion: "14px"
-  vidrio: "24px"
-  vidrio-l: "32px"
-  pildora: "999px"
+  none: "0px"
+  panel: "16px"
+  pill: "999px"
 spacing:
-  espacio-1: "4px"
-  espacio-2: "8px"
-  espacio-3: "12px"
-  espacio-4: "16px"
-  espacio-5: "24px"
-  espacio-6: "32px"
-  espacio-7: "48px"
-  espacio-8: "64px"
-  espacio-9: "96px"
-  espacio-10: "128px"
+  gutter-mobile: "20px"
+  gutter-desktop: "40px"
+  photo-gap: "16px"
+  photo-gap-mobile: "8px"
 components:
-  fusion-boton-primario:
-    backgroundColor: "{colors.fusion-fondo-invertido}"
-    textColor: "{colors.fusion-texto-invertido}"
-    typography: "{typography.fusion-boton}"
-    rounded: "{rounded.pildora}"
-    padding: "14px 28px"
-  fusion-boton-secundario:
-    backgroundColor: "{colors.fusion-vidrio}"
-    textColor: "{colors.fusion-texto-primario}"
-    typography: "{typography.fusion-boton}"
-    rounded: "{rounded.pildora}"
-    padding: "14px 28px"
-  fusion-boton-texto:
-    textColor: "{colors.fusion-texto-primario}"
-    typography: "{typography.fusion-boton}"
-  fusion-campo:
-    backgroundColor: "{colors.fusion-vidrio}"
-    textColor: "{colors.fusion-texto-primario}"
-    typography: "{typography.fusion-cuerpo-s}"
-    rounded: "{rounded.campo-fusion}"
-    padding: "12px 16px"
-  fusion-navegacion:
-    backgroundColor: "{colors.fusion-vidrio}"
-    textColor: "{colors.fusion-texto-primario}"
-    typography: "{typography.fusion-cuerpo-s}"
-    rounded: "{rounded.pildora}"
-  fusion-asa-revelado:
-    backgroundColor: "{colors.fusion-vidrio}"
-    rounded: "{rounded.pildora}"
-    size: "48px"
-  fusion-whatsapp:
-    backgroundColor: "{colors.fusion-acento-verde}"
-    textColor: "{colors.fusion-texto-invertido}"
-    rounded: "{rounded.pildora}"
-    size: "56px"
+  button-primary:
+    backgroundColor: "{colors.bone}"
+    textColor: "{colors.ink}"
+    typography: "{typography.nav}"
+    rounded: "{rounded.pill}"
+  button-secondary:
+    backgroundColor: "transparent"
+    textColor: "{colors.bone}"
+    typography: "{typography.nav}"
+    rounded: "{rounded.pill}"
+  field:
+    backgroundColor: "transparent"
+    textColor: "{colors.bone}"
+    typography: "{typography.lead}"
+    rounded: "{rounded.none}"
+  chip:
+    backgroundColor: "transparent"
+    textColor: "{colors.bone}"
+    typography: "{typography.nav}"
+    rounded: "{rounded.pill}"
+  fact-item:
+    textColor: "{colors.bone}"
+    typography: "{typography.body}"
+  navigation:
+    backgroundColor: "transparent"
+    textColor: "{colors.bone}"
+    typography: "{typography.nav}"
 ---
 
-<!-- TWO FINAL DIRECTIONS. C · Fusión (light; Figma variable mode "Fusión" of the "Tema" collection, file w3WthJXOQOkFUEW9wKw6Gy) and D · Cuarto oscuro (dark; D/ paint and text styles). Directions A · Plancha and B · Cianotipia were retired in October 2026 and removed from the file and from this document. Shared: icon set and Borde de emulsión on the "Recursos compartidos" page; photos on "Fotos provisionales". -->
+<!-- Direction D · Cuarto oscuro is the only direction (Figma file w3WthJXOQOkFUEW9wKw6Gy, page "D · Cuarto oscuro", D/ paint and text styles). Directions A · Plancha and B · Cianotipia were retired in October 2026 and C · Fusión in November 2026; all three were removed from the file and from this document. Shared: icon set and Borde de emulsión on "Recursos compartidos"; provisional photos and the "Foto de Lina" component on "Fotos provisionales". -->
 
 # Design System: Lina María Nieto Gómez · Fotografía
 
 ## Overview
 
-**Creative North Star: "A field survey that becomes a print"**
+**Creative North Star: "The darkroom"**
 
-**C · Fusión** is a light, misty field journal: coordinate fichas, a legend and brushed plates, with every photograph draggable from cyanotype (left) to full colour (right).
+The site is a darkroom: a black room where only the photographs give off light. It is one long page where her projects follow one another, each with a large title, an italic second voice, a short centered paragraph, a two-column fact sheet and rows of photographs. Dividers by type of photography (landscape, architecture, people, product, personal projects) set the rhythm, and contact closes the page.
 
-Both directions share a premise: every photograph is a place she stood in, and the interface is the paper that place gets recorded on. The photograph leads and the interface recedes. Chrome is drawn from the world's own materials (coordinate frames, emulsion edges, specimen labels), not from generic gallery UI. Density is calm. Sections are wide, separated by whole-band colour changes or hairlines, never by cards floating on a neutral canvas.
-
-**C · Fusión.** A light mist ground moves through soft section gradients (mist to sage to lavender, dawn gold to lilac to sky) and closes on a deep forest-blue footer. Accents are light: sky blue, forest green, gold and lavender. Frosted-glass panels (the user's request) float only over photographs: the nav pill, the legend, the name panel, forms, and the slider handle. Every photo is a brushed plate with a place ficha (category dot, place, mono coordinates) and a reveal handle. Display is set in Anta (confirmed), body in Archivo, data in JetBrains Mono. Only the glass pieces that sit over photographs lift off the page.
+The photograph leads and the interface recedes into black, bone and gray. There are no cards, no glass, no colour gradients and no shadows. Sections are separated by space and by graphite hairlines.
 
 **Key Characteristics:**
-- C · Fusión binds to the semantic variable collection "Tema" (mode "Fusión"); D · Cuarto oscuro uses D/ styles. Every component binds to semantic tokens (`var(--fondo-base)`, `var(--texto-primario)`, `var(--acento-oro)`, and so on), never to primitives.
-- Gold is rare in every theme, and it marks actions. The one exception is C's Arquitectura category dot.
-- Blue and sober green carry the palette, as the brand commitment requires. Gold appears only as an occasional detail.
-- In C, frosted glass lifts only the pieces that float over photographs.
-- One signature motion per direction. C uses the drag-to-reveal slider; D reveals the Cianotipias series from blue to colour on hover.
-- All photographs are provisional AI-generated placeholders until her real work arrives.
+
+- Black ground (`ink`), bone text, ash for the secondary voice, graphite for rules.
+- Two typographic voices: Bricolage Grotesque ExtraBold for statements, Instrument Serif italic as the quiet second line under each one.
+- Colour comes only from the photographs. Prussian blue lives only in the Cianotipias series; gold is a single active-state touch.
+- One signature motion: photos in the Cianotipias series turn from Prussian blue to colour on hover or tap.
+- All photographs except Lina's portrait are provisional until her real work arrives.
 
 ## Colors
 
-C is a light, cool mist with four soft accents and a deep forest-blue close.
+A near-black room with warm paper-white text. Code tokens live in `src/index.css` (`--color-*`), and Figma uses the matching D/ paint styles.
 
-Semantic roles by mode, CSS `var(--role)`. Fusión binds the `fusion-*` values directly. Two semantic tokens are new with Fusión: fondo/lavanda, and acento/morado (#8C78B4 in every mode).
+| Token      | Figma style   | HEX     | Role                                                             |
+| ---------- | ------------- | ------- | ---------------------------------------------------------------- |
+| `ink`      | D/Negro       | #0A0A0B | Page ground everywhere                                           |
+| `charcoal` | D/Carbón      | #151517 | Rare surfaces: photo placeholders, the WhatsApp panel on Cotizar |
+| `graphite` | D/Grafito     | #2A2A2E | Hairlines, fact sheet rules, field underlines                    |
+| `bone`     | D/Hueso       | #F2EFEA | Text, primary button fill, focus ring, logo                      |
+| `ash`      | D/Gris        | #A3A3A8 | Second voice, labels, metadata                                   |
+| `prussian` | D/Azul prusia | #5B8FC0 | Cianotipias tint only                                            |
+| `gold`     | D/Oro         | #C49A4E | Active photo tile (ring and check) only                          |
+| `alert`    | —             | #E07A6A | Field errors                                                     |
 
-| Semantic token | Fusión (working) |
-|---|---|
-| fondo/base | fusion-fondo-base |
-| fondo/elevado | fusion-fondo-elevado |
-| fondo/banda | fusion-fondo-banda |
-| fondo/invertido | fusion-fondo-invertido |
-| fondo/profundo | fusion-fondo-profundo |
-| fondo/lavanda | fusion-fondo-lavanda |
-| texto/primario | fusion-texto-primario |
-| texto/secundario | fusion-texto-secundario |
-| texto/invertido | fusion-texto-invertido |
-| texto/agua | fusion-texto-agua |
-| acento/azul | fusion-acento-azul |
-| acento/verde | fusion-acento-verde |
-| acento/oro | fusion-acento-oro |
-| borde/fino | fusion-borde-fino |
-| borde/fuerte | fusion-borde-fuerte |
-| estado/error | fusion-estado-error |
-| estado/exito | fusion-estado-exito |
-| acento/morado | fusion-acento-morado |
-
-### Primary
-- **Mist Ground** (fusion-fondo-base) with **Field White** (fusion-fondo-elevado): Theme C. The light ground of every section and the raised white surfaces.
-- **Fjord Blue** (fusion-fondo-invertido) and **Forest Night** (fusion-fondo-profundo): Theme C. Deep blue appears only on the primary button and the footer.
-
-### Secondary
-- **Sky Accent** (fusion-acento-azul), **Forest Green** (fusion-acento-verde), **Lavender** (fusion-acento-morado): Theme C. Category dots, success, WhatsApp (green), and the gradient endpoints.
-- **Lake Blue** (fusion-texto-agua): Theme C. Blue text (texto/agua) and the Moda category dot.
-
-### Tertiary
-- **Field Gold** (fusion-acento-oro): Theme C. The primary button's arrow, the Texto button's underline, the Oro button gradient, and the Arquitectura category dot.
-
-### Neutral
-- **Ink Slate** (fusion-texto-primario, also borde/fuerte) and **Lichen Slate** (fusion-texto-secundario): Theme C. Primary and secondary text.
-- **Sage Band** (fusion-fondo-banda) and **Lavender Mist** (fusion-fondo-lavanda): Theme C. Section tints and gradient stops.
-- **Frost Line** (fusion-borde-fino): Theme C. Thin dividers and the Producto category dot.
-- **Glass** (fusion-vidrio, stroke fusion-vidrio-borde): Theme C. The fill and 1px stroke of C/Vidrio panels.
-
-### Gradients (Theme C paint styles)
-- **C/Degradado/Neblina** (sección, vertical #F4F7F6 → #E3EEE9 → #ECE7F4): Mist to sage to lavender section grounds.
-- **C/Degradado/Amanecer** (acento, diagonal #F6E7C8 → #E9E1F1 → #D5E8EF): Dawn gold to lilac to sky accent grounds.
-- **C/Degradado/Bosque** (cierre, vertical #2E6A72 → #1F4F63 → #163B47): The footer close.
-- **C/Degradado/Velo de foto**: A legibility veil over photographs (stops not reported).
-- **C/Degradado/Oro** (botón, #D9B46A → #B98A3F): Gold paint for button details.
-
-### Category colours (Theme C)
-Paisaje acento/verde · Naturaleza acento/azul (sky) · Arquitectura acento/oro · Retrato lavanda · Moda texto/agua · Producto borde/fino. Retrato's lavanda is assumed to bind to acento/morado; confirm the binding in Figma.
+Polpo mapping: `background` = ink, `background-paper` = charcoal, `foreground` = bone, `border` = graphite, `primary` = bone with ink foreground, `alert` = #E07A6A.
 
 ### Named Rules
-**The Deep Blue Close Rule (C).** Fusión is a light theme. Deep blue (fondo/invertido, fondo/profundo, Bosque) appears only on the primary button and the footer.
 
-**The Connecting Gradient Rule (C).** Gradients connect sections as grounds, and never fill text.
+**The Light Comes From the Photo Rule.** The interface stays black, bone and gray. Any colour on screen comes from a photograph.
 
+**The One Gold Touch Rule.** Gold marks a single active state per block (the chosen service tile). Never use it for text, decoration or large areas.
 
-
-
+**The Prussian Series Rule.** Prussian blue belongs to the Cianotipias series and its reveal. It is not a link or UI colour.
 
 ## Typography
 
-**Theme C (working). Display:** Anta (provisional; Sora SemiBold and League Spartan SemiBold are still being compared on the page "C · Fusión — Inicio"). **Body:** Archivo. **Data:** JetBrains Mono.
+**Display:** Bricolage Grotesque ExtraBold. **Second voice:** Instrument Serif italic. **Text and controls:** Hanken Grotesk 400/500/600. **Data:** Geist Mono. All self-hosted with Fontsource.
 
-**Character.** C reads like a field journal: a rounded, technical display face set large and plain, a calm Archivo for reading and place names, and mono for anything measured.
+**Character.** A loud, tight grotesque says what the work is; a soft serif italic says it again more quietly. Hanken carries everything practical, and mono is reserved for coordinates.
 
-### Hierarchy (Theme C · Fusión, working)
-- **Display XL** (Anta 400, 104px, 100%, -1%): Her name on the glass name panel in the hero.
-- **Display L** (Anta 400, 64px, 105%): Section headings.
-- **Titular** (Anta 400, 40px, 115%): Statements and the CTA heading.
-- **Subtítulo** (Archivo 500, 22px): Sub-heads and service names.
-- **Lugar** (Archivo 500, 16px): The place name in the Ficha de lugar.
-- **Cuerpo / Cuerpo S** (Archivo 400, 17px at 160% / 15px): Reading text, at most about 65ch.
-- **Etiqueta** (Archivo 600, 12px, +12%, uppercase): Field labels and legend titles.
-- **Botón** (Archivo 600, 15px, sentence case): Button labels.
-- **Coordenada** (JetBrains Mono 400, 12px): Coordinates and measured data on every ficha.
+### Hierarchy
 
-
+- **Display** (Bricolage 800, 160px desktop, fluid down to 68px, 0.92, -3%): "Portafolio / fotográfico" in the hero. Code: `hero`.
+- **Divider** (Bricolage 800, 112px, 0.94, -3%): type-of-photography dividers. Code: `header1`.
+- **Project title** (Bricolage 800, 80px, 0.96, -2.5%): each project. Code: `header2`.
+- **Title S** (Bricolage 800, 40px, 1, -1.5%): section and page titles. Code: `header3`.
+- **Brand** (Bricolage 800, 24px desktop / 20px mobile): "Lina Nieto" next to the logo. Code: `header4` via `t-header4`.
+- **Serif XL / Serif** (Instrument Serif italic, 96px / 32px, ash): the second voice under titles. Code: `t-serif-xl`, `t-serif`, class `serif-voice`.
+- **Lead** (Hanken 400, 20px, 1.6): project paragraphs and field values. Code: `t-lead`.
+- **Body** (Hanken 400, 16px, 1.6): reading text, at most about 65ch.
+- **Nav / Button** (Hanken 500–600, 15px, sentence case). Code: `t-label`.
+- **Label** (Hanken 600, 12px, +8%, ash, sentence case): fact sheet and field labels. Code: `meta-label`.
+- **Coordinate** (Geist Mono 400, 12px): coordinates and measured data only.
 
 ### Named Rules
-**The Ficha Rule (C).** Every photograph carries a Ficha de lugar: category dot, then the Lugar place name, then Coordenada. Mono is used only for those coordinates and other measured data.
 
+**The Two Voices Rule.** Every major title is followed by its Instrument Serif italic line in ash. Never two grotesque lines stacked, never the serif alone as a heading.
 
+**The Mono Is Measured Rule.** Geist Mono appears only for coordinates and measured data (place, altitude, date).
 
+No eyebrows above titles and no section numbers.
 
 ## Layout
 
-Desktop is 1440px with 12 columns and 40px margins. Mobile is 390px with 20px margins. Spacing follows the espacio scale (4, 8, 12, 16, 24, 32, 48, 64, 96, 128). Section padding sits at the top of the scale (96 to 128px), component interiors use 12 to 24px, and label-to-value gaps use 4 to 8px.
+Desktop is 1440px with 40px side margins (content width 1360px). Mobile is 390px with 20px margins. Photo rows run full content width with a 16px gap (8px on mobile). Section padding is generous (96 to 160px on desktop), component interiors use 12 to 24px, and label-to-value gaps use 6 to 8px.
 
-- **C.** The hero is a full-width brushed plate of the páramo with coordinate ticks on its collar. The image is split by the reveal handle at 58%, so the slider invites dragging. The Anta name and Cotizar sit on a glass panel at bottom left, the glass legend at top right, and a floating glass nav pill above. The whole page sits on ONE continuous vertical gradient (mist → sage → lavender → warm dawn → sky → forest-blue footer) with soft blurred light orbs at section seams, so no section has its own hard-edged fill. Services is a bento of photo cards ("Tarjeta de servicio": photo background, radius 28, glass label panel; hover lifts and reveals "Cotizar este servicio") plus a "Cómo trabajamos" timeline card. Contact pairs a glass form that opens with selectable photo tiles ("Mosaico de servicio") with channel cards ("Canal de contacto": WhatsApp in green with a prefilled-message bubble, correo, Instagram) and a base card with contour lines over Bogotá. On mobile, services become a horizontal card carousel.
-- **All.** Services are full-width rows (name, description, action) with hairline dividers. The CTA is a full-width band. The footer is a deep block with Contacto / Redes / Base columns.
+Page structure: Hero (Lina in black and white with a fade into ink, "Portafolio / fotográfico") → ¿Quién soy? → dividers by type → Project (centered heading, paragraph, 2-column fact sheet, photo rows) → Contacto → footer.
 
 ## Elevation & Depth
 
-**C** is layered, but only over photographs. Frosted glass lifts the nav, legend, name panel, forms, and the slider handle off the image. Elsewhere C stays flat on its gradient grounds. **D** is flat: black ground, hairlines in grafito, no shadows.
-
-### Shadow Vocabulary
-- **C/Vidrio** (`backdrop-filter: blur(28px); box-shadow: 0 16px 40px -12px rgba(23,51,61,0.10)`, with fusion-vidrio fill, 1px fusion-vidrio-borde stroke, 24 to 32px radius): Theme C glass pieces floating over photographs only.
-- **C/Sombra suave** (`box-shadow: 0 20px 48px -16px rgba(23,51,61,0.14)`): Theme C soft lift. Its exact placements were not reported.
-
-### Named Rules
-**The Glass Over Photo Rule (C).** Glass is used only on pieces that float over a photograph. A glass panel on a plain ground is out of system.
-
+Flat. Black ground, graphite hairlines, no shadows, no blur. Depth comes from the photographs alone.
 
 ## Shapes
 
-- **C: soft field journal.** Buttons, the nav, chips, the reveal handle, and the WhatsApp button are pills or circles (999px). Glass panels use 24 to 32px corners, and fields use 14px. Every plate is framed by the brushed emulsion edge.
-
-**Radii outside the Figma radius variables (0, 2, 999):** C's 14px field corner, and C's 24 to 32px glass corners are all used by the build but not bound to variables. They are recorded as `rounded.campo`, `rounded.campo-fusion`, `rounded.vidrio`, and `rounded.vidrio-l`.
+- Photographs are square-cornered, always.
+- Buttons, chips and the mobile menu button are pills or circles (999px).
+- Fields have no box: only a bottom line.
+- The one rounded panel is the WhatsApp column on Cotizar (charcoal, 16px).
 
 ## Components
 
-### Buttons
-- **C, Primario:** A deep-blue pill (fondo/invertido, label texto/invertido, Botón type) with a gold arrow.
-- **C, Secundario:** A glass pill (C/Vidrio) with a texto/primario label.
-- **C, Texto:** A label with a gold (acento/oro) underline.
-- **All:** Disabled drops to reduced-contrast label and border. Focus uses acento/azul.
-
-### Chips (Chip de servicio)
-- **C:** A pill chip with Inactivo and Activo states. Its exact fills were not reported.
-
-### Cards / Containers (Tarjeta de foto)
-- **C, Tarjeta de revelado:** A brushed-edge plate with a Ficha de lugar below and the Asa de revelado on it. Its Posición variants are Cianotipia, Deslizando, and Color. At rest it shows Color. Dragging left reveals the cyanotype and dragging right reveals colour, and on release the handle returns with a 400ms ease-out. The same slider appears on the hero and on hover over every plate.
-
-### Inputs / Fields (Campo)
-- **C:** A glass field (C/Vidrio) with 14px corners, used inside forms that float over photos.
-
-### Ítem de categoría (legend / index row)
-In C, it is a glass legend row with a category dot (see Category colours), the name, and a count.
-
 ### Logo
-The LN monogram: "LN" in a single-line script inside a broken circle, with a viewfinder corner at the top right. It is a single-colour mark (`currentColor`): bone `#F2EFEA` on ink, ink `#0A0A0B` on bone. In the navigation it sits to the left of the name "Lina Nieto" (40 px tall on mobile, 44 px on desktop, 12 px gap); in the footer it appears alone at 28 px. Minimum height 24 px. Do not recolour, outline, rotate, add effects or place it over busy areas of a photo. Source: `public/logo-ln.svg`; code: `src/components/Logo.tsx`.
 
-### Navigation
-- **D (shipping):** LN monogram plus the name, links and the Cotizar button; on mobile the monogram, the name and a round menu button.
-- **C:** A floating glass pill with the name, links, and the primary Cotizar button.
-- **Mobile:** Name block and a menu icon. The menu opens full-screen on fondo/base.
+The LN monogram: "LN" in a single-line script inside a broken circle, with a viewfinder corner at the top right. It is a single-colour mark (`currentColor`): bone `#F2EFEA` on ink, ink `#0A0A0B` on bone (Figma: D/Logo LN, variants Hueso and Tinta). In the navigation it sits to the left of the name "Lina Nieto" (40px tall on mobile, 44px on desktop, 12px gap); in the footer it appears at 28px before the copyright. Minimum height 24px. Do not recolour, outline, rotate, add effects or place it over busy areas of a photo. Source: `public/logo-ln.svg`; code: `src/components/Logo.tsx`.
 
-### Pie de página
-In C, the footer is the deep Bosque gradient block, one of the two places deep blue is allowed. It has Contacto / Redes / Base columns and a stacked mobile version.
+### Buttons (D/Botón)
 
-### WhatsApp flotante
-In C, it is a 56px round acento/verde button.
+- **Primary:** bone pill with ink label ("Cotizar", "Cotizar un proyecto").
+- **Secondary:** transparent pill with a bone outline and bone label.
+- States: rest and hover (Figma D/Botón). Focus is a 2px bone outline with a 3px offset.
+
+### Navigation (D/Navegación)
+
+- **Desktop:** logo and name on the left, centered links (Portafolio, Servicios, Sobre mí, Contacto) with the active one in bone and the rest in ash, the primary Cotizar button on the right.
+- **Mobile:** logo and name, plus a round outlined menu button. The menu opens full-screen on ink with the links in Bricolage, the Cotizar button and the base coordinates.
+
+### Fact sheet (D/Dato de ficha)
+
+A graphite top rule, a label in `meta-label`, then the value in Hanken 500. Laid out in two columns under each project's paragraph. Code: `FactSheet` / `FactItem`.
+
+### Project heading (D/Encabezado de proyecto)
+
+Centered Bricolage title with its Instrument Serif line below. Code: `DualTitle`, `ProjectHeading`.
+
+### Fields (D/Campo)
+
+Bottom line only: small ash label, large bone value (Lead), graphite underline. Focus thickens the line to 2px bone; error turns it coral (#E07A6A) with a message below. States: rest, focus, error, paragraph. Code: class `line-fields` over Polpo fields.
+
+### Chips (D/Chip)
+
+Pill with inactive and active states. It exists in Figma; the code uses the service tiles instead.
+
+### Service tiles (D/Mosaico de servicio)
+
+Photo tiles in a 2- or 3-column grid for choosing services on Cotizar. The active tile gets a 3px gold ring and a gold check in the corner. Code: `ServiceTilePicker` (react-hook-form).
+
+### Gallery and photo
+
+Rows of photographs at full content width; each row sets its own proportions. Clickable photos open the enlarged view with a gentle 1.5% zoom on hover. Missing files show a charcoal placeholder with the description and "foto provisional". Code: `Gallery`, `Photo`.
+
+### Plate frame
+
+On the enlarged photo, a thin white rule around the image with tick marks and mono coordinate labels, like a map plate. Decorative. Code: `PlateFrame`.
+
+### Footer
+
+Graphite top rule; logo and "© year Lina María Nieto Gómez" on the left, base and coordinates in mono on the right.
 
 ### Icons
-The shared set is drawn at 24px with a 1.5px stroke and square caps: flecha, cerrar, menú, anterior/siguiente, whatsapp, instagram, correo, ubicación, calendario, check, ampliar, mojón, rama. The rama sprig marks reveal hints in C.
 
-### Ficha de lugar (C)
-A category dot, then the Lugar place name, then the Coordenada line. Every C photo carries one.
-
-### Asa de revelado (C)
-A 48px glass knob on a vertical split line. It sits at 58% on the hero.
+The shared set ("Recursos compartidos") is drawn at 24px with a 1.5px stroke and square caps: flecha, flecha-izq, cerrar, menú, anterior/siguiente, whatsapp, instagram, correo, ubicación, calendario, check, ampliar. In code they come from `react-icons/lu`.
 
 ### Signature motion
-- **C, reveal slider:** Dragging the handle moves the split between cyanotype (left) and colour (right). On release the handle returns with a 400ms ease-out. At rest the plate shows Color.
+
+**Cianotipias reveal.** Photos in the Cianotipias series sit in Prussian blue (grayscale plus a blue colour blend) and turn to full colour over 700ms ease-out on hover, or on tap on touch screens. Under reduced motion the change is instant.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** design light surfaces in C · Fusión and dark ones in D · Cuarto oscuro; never mix the two on one surface.
-- **Do** bind every component to the "Tema" semantic variables (mode "Fusión"). Never bind to primitives.
-- **Do** (C) give every photograph the brushed emulsion edge and a Ficha de lugar with mono coordinates.
-- **Do** (C) set the hero split at 58% so the slider invites dragging.
-- **Do** keep one signature motion per direction (C: drag-to-reveal; D: Cianotipias reveal) and show the final state under reduced motion.
+
+- **Do** keep every surface on ink; let the photographs carry the colour.
+- **Do** pair each major title with its Instrument Serif second voice.
+- **Do** separate sections with space and graphite hairlines.
+- **Do** use the D/ styles in Figma and the `src/index.css` tokens in code.
 - **Do** mark every generated photo as provisional until Lina's real work replaces it.
 
 ### Don't:
-- **Don't** (C) use deep blue anywhere other than the primary button and the footer.
-- **Don't** (C) put glass on anything that is not floating over a photograph.
-- **Don't** (C) run gradients inside text.
-- **Don't** use gold for anything except actions: the filete de oro, the arrow, underline and Oro detail (C). C's Arquitectura category dot is the one exception. Never set text or decoration in gold.
-- **Don't** mix C and D on one surface.
 
+- **Don't** add cards, glass panels, shadows or colour gradients.
+- **Don't** put eyebrows above titles or number the sections.
+- **Don't** use gold for more than one active touch per block, and never for text.
+- **Don't** use Prussian blue outside the Cianotipias series.
+- **Don't** round the corners of photographs.
 
-**Rule — Continuous Gradient (C).** Sections never carry their own background fill; colour changes live in a single page-length gradient whose stops sit at section midpoints, softened by blurred light orbs at the seams. **Rule — Plates vs. cards (C).** Portfolio photos are brushed plates with fichas; service photos are UI cards with radius 28 and no brushed edge.
+## Screens (Figma, page "D · Cuarto oscuro")
 
-## Hero "Hola, soy Lina" (Fusión, Home) — includes About me
-- Lina's photo full-bleed, sharp and centered (not blurred). The left side reveals as a cyanotype through a soft gradient mask (no hard cut) that turns to color towards the right; the slider is still hinted with "Desliza: cianotipia ← → color".
-- Petrol veil for legibility, side vignette, warm golden light, grain; the bottom edge fades into mist (#EEF2F1) so the next section comes in without a jump.
-- Centered text: "¡Hola!" in Anta; "Soy Lina Nieto" with "Lina Nieto" in Moirai One, light gold (#E2C07E). Below it, the About me text with key words in light green, gold and lavender, the category row with its color dots, and the glass pill with Cotizar + Explorar.
-- The standalone "Sobre Lina" section was removed; its content lives in the hero.
-- Moirai One is used only for Lina's name; every other heading stays in Anta.
-- Every appearance of the photo is an instance of the "Foto de Lina" component ("Fotos provisionales" page).
-
-## Fusión screens (desktop)
-- Home (edited by hand by the team: hero text aligned left, name in Anta).
-- Portfolio — Landscape: header with a photo (cyanotype → color reveal through a soft mask), "Ítem de categoría" filters, a 3-column mosaic of reveal cards, a "Sobre esta serie" glass card, a "Siguiente categoría" band.
-- Enlarged photo: plate with an emulsion edge and reveal handle, previous/next in glass circles, side fact sheet (coordinates, altitude, series), thumbnails with the active one in a gold rule.
-- Services: 6 service cards, "Cómo trabajamos" in 4 steps, FAQ, call-to-quote band.
-- About me: header with Lina's photo, story, "Cómo miro" (patience, natural light, clean composition), "Con quién trabajo".
-- Quote: short header, form + channels (same block as Contact on Home), "Qué pasa después".
-- Request sent: blurred photo with a veil, glass card with a summary and actions.
-- Header rule (from the team's redesigned home): every screen opens with the "Lámina principal": a petrol gradient dissolving downwards, name/title in white Anta 104 on the left, a "specimen label" (gold top rule + three lines in Courier Prime 13), actions, and on the right a 779×623 photo plate with a Prussian tint in SCREEN over its left part and a 4 px "gold rule" marking the split. Below: the plate caption (place in Courier Prime Bold + coordinates in JetBrains Mono) and a hint with a gold sprig.
-- Courier Prime comes in for captions and hints (specimen typewriter); JetBrains Mono stays for coordinates.
-- The reveal is marked with the gold rule, not the white line and handle (Enlarged photo updated accordingly).
-
-## D · Cuarto oscuro ("D · Cuarto oscuro" page) — implemented in this repository
-- Single-page portfolio on black (#0A0A0B), following the reference of projects in sequence.
-- Typography: Bricolage Grotesque ExtraBold (Display 160, Divider 112, Project title 80), Instrument Serif Italic as the second voice under each title, Hanken Grotesk for text and fact sheets, Geist Mono for coordinates only.
-- Color (code tokens in `src/index.css`): `bone` #F2EFEA for text, `ash` #A3A3A8 secondary, `graphite` #2A2A2E for rules, `ink` #0A0A0B ground, `charcoal` #151517 surfaces; `prussian` blue only in the Cianotipias series; `gold` #C49A4E for the active photo tile.
-- Structure: Hero (Lina in black and white with a fade, "Portafolio / fotográfico") → ¿Quién soy? → divider per type (landscape, architecture, people, product, personal projects) → Project (centered heading, paragraph, 2-column fact sheet, photo rows at 1360 with a 16 px gap) → Contact → footer.
-- Components: D/Botón (bone primary, outlined secondary; rest/hover), D/Dato de ficha (graphite top rule, label + value), D/Encabezado de proyecto (title + serif subtitle).
-- D screens (desktop and 390 mobile): Portfolio, Project (Cordillera, with "Del azul al color" and next project), Enlarged photo, Services (editorial list with rules), Quote (bottom-line fields, chips, WhatsApp column), Request sent; on mobile also the Menu (overlay).
-- Added components: D/Navegación (desktop/mobile), D/Campo (rest/focus/error/paragraph; bottom line only, error in #E07A6A with a message), D/Chip (inactive/active).
+- Desktop (1440) and mobile (390): Portafolio, Proyecto (Cordillera, with "Del azul al color" and the next project), Foto ampliada, Servicios (editorial list with rules), Cotizar (bottom-line fields, chips, service tiles, WhatsApp column), Solicitud enviada; on mobile also the Menú overlay.
 - Prototype starting points: "Cuarto oscuro · Escritorio" and "Cuarto oscuro · Móvil".
-- Code names: `DualTitle` (two-voice heading), `FactSheet`/`FactItem`, `ProjectHeading`, `Navigation`, `PlateFrame` (white plate frame on the enlarged photo), `ServiceTilePicker` (D/Mosaico de servicio), `Gallery`, `Photo` (with the cyanotype reveal).
+- Components: D/Logo LN, D/Botón, D/Navegación, D/Campo, D/Chip, D/Dato de ficha, D/Encabezado de proyecto, D/Mosaico de servicio.
