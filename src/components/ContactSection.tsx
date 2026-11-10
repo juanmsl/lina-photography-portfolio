@@ -15,7 +15,7 @@ export const ContactActions = () => {
 
   return (
     <div className='flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4'>
-      <Button color='primary' radius='full' onClick={() => navigate('/cotizar')}>
+      <Button color='primary' radius='full' onClick={() => navigate('/cotizar', { viewTransition: true })}>
         Cotizar un proyecto
       </Button>
       <Button color='primary' variant='outlined' radius='full' onClick={() => openWhatsApp()}>

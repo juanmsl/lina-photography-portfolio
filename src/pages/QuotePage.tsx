@@ -44,7 +44,7 @@ export const QuotePage = () => {
     await new Promise(r => {
       setTimeout(r, 600);
     });
-    navigate('/cotizar/enviada', { state: data });
+    navigate('/cotizar/enviada', { state: data, viewTransition: true });
   });
 
   return (

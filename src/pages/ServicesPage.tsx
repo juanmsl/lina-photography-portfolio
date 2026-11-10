@@ -24,6 +24,7 @@ export const ServicesPage = () => (
         {services.map(s => (
           <li key={s.name}>
             <Link
+              viewTransition
               to='/cotizar'
               state={{ service: s.name }}
               className='group grid gap-4 border-t border-graphite py-7 md:grid-cols-[minmax(0,32.5rem)_minmax(0,24.25rem)_17.5rem_auto] md:items-center md:gap-12 md:py-8'

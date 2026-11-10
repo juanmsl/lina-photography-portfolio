@@ -80,6 +80,17 @@ logotype in script. Both are single-colour SVGs that take the text color (`curre
 Use them in bone on dark backgrounds and in ink on light ones; never in color, outlined or distorted. Keep the
 monogram at least 24 px tall and the logotype at least 20 px tall so the script stays legible.
 
+## Loader and page transitions
+
+- **Initial loader:** `#splash` in `index.html` (inline CSS, so it shows before the JS arrives): the LN monogram
+  pulsing over ink with a thin progress line. `src/splash.ts` fades it out once the fonts and the hero photo are
+  ready (3 s at most) and removes it.
+- **Transitions between pages:** the router is a data router (`createBrowserRouter` in `src/App.tsx`) so `Link` and
+  `navigate` can use `viewTransition`. The animation lives in `src/index.css` (`::view-transition-*`): the old page
+  fades out, the new one rises in, and the header stays still. Browsers without the View Transitions API change the
+  page without animation. Every new link or `navigate` call should pass `viewTransition`.
+- Both respect `prefers-reduced-motion`.
+
 ## Installable app (PWA)
 
 `vite-plugin-pwa` (in `vite.config.ts`) turns the site into an installable app:

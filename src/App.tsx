@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Route, Routes, useLocation } from 'react-router';
+import { useLayoutEffect } from 'react';
+import { createBrowserRouter, Outlet, useLocation } from 'react-router';
 
 import { PageMeta } from './components/PageMeta';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -13,7 +13,8 @@ import { ServicesPage } from './pages/ServicesPage';
 /** Scrolls to the top on page change and honors anchors (#quien-soy, #contacto). */
 const ScrollManager = () => {
   const { pathname, hash } = useLocation();
-  useEffect(() => {
+  // Layout effect: the scroll happens before the page transition captures the new view.
+  useLayoutEffect(() => {
     if (hash) {
       document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView();
 
@@ -26,18 +27,33 @@ const ScrollManager = () => {
   return null;
 };
 
-export const App = () => (
+/** Shell shared by every page. */
+const AppLayout = () => (
   <>
     <ScrollManager />
     <PageMeta />
-    <Routes>
-      <Route path='/' element={<PortfolioPage />} />
-      <Route path='/proyectos/:slug' element={<ProjectPage />} />
-      <Route path='/proyectos/:slug/foto/:n' element={<PhotoViewerPage />} />
-      <Route path='/servicios' element={<ServicesPage />} />
-      <Route path='/cotizar' element={<QuotePage />} />
-      <Route path='/cotizar/enviada' element={<QuoteSentPage />} />
-      <Route path='*' element={<NotFoundPage />} />
-    </Routes>
+    <Outlet />
   </>
+);
+
+/*
+ * Data router: required for `viewTransition` on Link and navigate, which
+ * animates the change between pages (see ::view-transition in index.css).
+ */
+export const router = createBrowserRouter(
+  [
+    {
+      element: <AppLayout />,
+      children: [
+        { path: '/', element: <PortfolioPage /> },
+        { path: '/proyectos/:slug', element: <ProjectPage /> },
+        { path: '/proyectos/:slug/foto/:n', element: <PhotoViewerPage /> },
+        { path: '/servicios', element: <ServicesPage /> },
+        { path: '/cotizar', element: <QuotePage /> },
+        { path: '/cotizar/enviada', element: <QuoteSentPage /> },
+        { path: '*', element: <NotFoundPage /> },
+      ],
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
 );

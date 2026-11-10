@@ -62,7 +62,12 @@ export const QuoteSentPage = () => {
           >
             Escribir por WhatsApp
           </Button>
-          <Button color='primary' variant='outlined' radius='full' onClick={() => navigate('/')}>
+          <Button
+            color='primary'
+            variant='outlined'
+            radius='full'
+            onClick={() => navigate('/', { viewTransition: true })}
+          >
             Volver al portafolio
           </Button>
         </div>

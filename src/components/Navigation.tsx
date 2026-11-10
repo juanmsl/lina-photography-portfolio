@@ -29,6 +29,7 @@ const isActive = (a: string, pathname: string, hash: string) => {
 
 const Brand = ({ className, onClick }: { className?: string; onClick?: () => void }) => (
   <Link
+    viewTransition
     to='/'
     onClick={onClick}
     aria-label='Lina Nieto, ir al inicio'
@@ -49,7 +50,7 @@ export const Navigation = ({ className }: NavigationProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className={cn('relative z-20 px-5 pt-4 md:px-10 md:pt-8', className)}>
+    <header className={cn('site-header relative z-20 px-5 pt-4 md:px-10 md:pt-8', className)}>
       <nav aria-label='Principal' className='flex items-center justify-between gap-6'>
         <Brand />
 
@@ -57,6 +58,7 @@ export const Navigation = ({ className }: NavigationProps) => {
           {links.map(e => (
             <li key={e.a}>
               <Link
+                viewTransition
                 to={e.a}
                 aria-current={isActive(e.a, pathname, hash) ? 'page' : undefined}
                 className={cn(
@@ -70,7 +72,12 @@ export const Navigation = ({ className }: NavigationProps) => {
           ))}
         </ul>
 
-        <Button color='primary' radius='full' className='hidden lg:flex' onClick={() => navigate('/cotizar')}>
+        <Button
+          color='primary'
+          radius='full'
+          className='hidden lg:flex'
+          onClick={() => navigate('/cotizar', { viewTransition: true })}
+        >
           Cotizar
         </Button>
 
@@ -116,6 +123,7 @@ export const Navigation = ({ className }: NavigationProps) => {
             {links.map(e => (
               <li key={e.a}>
                 <Link
+                  viewTransition
                   to={e.a}
                   onClick={() => setMenuOpen(false)}
                   className='font-title text-[3.25rem] leading-[0.94] font-extrabold tracking-[-0.03em]'
@@ -133,7 +141,7 @@ export const Navigation = ({ className }: NavigationProps) => {
             className='mt-auto'
             onClick={() => {
               setMenuOpen(false);
-              navigate('/cotizar');
+              navigate('/cotizar', { viewTransition: true });
             }}
           >
             Cotizar un proyecto
