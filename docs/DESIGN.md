@@ -35,12 +35,6 @@ typography:
     fontSize: "40px"
     lineHeight: 1
     letterSpacing: "-0.015em"
-  brand:
-    fontFamily: "Bricolage Grotesque"
-    fontWeight: 800
-    fontSize: "24px"
-    lineHeight: 1
-    letterSpacing: "-0.01em"
   serif-xl:
     fontFamily: "Instrument Serif"
     fontStyle: italic
@@ -176,7 +170,6 @@ Polpo mapping: `background` = ink, `background-paper` = charcoal, `foreground` =
 - **Divider** (Bricolage 800, 112px, 0.94, -3%): type-of-photography dividers. Code: `header1`.
 - **Project title** (Bricolage 800, 80px, 0.96, -2.5%): each project. Code: `header2`.
 - **Title S** (Bricolage 800, 40px, 1, -1.5%): section and page titles. Code: `header3`.
-- **Brand** (Bricolage 800, 24px desktop / 20px mobile): "Lina Nieto" next to the logo. Code: `header4` via `t-header4`.
 - **Serif XL / Serif** (Instrument Serif italic, 96px / 32px, ash): the second voice under titles. Code: `t-serif-xl`, `t-serif`, class `serif-voice`.
 - **Lead** (Hanken 400, 20px, 1.6): project paragraphs and field values. Code: `t-lead`.
 - **Body** (Hanken 400, 16px, 1.6): reading text, at most about 65ch.
@@ -211,9 +204,15 @@ Flat. Black ground, graphite hairlines, no shadows, no blur. Depth comes from th
 
 ## Components
 
-### Logo
+### Logo and logotype
 
-The LN monogram: "LN" in a single-line script inside a broken circle, with a viewfinder corner at the top right. It is a single-colour mark (`currentColor`): bone `#F2EFEA` on ink, ink `#0A0A0B` on bone (Figma: D/Logo LN, variants Hueso and Tinta). In the navigation it sits to the left of the name "Lina Nieto" (40px tall on mobile, 44px on desktop, 12px gap); in the footer it appears at 28px before the copyright. Minimum height 24px. Do not recolour, outline, rotate, add effects or place it over busy areas of a photo. Source: `public/logo-ln.svg`; code: `src/components/Logo.tsx`.
+The **LN monogram**: "LN" in a single-line script inside a broken circle, with a viewfinder corner at the top right. The **logotype**: "Lina Nieto" in the same single-line script. Both are single-colour marks (`currentColor`): bone `#F2EFEA` on ink, ink `#0A0A0B` on bone (Figma: D/Logo LN and D/Logotipo, variants Hueso and Tinta).
+
+- **Lockup** (navigation and mobile menu): monogram, 12px gap, logotype. Monogram 40px tall on mobile and 44px on desktop; logotype 32px on mobile and 36px on desktop. The whole lockup links home.
+- **Footer:** the monogram alone at 28px before the copyright.
+- **Minimums:** monogram 24px tall, logotype 20px tall.
+- Do not recolour, outline, rotate, add effects, set the name in another typeface next to the monogram, or place the marks over busy areas of a photo.
+- Sources: `public/logo-ln.svg`, `public/logotipo.svg`; code: `src/components/Logo.tsx`, `src/components/Logotype.tsx`.
 
 ### Buttons (D/Botón)
 
@@ -223,8 +222,8 @@ The LN monogram: "LN" in a single-line script inside a broken circle, with a vie
 
 ### Navigation (D/Navegación)
 
-- **Desktop:** logo and name on the left, centered links (Portafolio, Servicios, Sobre mí, Contacto) with the active one in bone and the rest in ash, the primary Cotizar button on the right.
-- **Mobile:** logo and name, plus a round outlined menu button. The menu opens full-screen on ink with the links in Bricolage, the Cotizar button and the base coordinates.
+- **Desktop:** monogram and logotype on the left, centered links (Portafolio, Servicios, Sobre mí, Contacto) with the active one in bone and the rest in ash, the primary Cotizar button on the right.
+- **Mobile:** monogram and logotype, plus a round outlined menu button. The menu opens full-screen on ink with the links in Bricolage, the Cotizar button and the base coordinates.
 
 ### Fact sheet (D/Dato de ficha)
 
@@ -288,4 +287,4 @@ The shared set ("Recursos compartidos") is drawn at 24px with a 1.5px stroke and
 
 - Desktop (1440) and mobile (390): Portafolio, Proyecto (Cordillera, with "Del azul al color" and the next project), Foto ampliada, Servicios (editorial list with rules), Cotizar (bottom-line fields, chips, service tiles, WhatsApp column), Solicitud enviada; on mobile also the Menú overlay.
 - Prototype starting points: "Cuarto oscuro · Escritorio" and "Cuarto oscuro · Móvil".
-- Components: D/Logo LN, D/Botón, D/Navegación, D/Campo, D/Chip, D/Dato de ficha, D/Encabezado de proyecto, D/Mosaico de servicio.
+- Components: D/Logo LN, D/Logotipo, D/Botón, D/Navegación, D/Campo, D/Chip, D/Dato de ficha, D/Encabezado de proyecto, D/Mosaico de servicio.

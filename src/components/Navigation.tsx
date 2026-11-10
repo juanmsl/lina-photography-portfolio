@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { contact } from '../content/contact';
 
 import { Logo } from './Logo';
+import { Logotype } from './Logotype';
 
 const links = [
   { label: 'Portafolio', a: '/' },
@@ -30,13 +31,11 @@ const Brand = ({ className, onClick }: { className?: string; onClick?: () => voi
   <Link
     to='/'
     onClick={onClick}
-    className={cn(
-      'font-title t-header4 inline-flex items-center gap-3 font-extrabold tracking-[-0.01em] text-bone',
-      className,
-    )}
+    aria-label='Lina Nieto, ir al inicio'
+    className={cn('inline-flex items-center gap-3 text-bone', className)}
   >
     <Logo className='h-10 w-auto md:h-11' />
-    Lina Nieto
+    <Logotype className='h-8 w-auto md:h-9' />
   </Link>
 );
 

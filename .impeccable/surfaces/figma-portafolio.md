@@ -16,7 +16,7 @@ Audience: brands (product/fashion), private clients (portraits), editorial/touri
 - Mode: Experience. The photo leads; the interface is black, bone and gray.
 - Typography: Bricolage Grotesque ExtraBold (display, -3% tracking), Instrument Serif Italic (subtitles and second voice), Hanken Grotesk (text, fact sheet, navigation), Geist Mono for coordinates only.
 - Color: ink #0A0A0B, charcoal #151517, graphite #2A2A2E (rules), bone #F2EFEA (text), ash #A3A3A8 (secondary), Prussian blue #5B8FC0 (Cianotipias series only), gold #C49A4E (one active touch per block).
-- Brand: LN monogram (D/Logo LN) next to the name in the navigation and in the footer.
+- Brand: LN monogram (D/Logo LN) plus the script logotype (D/Logotipo) in the navigation and menu; monogram alone in the footer.
 - Signature: the "Cianotipias" series in personal projects turns from Prussian blue to colour on hover or tap.
 - Not allowed: eyebrows above titles, section numbers, glass cards, color gradients, shadows.
 - FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, docs/DESIGN.md, and every shipping raster carrying its provenance
