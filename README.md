@@ -67,17 +67,18 @@ docs/                  DESIGN.md (design system) and PRODUCT.md (product context
 Routes (kept in Spanish because visitors see them): `/`, `/proyectos/:slug`, `/proyectos/:slug/foto/:n`,
 `/servicios`, `/cotizar`, `/cotizar/enviada`.
 
-## Logo
+## Logo and logotype
 
-The LN monogram (script "LN" inside a broken circle with a viewfinder corner) lives in two places:
+The brand is the LN monogram (script "LN" inside a broken circle with a viewfinder corner) plus the "Lina Nieto"
+logotype in script. Both are single-colour SVGs that take the text color (`currentColor`):
 
-- `src/components/Logo.tsx`: inline SVG that takes the text color (`currentColor`). Used in the navigation (with
-  the name "Lina Nieto"), in the mobile menu and in the footer.
-- `public/logo-ln.svg` (source file, `currentColor`), `public/favicon.svg` (bone monogram on an ink square),
-  `public/apple-touch-icon.png` (180×180) and `public/og.jpg` (link preview with the monogram).
+- `src/components/Logo.tsx` (monogram) and `src/components/Logotype.tsx` (logotype). In the navigation and the
+  mobile menu they go together, monogram first; the footer uses the monogram alone before the copyright.
+- `public/logo-ln.svg` and `public/logotipo.svg` (source files), `public/favicon.svg` (bone monogram on an ink
+  square), `public/apple-touch-icon.png` (180×180) and `public/og.jpg` (link preview with monogram and logotype).
 
-Use it in bone on dark backgrounds and in ink on light ones; never in color, outlined or distorted. Keep at least
-24 px of height on screen so the script stays legible.
+Use them in bone on dark backgrounds and in ink on light ones; never in color, outlined or distorted. Keep the
+monogram at least 24 px tall and the logotype at least 20 px tall so the script stays legible.
 
 ## Theme
 
