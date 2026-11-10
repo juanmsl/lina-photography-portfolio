@@ -16,7 +16,7 @@ export const NotFoundPage = () => {
         <Typography noPadding align='center' className='m-0 max-w-[35rem] t-lead text-ash'>
           Puede que el enlace haya cambiado. El portafolio completo está en la página de inicio.
         </Typography>
-        <Button color='primary' radius='full' onClick={() => navigate('/')}>
+        <Button color='primary' radius='full' onClick={() => navigate('/', { viewTransition: true })}>
           Volver al portafolio
         </Button>
       </main>

@@ -44,9 +44,9 @@ export const PhotoViewerPage = () => {
     if (!p) return;
 
     const next = ((i - 1 + list.length) % list.length) + 1;
-    navigate(`/proyectos/${p.slug}/foto/${next}`, { replace: true });
+    navigate(`/proyectos/${p.slug}/foto/${next}`, { replace: true, viewTransition: true });
   };
-  const close = () => p && navigate(`/proyectos/${p.slug}`);
+  const close = () => p && navigate(`/proyectos/${p.slug}`, { viewTransition: true });
 
   useEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') goTo(current - 1);
@@ -72,6 +72,7 @@ export const PhotoViewerPage = () => {
     <main className='flex min-h-dvh flex-col px-5 pt-4 pb-8 md:px-10 md:pt-7 md:pb-10'>
       <div className='flex items-center justify-between'>
         <Link
+          viewTransition
           to={`/proyectos/${p.slug}`}
           className='inline-flex items-center gap-2.5 t-label font-medium hover:text-ash'
         >
@@ -124,7 +125,12 @@ export const PhotoViewerPage = () => {
               <LuChevronRight size={22} aria-hidden />
             </CircleButton>
           </div>
-          <Button color='primary' variant='outlined' radius='full' onClick={() => navigate('/cotizar')}>
+          <Button
+            color='primary'
+            variant='outlined'
+            radius='full'
+            onClick={() => navigate('/cotizar', { viewTransition: true })}
+          >
             Cotizar algo así
           </Button>
         </div>

@@ -16,7 +16,7 @@ export const ProjectHeading = ({ title, subtitle, a, as = 'h3', className }: Pro
   <div className={cn('flex flex-col items-center text-center', className)}>
     <Typography variant='header2' as={as} noPadding className='m-0'>
       {a ? (
-        <Link to={a} className='underline-offset-[0.12em] decoration-2 hover:underline'>
+        <Link viewTransition to={a} className='underline-offset-[0.12em] decoration-2 hover:underline'>
           {title}
         </Link>
       ) : (

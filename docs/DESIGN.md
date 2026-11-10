@@ -265,6 +265,10 @@ The shared set ("Recursos compartidos") is drawn at 24px with a 1.5px stroke and
 
 **Cianotipias reveal.** Photos in the Cianotipias series sit in Prussian blue (grayscale plus a blue colour blend) and turn to full colour over 700ms ease-out on hover, or on tap on touch screens. Under reduced motion the change is instant.
 
+**Initial loader.** Ink screen with the LN monogram in bone breathing between 45% and 100% opacity (1.6s) and a 96px graphite line with a bone segment sliding through it. It fades out over 500ms once fonts and the hero photo are ready (3s at most). Reduced motion: static monogram.
+
+**Page transitions.** The old page fades out (200ms, ease-in); the new one fades in rising 12px (420ms, ease-out, 160ms delay). The header stays in place. Reduced motion: instant change.
+
 ## Do's and Don'ts
 
 ### Do:

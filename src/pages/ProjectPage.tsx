@@ -30,7 +30,11 @@ export const ProjectPage = () => {
 
       <section aria-labelledby='project-title' className='px-5 pt-16 pb-10 md:px-10 md:pt-30 md:pb-16'>
         <div className='flex justify-center'>
-          <Link to='/' className='inline-flex items-center gap-2.5 t-label font-medium text-ash hover:text-bone'>
+          <Link
+            viewTransition
+            to='/'
+            className='inline-flex items-center gap-2.5 t-label font-medium text-ash hover:text-bone'
+          >
             <LuArrowLeft size={18} aria-hidden />
             Portafolio · {c.title} {c.voice}
           </Link>
@@ -45,7 +49,12 @@ export const ProjectPage = () => {
         />
       </section>
 
-      <Link to={`/proyectos/${p.slug}/foto/1`} aria-label='Ver la foto principal ampliada' className='block'>
+      <Link
+        viewTransition
+        to={`/proyectos/${p.slug}/foto/1`}
+        aria-label='Ver la foto principal ampliada'
+        className='block'
+      >
         <Photo
           id={p.cover}
           priority
@@ -90,6 +99,7 @@ export const ProjectPage = () => {
 
       <nav aria-label='Siguiente proyecto' className='border-t border-graphite px-5 py-12 md:px-10 md:py-16'>
         <Link
+          viewTransition
           to={`/proyectos/${next.slug}`}
           className='group flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-12'
         >

@@ -54,6 +54,7 @@ export const Gallery = ({ rows, project, cyanotype, className }: GalleryProps) =
             if (project) {
               return (
                 <Link
+                  viewTransition
                   key={i}
                   to={`/proyectos/${project.slug}/foto/${project.photoIndex(x.id) + 1}`}
                   className={cn(box, 'group block overflow-hidden')}
