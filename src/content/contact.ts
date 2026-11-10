@@ -2,7 +2,7 @@
  * Contact details. All three values come from the mockup and are PENDING:
  * replace them with Lina's real ones before publishing.
  */
-/** Public site domain (GitHub Pages with a custom domain). */
+/** Public site domain (Vercel with a custom domain). */
 export const SITE_URL = 'https://linanieto.com';
 
 export const contact = {
