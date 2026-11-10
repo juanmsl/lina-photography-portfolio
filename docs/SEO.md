@@ -16,7 +16,7 @@ pending.
 | Structured data (schema.org JSON-LD): `WebSite`, `Person` (the photographer, Bogotá), `ProfilePage` on the home page; `WebPage` + `BreadcrumbList` on Servicios; `CreativeWork` + `BreadcrumbList` on each project | `src/seo.ts`                          |
 | Open Graph and X cards (`og.jpg`, 1200×630)                                                                                                                                                                        | `index.html`, `src/seo.ts`            |
 | `lang="es-CO"`, `og:locale es_CO`, descriptive `alt` on every photo                                                                                                                                                | `index.html`, `src/content/photos.ts` |
-| HTTPS, mobile-first layout, PWA manifest, fast static hosting                                                                                                                                                      | GitHub Pages, `vite.config.ts`        |
+| HTTPS, mobile-first layout, PWA manifest, fast static hosting                                                                                                                                                      | Vercel, `vite.config.ts`              |
 
 Pages left out on purpose (`noindex, follow`): the three example projects (Invernadero, Campaña textil, Bodegón,
 flagged `isExample` in `src/content/projects.ts`), the enlarged-photo pages, "Solicitud enviada" and the 404 page.
@@ -27,7 +27,7 @@ When an example project is replaced with real work, remove `isExample` and it en
 1. Open https://search.google.com/search-console and choose **Add property → Domain**: `linanieto.com`. A domain
    property covers `https`, `http`, `www` and any subdomain.
 2. Google shows a `TXT` record (`google-site-verification=…`). Add it in the DNS of the domain (same panel where the
-   GitHub Pages `A` records live), wait a few minutes and press **Verify**. Keep the record: removing it unverifies
+   Vercel records live), wait a few minutes and press **Verify**. Keep the record: removing it unverifies
    the property.
 3. **Sitemaps** → submit `sitemap.xml` (full URL `https://linanieto.com/sitemap.xml`).
 4. **URL inspection** → inspect `https://linanieto.com/`, then **Request indexing**. Repeat for `/servicios` and each
