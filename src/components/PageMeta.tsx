@@ -1,60 +1,7 @@
 import { useEffect } from 'react';
-import { matchPath, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 
-import { SITE_URL } from '../content/contact';
-import { photos } from '../content/photos';
-import { findProject, projectPhotos } from '../content/projects';
-
-type Meta = { title: string; description: string; indexable: boolean };
-
-const SUFFIX = 'Lina Nieto · Fotografía';
-const DESCRIPTION =
-  'Lina María Nieto Gómez, fotógrafa en Bogotá. Paisaje, naturaleza y arquitectura; también retrato, moda y producto.';
-const NOT_FOUND: Meta = { title: `Página no encontrada · ${SUFFIX}`, description: DESCRIPTION, indexable: false };
-
-const metaFor = (pathname: string): Meta => {
-  const photo = matchPath('/proyectos/:slug/foto/:n', pathname);
-  const project = matchPath('/proyectos/:slug', pathname);
-
-  if (pathname === '/') return { title: SUFFIX, description: DESCRIPTION, indexable: true };
-
-  if (pathname === '/servicios') {
-    return {
-      title: `Servicios · ${SUFFIX}`,
-      description:
-        'Fotografía para marcas, editoriales y personas. El precio depende del proyecto: te envío una propuesta.',
-      indexable: true,
-    };
-  }
-
-  if (pathname === '/cotizar') {
-    return {
-      title: `Cotizar · ${SUFFIX}`,
-      description: 'Cuéntame tu proyecto. Respondo con una propuesta: alcance, fechas y valor.',
-      indexable: true,
-    };
-  }
-
-  if (pathname === '/cotizar/enviada')
-    return { title: `Solicitud enviada · ${SUFFIX}`, description: DESCRIPTION, indexable: false };
-
-  if (photo) {
-    const p = findProject(photo.params.slug);
-    const id = p ? projectPhotos(p)[Number(photo.params.n) - 1] : undefined;
-
-    return p && id
-      ? { title: `${photos[id].title} · ${p.title} · ${SUFFIX}`, description: p.summary, indexable: true }
-      : NOT_FOUND;
-  }
-
-  if (project) {
-    const p = findProject(project.params.slug);
-
-    return p ? { title: `${p.title} · ${SUFFIX}`, description: p.summary, indexable: true } : NOT_FOUND;
-  }
-
-  return NOT_FOUND;
-};
+import { absoluteUrl, metaFor } from '../seo';
 
 const setHeadTag = (selector: string, create: () => HTMLElement, attribute: string, value: string | null) => {
   let el = document.head.querySelector<HTMLElement>(selector);
@@ -73,26 +20,54 @@ const setHeadTag = (selector: string, create: () => HTMLElement, attribute: stri
   el.setAttribute(attribute, value);
 };
 
+const meta = (key: 'name' | 'property', value: string) => () => {
+  const el = document.createElement('meta');
+
+  el.setAttribute(key, value);
+
+  return el;
+};
+
 /**
- * Title, description, canonical URL (linanieto.com) and robots for each route.
- * index.html carries the portfolio defaults and the link-sharing tags.
+ * Keeps the head in sync while navigating inside the app: title, description,
+ * robots, canonical, Open Graph and JSON-LD. The same data (src/seo.ts) is
+ * written into each route's HTML file at build time.
  */
 export const PageMeta = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const { title, description, indexable } = metaFor(pathname);
-    const meta = (name: string) => () => Object.assign(document.createElement('meta'), { name });
+    const m = metaFor(pathname);
 
-    document.title = title;
-    setHeadTag('meta[name="description"]', meta('description'), 'content', description);
+    document.title = m.title;
+    setHeadTag('meta[name="description"]', meta('name', 'description'), 'content', m.description);
+    setHeadTag(
+      'meta[name="robots"]',
+      meta('name', 'robots'),
+      'content',
+      m.indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow',
+    );
     setHeadTag(
       'link[rel="canonical"]',
       () => Object.assign(document.createElement('link'), { rel: 'canonical' }),
       'href',
-      indexable ? `${SITE_URL}${pathname}` : null,
+      m.indexable ? absoluteUrl(pathname) : null,
     );
-    setHeadTag('meta[name="robots"]', meta('robots'), 'content', indexable ? null : 'noindex');
+    setHeadTag('meta[property="og:url"]', meta('property', 'og:url'), 'content', absoluteUrl(pathname));
+    setHeadTag('meta[property="og:title"]', meta('property', 'og:title'), 'content', m.title);
+    setHeadTag('meta[property="og:description"]', meta('property', 'og:description'), 'content', m.description);
+    setHeadTag('meta[property="og:image"]', meta('property', 'og:image'), 'content', m.image);
+    setHeadTag('meta[property="og:image:alt"]', meta('property', 'og:image:alt'), 'content', m.imageAlt);
+
+    document.head.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+
+    for (const data of m.jsonLd) {
+      const script = document.createElement('script');
+
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(data);
+      document.head.appendChild(script);
+    }
   }, [pathname]);
 
   return null;

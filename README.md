@@ -45,12 +45,17 @@ run manually from the **Actions** tab (Run workflow).
 
 ## Search engines and link previews
 
-- `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, Lina's photo in
-  black and white with the LN monogram).
-- `src/components/PageMeta.tsx`: title, description and canonical URL for each route; `noindex` on "Solicitud
+- `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
+  route. It is the single source: `PageMeta` applies it while navigating, and the build writes it into the HTML.
+- `build/seo-plugin.ts` (Vite plugin): writes one HTML file per indexable route (`servicios.html`,
+  `proyectos/cordillera.html`…) with its own head, plus `404.html` (`noindex`) and `sitemap.xml`. GitHub Pages then
+  answers 200 with the right tags for every page, even for crawlers and link previews that do not run JavaScript.
+- Not indexed (`noindex, follow`, out of the sitemap): example projects (`isExample`), enlarged photos, "Solicitud
   enviada" and the 404 page.
-- `public/robots.txt` and `public/sitemap.xml` (portfolio, services, quote and the projects). If the domain changes
-  or projects are added, update both files, `index.html` and `SITE_URL` in `src/content/contact.ts`.
+- `public/robots.txt` points to the sitemap. If the domain changes, update `SITE_URL` in `src/content/contact.ts`,
+  `index.html` and `robots.txt`.
+
+Search Console setup and next steps: `docs/SEO.md`.
 
 ## Structure
 
@@ -61,7 +66,7 @@ src/
   pages/        PortfolioPage, ProjectPage, PhotoViewerPage, ServicesPage, QuotePage, QuoteSentPage, NotFoundPage
   index.css     Polpo theme with the D/ tokens (colors, typefaces, sizes)
 .claude/skills/polpo   Polpo instructions for agents (npx polpo init-ai --claude)
-docs/                  DESIGN.md (design system) and PRODUCT.md (product context)
+docs/                  DESIGN.md (design system), PRODUCT.md (product context) and SEO.md
 ```
 
 Routes (kept in Spanish because visitors see them): `/`, `/proyectos/:slug`, `/proyectos/:slug/foto/:n`,
