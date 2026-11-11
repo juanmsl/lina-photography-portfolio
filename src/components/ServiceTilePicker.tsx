@@ -74,11 +74,11 @@ export const ServiceTilePicker = <T extends FieldValues>({
                   active ? '[--veil-start:0.15]' : '[--veil-start:0.25]',
                 )}
               />
-              <span className='absolute bottom-3 left-3.5 font-medium text-bone'>{o.value}</span>
+              <span className='absolute bottom-3 left-3.5 font-medium text-on-photo'>{o.value}</span>
               {active && (
                 <span
                   aria-hidden
-                  className='absolute top-3 right-3 grid size-6 place-content-center rounded-full bg-gold text-ink'
+                  className='absolute top-3 right-3 grid size-6 place-content-center rounded-full bg-gold text-on-photo-ink'
                 >
                   <LuCheck size={14} strokeWidth={3} />
                 </span>

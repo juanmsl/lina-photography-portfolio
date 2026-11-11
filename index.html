@@ -6,6 +6,15 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0A0A0B" />
+    <!-- Theme before the first paint: dark unless the visitor chose light (src/theme.ts). The system theme is ignored. -->
+    <script>
+      try {
+        if (localStorage.getItem('lina-theme') === 'light') {
+          document.documentElement.dataset.theme = 'light';
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#F2EFEA');
+        }
+      } catch (e) {}
+    </script>
 
     <!-- Installed app on iOS (the manifest covers Android and desktop) -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -49,6 +58,16 @@
         background: #0a0a0b;
         color: #f2efea;
         transition: opacity 500ms ease-out, visibility 0s linear 500ms;
+      }
+      [data-theme='light'] #splash {
+        background: #f2efea;
+        color: #0a0a0b;
+      }
+      [data-theme='light'] #splash .splash-line {
+        background: #d3ccc1;
+      }
+      [data-theme='light'] #splash .splash-line::after {
+        background: #0a0a0b;
       }
       #splash.is-done {
         opacity: 0;

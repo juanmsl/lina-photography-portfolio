@@ -6,12 +6,12 @@
 export const SITE_URL = 'https://linanieto.com';
 
 export const contact = {
-  whatsappDisplay: '+57 300 000 0000',
+  whatsappDisplay: '+57 312 758 5785',
   /** Digits only, with country code, for wa.me. */
-  whatsappNumber: '573000000000',
-  email: 'correo@linanieto.com',
-  instagram: '@linanieto',
-  instagramUrl: 'https://instagram.com/linanieto',
+  whatsappNumber: '573127585785',
+  email: 'linamanigo@gmail.com',
+  instagram: '@lix_marie',
+  instagramUrl: 'https://instagram.com/lix_marie',
   base: 'Bogotá, Colombia',
   baseCoordinates: '4°36′N 74°04′O',
 };

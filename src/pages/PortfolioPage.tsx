@@ -37,20 +37,20 @@ const ProjectBlock = ({ p }: { p: Project }) => {
 
 export const PortfolioPage = () => (
   <>
-    {/* Hero */}
+    <Navigation />
+
+    {/* Hero: pulled up under the sticky navigation so the photo starts at the top of the page */}
     <section
       aria-labelledby='hero-title'
-      className='relative flex min-h-[48.75rem] flex-col md:min-h-[min(100dvh,58.75rem)]'
+      className='relative -mt-[var(--header-h)] flex min-h-[48.75rem] flex-col pt-[var(--header-h)] md:min-h-[min(100dvh,58.75rem)]'
     >
       <div className='absolute inset-x-0 top-0 h-[38.75rem] md:inset-y-0 md:left-[40%] md:h-auto'>
         <Photo id='lina' grayscale priority position='50% 30%' className='size-full' />
         <div
           aria-hidden
-          className='absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,var(--color-ink)_100%)] md:bg-[linear-gradient(to_right,var(--color-ink)_0%,transparent_38%),linear-gradient(to_bottom,rgb(10_10_11/0.55)_0%,transparent_14%,transparent_70%,var(--color-ink)_100%)]'
+          className='absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,var(--color-ink)_100%)] md:bg-[linear-gradient(to_right,var(--color-ink)_0%,transparent_38%),linear-gradient(to_bottom,color-mix(in_srgb,var(--color-ink)_55%,transparent)_0%,transparent_14%,transparent_70%,var(--color-ink)_100%)]'
         />
       </div>
-
-      <Navigation />
 
       <div className='relative mt-auto px-4 md:px-9'>
         <DualTitle id='hero-title' as='h1' level='hero' title='Portafolio' voice='fotográfico' align='start' />
