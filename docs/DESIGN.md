@@ -241,6 +241,7 @@ The **LN monogram**: "LN" in a single-line script inside a broken circle, with a
 ### Navigation (D/Navegación)
 
 - **Desktop:** monogram and logotype on the left, centered links (Portafolio, Servicios, Sobre mí, Contacto) with the active one in bone and the rest in ash, the primary Cotizar button on the right.
+- **Sticky:** the bar stays at the top while scrolling (76px tall on mobile, 108px on desktop). At the top of the page it is transparent (over the hero photo); once the page scrolls it takes the ground color and a graphite rule underneath. Anchors land below it (`scroll-padding-top`).
 - **Mobile:** monogram and logotype, plus a round outlined menu button. The menu opens full-screen on ink with the links in Bricolage, the Cotizar button and the base coordinates.
 
 ### Fact sheet (D/Dato de ficha)

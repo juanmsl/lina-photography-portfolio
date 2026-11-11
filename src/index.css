@@ -233,6 +233,14 @@
 @layer base {
   :root {
     color-scheme: dark;
+    /* Height of the sticky navigation bar */
+    --header-h: 4.75rem;
+    /* Anchors (#quien-soy, #contacto) land below the sticky bar */
+    scroll-padding-top: var(--header-h);
+
+    @media (width >= 48rem) {
+      --header-h: 6.75rem;
+    }
   }
 
   :root[data-theme='light'] {

@@ -1,7 +1,7 @@
 import { AsideModal, Button, Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
 import { useViewport } from 'polpo/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 import { Link, useLocation, useNavigate } from 'react-router';
 
@@ -43,16 +43,33 @@ const Brand = ({ className, onClick }: { className?: string; onClick?: () => voi
 
 type NavigationProps = { className?: string };
 
-/** D/Navigation: brand, links and Quote on desktop; brand and menu on mobile. */
+/** D/Navigation: brand, links and Quote on desktop; brand and menu on mobile. Sticky at the top while scrolling. */
 export const Navigation = ({ className }: NavigationProps) => {
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
   const { width } = useViewport();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Transparent at the top of the page; once the page scrolls, the bar gets the ground color and a rule.
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 8);
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+
+    return () => window.removeEventListener('scroll', update);
+  }, []);
 
   return (
-    <header className={cn('site-header relative z-20 px-5 pt-4 md:px-10 md:pt-8', className)}>
-      <nav aria-label='Principal' className='flex items-center justify-between gap-6'>
+    <header
+      className={cn(
+        'site-header sticky top-0 z-30 flex h-[var(--header-h)] items-center border-b px-5 transition-[background-color,border-color] duration-300 ease-out md:px-10',
+        scrolled ? 'border-graphite bg-ink' : 'border-transparent bg-transparent',
+        className,
+      )}
+    >
+      <nav aria-label='Principal' className='flex w-full items-center justify-between gap-6'>
         <Brand />
 
         <ul className='m-0 hidden list-none gap-9 p-0 lg:flex'>
