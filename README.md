@@ -48,6 +48,15 @@ Every push to `main` deploys to production, and every PR gets its own preview UR
    the `google-site-verification` TXT record.
 4. In GitHub: **Settings → Pages → Source: None** (or unpublish) so GitHub Pages stops serving the old copy.
 
+## Analytics
+
+`@vercel/analytics` (Web Analytics: visits and page views, without cookies) and `@vercel/speed-insights` (Core Web
+Vitals from real visitors) are rendered once in `AppLayout` (`src/App.tsx`). Speed Insights receives the route
+pattern (for example `/proyectos/:slug`) so dynamic pages are grouped. They only send data from a Vercel deployment:
+locally the `/_vercel/*` scripts answer 404, which is expected.
+
+One-time setup in Vercel: **Project → Analytics → Enable** and **Project → Speed Insights → Enable**.
+
 ## Search engines and link previews
 
 - `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
