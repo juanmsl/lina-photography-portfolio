@@ -4,9 +4,9 @@
  * `PageMeta` (in the browser) and by the build step in `vite.config.ts`, which
  * writes one HTML file per indexable route and the sitemap.
  */
-import { SITE_URL } from './content/contact';
-import { photos } from './content/photos';
-import { findProject, projectPhotos, projects } from './content/projects';
+import { SITE_URL } from './content/contact.ts';
+import { photos } from './content/photos.ts';
+import { findProject, projectPhotos, projects } from './content/projects.ts';
 
 export type RouteMeta = {
   title: string;
