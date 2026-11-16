@@ -57,10 +57,54 @@ locally the `/_vercel/*` scripts answer 404, which is expected.
 
 One-time setup in Vercel: **Project → Analytics → Enable** and **Project → Speed Insights → Enable**.
 
+## Photos on Cloudinary
+
+The photos are served from Cloudinary, never as originals:
+
+- **Originals** are uploaded as `authenticated` assets (`lina/photos/<name>`): they have no public URL.
+- **Only three versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
+  - `lina_page` (up to 1600 px, no watermark): photos that cannot be enlarged (hero portrait, cyanotype galleries,
+    services, "next project", "Solicitud enviada").
+  - `lina_thumb` (up to 1600 px, watermarked): photos that open the enlarged view (the galleries on the home page
+    and in each project, and each project's cover). They are shown small, so the watermark tile is 16 % of the
+    photo's width.
+  - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`, tile 10 % of the
+    width.
+
+  The watermark (`lina/watermark`: the LN monogram with the name, in white; `scripts/cloudinary/watermark.svg`) is
+  repeated as a grid over the whole photo (`fl_tiled`), rotated -30° and at 40 % opacity. The tile size is relative
+  to the photo (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
+- **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
+  and exposes them as `virtual:lina-photos`. The secret never reaches the browser, and editing an URL (bigger
+  size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the
+  output so the originals are not published with the site, and the photos in link previews and structured data
+  (`src/seo.ts`) use the signed URLs too: the watermarked version for Lina's work, the plain one for her portrait.
+- **Without `CLOUDINARY_URL`** (for example a local `pnpm dev` with no `.env.local`) the site uses the local files in
+  `public/photos/`. A photo missing in both places shows the dark placeholder.
+- `Photo` downloads each photo with `fetch` once it gets close to the screen and shows it through a `blob:` URL, so
+  the `<img>` in the inspector does not point to Cloudinary (if the download fails it falls back to the direct
+  URL). It also disables right click, dragging and the iOS long-press menu. All of this only discourages: the
+  request is still visible in the network tab and anything shown on screen can be captured, which is why only
+  reduced versions are public and the ones that can be enlarged are watermarked.
+
+### Setup
+
+1. Create a Cloudinary account (or use the same one as Áureo: everything here lives under `lina/` and `lina_*`). In
+   **Settings → API Keys**, copy the **API environment variable**
+   (`CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>`).
+2. Put that line in `.env.local` at the root of this project (ignored by git; never commit it).
+3. In Vercel: **Settings → Environment Variables → CLOUDINARY_URL** with the same value (Production and Preview).
+4. Run `pnpm cloudinary:setup`. It uploads the watermark and the photos in `public/photos/` and creates the named
+   transformations. Run it again whenever photos are added or the transformations change.
+5. In Cloudinary: **Settings → Security → Strict transformations: enabled**. From then on only the named
+   transformations can be delivered.
+6. Redeploy on Vercel so the build signs the new URLs.
+
 ## Search engines and link previews
 
 - `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
   route. It is the single source: `PageMeta` applies it while navigating, and the build writes it into the HTML.
+  Photo URLs come from a resolver (`PhotoUrl`), so with Cloudinary they are the signed URLs.
 - `build/seo-plugin.ts` (Vite plugin): writes one HTML file per indexable route (`servicios.html`,
   `proyectos/cordillera.html`…) with its own head, plus `404.html` (`noindex`) and `sitemap.xml`. Every page then
   answers 200 with the right tags, even for crawlers and link previews that do not run JavaScript.
@@ -157,7 +201,8 @@ PlateFrame, the cyanotype → color reveal and the row Gallery. Everything else 
 - **Photos**: only `public/photos/lina.jpg` is real. The rest are listed in `src/content/photos.ts` and expected in
   `public/photos/` (`paramo.jpg`, `cocora.jpg`, `clouds.jpg`, `forest.jpg`, `brick.jpg`, `stairs.jpg`,
   `portrait.jpg`, `fashion.jpg`, `product.jpg`, `camera.jpg`). While they are missing, a dark placeholder with the
-  description is shown. Ideally, use Lina's real photographs.
+  description is shown. Ideally, use Lina's real photographs; after adding them, run `pnpm cloudinary:setup` (see
+  Photos on Cloudinary).
 - **Contact**: WhatsApp, email and Instagram in `src/content/contact.ts` come from the mockup.
 - **Form**: the quote page simulates the submission; it still needs a service that receives the requests.
 - Invernadero, Campaña textil and Bodegón are example projects.

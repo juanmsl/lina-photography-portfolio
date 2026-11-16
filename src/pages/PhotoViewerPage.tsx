@@ -94,7 +94,7 @@ export const PhotoViewerPage = () => {
 
         <PlateFrame coordinates={info.coordinates} className='mx-auto w-full max-w-[73.5rem]'>
           <div className='relative'>
-            <Photo id={id} priority className='aspect-[4/5] w-full sm:aspect-[1120/700]' />
+            <Photo id={id} size='view' priority className='aspect-[4/5] w-full sm:aspect-[1120/700]' />
             {locationLabel && (
               <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-10 md:left-15'>
                 <LuMapPin size={16} aria-hidden />

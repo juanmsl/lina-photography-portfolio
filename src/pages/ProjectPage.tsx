@@ -57,6 +57,7 @@ export const ProjectPage = () => {
       >
         <Photo
           id={p.cover}
+          size='thumb'
           priority
           cyanotype={p.cyanotype ? 'fixed' : undefined}
           className='aspect-[4/3] w-full md:aspect-[1440/820]'

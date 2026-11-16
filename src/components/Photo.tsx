@@ -1,5 +1,7 @@
 import { cn } from 'polpo/helpers';
-import { useState } from 'react';
+import { useInView } from 'polpo/hooks';
+import { useEffect, useState, type MouseEvent, type RefObject } from 'react';
+import { photoUrls } from 'virtual:lina-photos';
 
 import { photos, type PhotoId } from '../content/photos';
 
@@ -16,18 +18,86 @@ type PhotoProps = {
   position?: string;
   /** Hides the placeholder description when the file is missing (small boxes). */
   silentPlaceholder?: boolean;
+  /**
+   * page: without watermark, for photos that cannot be enlarged (default).
+   * thumb: with the tiled watermark, for photos that link to the enlarged view.
+   * view: the enlarged photo, bigger and watermarked.
+   */
+  size?: 'page' | 'thumb' | 'view';
+};
+
+const preventSave = (e: MouseEvent) => e.preventDefault();
+
+/**
+ * Loads the photo with fetch and shows it from a `blob:` URL, so "copy image
+ * address" and the element inspector do not show the Cloudinary URL. It only
+ * starts when `start` is true, and frees the blob when the component unmounts.
+ * If the fetch fails it falls back to the normal URL (a missing photo then
+ * shows the placeholder).
+ */
+const useBlobSrc = (src: string, start: boolean) => {
+  const [blobSrc, setBlobSrc] = useState<string>();
+
+  useEffect(() => {
+    if (!start) return undefined;
+
+    const controller = new AbortController();
+    let objectUrl: string | undefined;
+
+    fetch(src, { signal: controller.signal })
+      .then(response => {
+        if (!response.ok) throw new Error(String(response.status));
+
+        return response.blob();
+      })
+      .then(blob => {
+        objectUrl = URL.createObjectURL(blob);
+        setBlobSrc(objectUrl);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setBlobSrc(src);
+      });
+
+    return () => {
+      controller.abort();
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [src, start]);
+
+  return blobSrc;
 };
 
 /**
  * Full-bleed photograph inside its box; the container decides the size.
- * If the file does not exist yet in `public/photos`, it shows a dark
- * placeholder with the description so the layout does not break.
+ * With Cloudinary configured it loads a signed version (watermarked when the
+ * photo can be enlarged or is the enlarged one; see build/photos-plugin.ts)
+ * through a `blob:` URL, once the photo gets close to the viewport (right away
+ * with `priority`). Right click, drag and the iOS long-press menu are disabled
+ * as a light deterrent. If the file does not exist, it shows a dark placeholder
+ * with the description so the layout does not break.
  */
-export const Photo = ({ id, className, cyanotype, grayscale, priority, position, silentPlaceholder }: PhotoProps) => {
+export const Photo = ({
+  id,
+  className,
+  cyanotype,
+  grayscale,
+  priority,
+  position,
+  silentPlaceholder,
+  size = 'page',
+}: PhotoProps) => {
   const info = photos[id];
   const [failed, setFailed] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const reveals = cyanotype === 'reveal';
+  const { ref, inView } = useInView({ rootMargin: '400px' });
+  const [seen, setSeen] = useState(Boolean(priority));
+  const blobSrc = useBlobSrc(photoUrls?.[id][size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`, seen);
+
+  useEffect(() => {
+    if (inView) setSeen(true);
+  }, [inView]);
 
   const content = (
     <>
@@ -41,21 +111,24 @@ export const Photo = ({ id, className, cyanotype, grayscale, priority, position,
           )}
         </span>
       ) : (
-        <img
-          src={`${import.meta.env.BASE_URL}photos/${info.file}`}
-          alt={info.description}
-          loading={priority ? 'eager' : 'lazy'}
-          decoding='async'
-          onError={() => setFailed(true)}
-          style={position ? { objectPosition: position } : undefined}
-          className={cn(
-            'absolute inset-0 size-full object-cover transition-[filter] duration-700 ease-out motion-reduce:transition-none',
-            (grayscale || cyanotype) && 'grayscale',
-            cyanotype && 'contrast-[1.15] brightness-[1.05]',
-            reveals && 'group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100',
-            reveals && revealed && 'grayscale-0 contrast-100 brightness-100',
-          )}
-        />
+        blobSrc && (
+          <img
+            src={blobSrc}
+            alt={info.description}
+            decoding='async'
+            draggable={false}
+            onDragStart={preventSave}
+            onError={() => setFailed(true)}
+            style={position ? { objectPosition: position } : undefined}
+            className={cn(
+              'absolute inset-0 size-full object-cover transition-[filter] duration-700 ease-out motion-reduce:transition-none',
+              (grayscale || cyanotype) && 'grayscale',
+              cyanotype && 'contrast-[1.15] brightness-[1.05]',
+              reveals && 'group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100',
+              reveals && revealed && 'grayscale-0 contrast-100 brightness-100',
+            )}
+          />
+        )
       )}
       {cyanotype && (
         <span
@@ -77,12 +150,25 @@ export const Photo = ({ id, className, cyanotype, grayscale, priority, position,
         aria-pressed={revealed}
         aria-label={`${info.description}. ${revealed ? 'Ver en cianotipia' : 'Revelar en color'}`}
         onClick={() => setRevealed(v => !v)}
-        className={cn('group relative block cursor-pointer overflow-hidden bg-charcoal', className)}
+        ref={ref as RefObject<HTMLButtonElement>}
+        onContextMenu={preventSave}
+        className={cn(
+          'group relative block cursor-pointer overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]',
+          className,
+        )}
       >
         {content}
       </button>
     );
   }
 
-  return <figure className={cn('relative m-0 overflow-hidden bg-charcoal', className)}>{content}</figure>;
+  return (
+    <figure
+      ref={ref as RefObject<HTMLElement>}
+      onContextMenu={preventSave}
+      className={cn('relative m-0 overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]', className)}
+    >
+      {content}
+    </figure>
+  );
 };

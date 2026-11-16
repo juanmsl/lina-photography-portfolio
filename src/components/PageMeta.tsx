@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { photoUrls } from 'virtual:lina-photos';
 
-import { absoluteUrl, metaFor } from '../seo';
+import { absoluteUrl, metaFor, type PhotoUrl } from '../seo';
+
+/** Signed Cloudinary URLs for the photos in the head, when Cloudinary is configured. */
+const signedUrls = photoUrls;
+const photoUrl: PhotoUrl | undefined = signedUrls ? (id, size) => signedUrls[id][size] : undefined;
 
 const setHeadTag = (selector: string, create: () => HTMLElement, attribute: string, value: string | null) => {
   let el = document.head.querySelector<HTMLElement>(selector);
@@ -37,7 +42,7 @@ export const PageMeta = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const m = metaFor(pathname);
+    const m = metaFor(pathname, photoUrl);
 
     document.title = m.title;
     setHeadTag('meta[name="description"]', meta('name', 'description'), 'content', m.description);

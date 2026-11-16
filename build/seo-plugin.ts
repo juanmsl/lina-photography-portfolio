@@ -1,5 +1,7 @@
 import { SITE_URL } from '../src/content/contact.ts';
-import { absoluteUrl, indexableRoutes, metaFor, type RouteMeta } from '../src/seo.ts';
+import { absoluteUrl, indexableRoutes, metaFor, type PhotoUrl, type RouteMeta } from '../src/seo.ts';
+
+import { signPhotoUrls } from './photos-plugin.ts';
 
 import type { Plugin, Rollup } from 'vite';
 
@@ -76,9 +78,11 @@ ${routes.map(r => `  <url>\n    <loc>${absoluteUrl(r)}</loc>\n  </url>`).join('\
  * run JavaScript (and link previews) see the right data. It also writes
  * 404.html (noindex), which vercel.json uses as the app shell for the
  * non-indexable routes, and sitemap.xml. Runs before the PWA plugin so the service worker
- * precaches the final files.
+ * precaches the final files. With Cloudinary, photo URLs in the head (link
+ * previews, structured data) are signed Cloudinary URLs, since the originals are
+ * not published.
  */
-export const seoPlugin = (): Plugin => ({
+export const seoPlugin = (cloudinaryUrl?: string): Plugin => ({
   name: 'lina-seo',
   apply: 'build',
   enforce: 'post',
@@ -88,16 +92,22 @@ export const seoPlugin = (): Plugin => ({
     if (!index) return;
 
     const template = String(index.source);
+    const urls = signPhotoUrls(cloudinaryUrl);
+    const photoUrl: PhotoUrl | undefined = urls ? (id, size) => urls[id][size] : undefined;
     const routes = indexableRoutes();
 
     for (const route of routes) {
-      const html = renderHead(template, route, metaFor(route));
+      const html = renderHead(template, route, metaFor(route, photoUrl));
 
       if (route === '/') index.source = html;
       else this.emitFile({ type: 'asset', fileName: fileFor(route), source: html });
     }
 
-    this.emitFile({ type: 'asset', fileName: '404.html', source: renderHead(template, '/404', metaFor('/404')) });
+    this.emitFile({
+      type: 'asset',
+      fileName: '404.html',
+      source: renderHead(template, '/404', metaFor('/404', photoUrl)),
+    });
     this.emitFile({
       type: 'asset',
       fileName: 'sitemap.xml',
