@@ -62,6 +62,7 @@ export const Gallery = ({ rows, project, cyanotype, className }: GalleryProps) =
                 >
                   <Photo
                     id={x.id}
+                    size='thumb'
                     className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
                   />
                 </Link>

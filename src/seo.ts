@@ -4,9 +4,9 @@
  * `PageMeta` (in the browser) and by the build step in `vite.config.ts`, which
  * writes one HTML file per indexable route and the sitemap.
  */
-import { SITE_URL } from './content/contact';
-import { photos } from './content/photos';
-import { findProject, projectPhotos, projects } from './content/projects';
+import { SITE_URL } from './content/contact.ts';
+import { photos, type PhotoId } from './content/photos.ts';
+import { findProject, projectPhotos, projects } from './content/projects.ts';
 
 export type RouteMeta = {
   title: string;
@@ -29,17 +29,27 @@ const OG_IMAGE_ALT = 'Retrato en blanco y negro de Lina Nieto junto al título P
 
 export const absoluteUrl = (pathname: string) => (pathname === '/' ? `${SITE_URL}/` : `${SITE_URL}${pathname}`);
 
-const photoUrl = (file: string) => `${SITE_URL}/photos/${file}`;
+/**
+ * Absolute URL of a photo for link previews and structured data. `thumb` is the
+ * watermarked version (Lina's work), `page` the one without watermark (her
+ * portrait). The build passes signed Cloudinary URLs and the browser the ones
+ * from `virtual:lina-photos`; without Cloudinary it is the local file.
+ */
+export type PhotoUrl = (id: PhotoId, size: 'page' | 'thumb') => string;
+
+const localPhotoUrl: PhotoUrl = id => `${SITE_URL}/photos/${photos[id].file}`;
 
 /** The photographer, referenced from every page by its @id. */
-const person = {
+const PERSON_ID = `${SITE_URL}/#lina`;
+
+const person = (photoUrl: PhotoUrl) => ({
   '@type': 'Person',
-  '@id': `${SITE_URL}/#lina`,
+  '@id': PERSON_ID,
   name: PERSON_NAME,
   alternateName: 'Lina Nieto',
   jobTitle: 'Fotógrafa',
   url: `${SITE_URL}/`,
-  image: photoUrl(photos.lina.file),
+  image: photoUrl('lina', 'page'),
   homeLocation: {
     '@type': 'Place',
     address: { '@type': 'PostalAddress', addressLocality: 'Bogotá', addressCountry: 'CO' },
@@ -52,7 +62,7 @@ const person = {
     'Fotografía de moda',
     'Fotografía de producto',
   ],
-};
+});
 
 const website = {
   '@type': 'WebSite',
@@ -60,7 +70,7 @@ const website = {
   url: `${SITE_URL}/`,
   name: SITE_NAME,
   inLanguage: 'es-CO',
-  publisher: { '@id': person['@id'] },
+  publisher: { '@id': PERSON_ID },
 };
 
 const graph = (...nodes: Array<Record<string, unknown>>) => [{ '@context': 'https://schema.org', '@graph': nodes }];
@@ -87,20 +97,20 @@ const base = (title: string, description: string): RouteMeta => ({
 const notFound: RouteMeta = { ...base(`Página no encontrada · ${SITE_NAME}`, DEFAULT_DESCRIPTION), indexable: false };
 
 /** Metadata for a pathname (without the base path). */
-export const metaFor = (pathname: string): RouteMeta => {
+export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): RouteMeta => {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
 
   if (path === '/') {
     return {
       ...base(`${SITE_NAME} en Bogotá`, DEFAULT_DESCRIPTION),
-      jsonLd: graph(website, person, {
+      jsonLd: graph(website, person(photoUrl), {
         '@type': 'ProfilePage',
         '@id': `${SITE_URL}/#profile`,
         url: `${SITE_URL}/`,
         name: `${PERSON_NAME} · Portafolio fotográfico`,
         inLanguage: 'es-CO',
         isPartOf: { '@id': website['@id'] },
-        mainEntity: { '@id': person['@id'] },
+        mainEntity: { '@id': PERSON_ID },
       }),
     };
   }
@@ -119,7 +129,7 @@ export const metaFor = (pathname: string): RouteMeta => {
           description,
           inLanguage: 'es-CO',
           isPartOf: { '@id': website['@id'] },
-          about: { '@id': person['@id'] },
+          about: { '@id': PERSON_ID },
         },
         breadcrumbs([
           ['Portafolio', '/'],
@@ -172,7 +182,7 @@ export const metaFor = (pathname: string): RouteMeta => {
       ...base(`${p.title} · ${p.subtitle} · ${SITE_NAME}`, p.summary),
       // Example projects stay out of Google until they are replaced by real work.
       indexable: !p.isExample,
-      image: cover.provisional ? OG_IMAGE : photoUrl(cover.file),
+      image: cover.provisional ? OG_IMAGE : photoUrl(p.cover, 'thumb'),
       imageAlt: cover.provisional ? OG_IMAGE_ALT : cover.description,
       jsonLd: graph(
         {
@@ -182,11 +192,11 @@ export const metaFor = (pathname: string): RouteMeta => {
           headline: `${p.title} · ${p.subtitle}`,
           description: p.summary,
           inLanguage: 'es-CO',
-          creator: { '@id': person['@id'] },
+          creator: { '@id': PERSON_ID },
           isPartOf: { '@id': website['@id'] },
           image: projectPhotos(p)
             .filter(id => !photos[id].provisional)
-            .map(id => photoUrl(photos[id].file)),
+            .map(id => photoUrl(id, 'thumb')),
         },
         breadcrumbs([
           ['Portafolio', '/'],

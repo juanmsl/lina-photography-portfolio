@@ -3,7 +3,8 @@
  *
  * All of them except `lina` are PROVISIONAL: reference images from the mockups
  * ("Fotos provisionales" page in the Figma file). Replace them with Lina's real
- * photographs before publishing by placing the file at `public/photos/<file>`.
+ * photographs before publishing by placing the file at `public/photos/<file>`
+ * and running `pnpm cloudinary:setup` (README → Photos on Cloudinary).
  * If a file is missing, the `Photo` component shows a dark placeholder with the
  * description.
  */

@@ -1,4 +1,4 @@
-import type { PhotoId } from './photos';
+import type { PhotoId } from './photos.ts';
 
 export type RowPhoto = {
   id: PhotoId;
