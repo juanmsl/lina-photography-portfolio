@@ -15,10 +15,10 @@ export type PhotoRow = {
 export type Fact = { label: string; value: string };
 
 export type Category = {
-  id: 'landscape' | 'architecture' | 'people' | 'product' | 'personal';
+  id: 'landscape' | 'architecture' | 'people' | 'fashion' | 'product' | 'personal';
   /** First word of the divider, in Bricolage. */
   title: string;
-  /** Second voice of the divider, in Instrument Serif. */
+  /** Second voice of the divider, in Instrument Serif. Named like the folders of the original photos. */
   voice: string;
 };
 
@@ -35,6 +35,8 @@ export type Project = {
   preview: Array<PhotoRow>;
   /** Full-bleed photo on the project page. */
   cover: PhotoId;
+  /** Crop of the cover (CSS object-position), for vertical photos in the wide frame. */
+  coverPosition?: string;
   /** Rows on the project page. */
   gallery: Array<PhotoRow>;
   /** Shows the same photo as a cyanotype and in color. */
@@ -49,243 +51,255 @@ export const categories: Array<Category> = [
   { id: 'landscape', title: 'Fotografía', voice: 'de paisaje' },
   { id: 'architecture', title: 'Fotografía', voice: 'de arquitectura' },
   { id: 'people', title: 'Fotografía', voice: 'de personas' },
+  { id: 'fashion', title: 'Fotografía', voice: 'de moda' },
   { id: 'product', title: 'Fotografía', voice: 'de producto' },
-  { id: 'personal', title: 'Proyectos', voice: 'personales' },
+  { id: 'personal', title: 'Fotografía', voice: 'personal' },
 ];
 
 export const projects: Array<Project> = [
   {
-    slug: 'cordillera',
+    slug: 'rio',
     category: 'landscape',
-    title: 'Cordillera',
-    subtitle: 'Serie personal',
+    title: 'Río',
+    subtitle: 'Paisaje y naturaleza',
     summary:
-      'Madrugadas en el páramo y en los valles de la cordillera. Fotos hechas esperando a que la niebla se abra y la luz encuentre el relieve.',
-    text: [
-      'Trabajo con luz natural y sin prisa: llego antes del amanecer, observo cómo cambia el clima y vuelvo las veces que haga falta. La serie existe también en cianotipia, el azul con el que empieza cada imagen.',
-    ],
+      'Un río ancho en medio de la selva, del cielo gris al dorado del atardecer: casas sobre el agua, canoas y la primera luna de la noche.',
     facts: [
-      { label: 'Lugar', value: 'Páramo de Chingaza y Valle del Cocora' },
-      { label: 'Coordenadas', value: '4°31′N 73°45′O' },
-      { label: 'Rol', value: 'Fotografía y edición' },
       { label: 'Tipo', value: 'Paisaje y naturaleza' },
+      { label: 'Fotos', value: '5' },
     ],
     preview: [
-      { height: 760, photos: [{ id: 'paramo', width: 1360 }] },
+      { height: 600, photos: [{ id: 'riverSunset', width: 1360 }] },
       {
-        height: 560,
+        height: 664,
         photos: [
-          { id: 'cocora', width: 443 },
-          { id: 'clouds', width: 443 },
-          { id: 'forest', width: 442 },
+          { id: 'riverHouses', width: 443 },
+          { id: 'riverCanoe', width: 443 },
+          { id: 'crescentMoon', width: 442 },
         ],
       },
     ],
-    cover: 'paramo',
+    cover: 'riverSunset',
     gallery: [
+      { height: 760, photos: [{ id: 'riverSunset', width: 1360 }] },
       {
-        height: 860,
+        height: 840,
         photos: [
-          { id: 'cocora', width: 672 },
-          { id: 'clouds', width: 672 },
+          { id: 'riverHouses', width: 672 },
+          { id: 'riverCanoe', width: 672 },
         ],
       },
-      { height: 720, photos: [{ id: 'forest', width: 1360 }] },
       {
-        height: 560,
+        height: 840,
         photos: [
-          { id: 'paramo', width: 443 },
-          { id: 'cocora', width: 443 },
-          { id: 'clouds', width: 442 },
+          { id: 'goldenSky', width: 672 },
+          { id: 'crescentMoon', width: 672 },
         ],
       },
     ],
-    blueToColor: 'paramo',
   },
   {
-    slug: 'la-candelaria',
+    slug: 'interiores',
     category: 'architecture',
-    title: 'La Candelaria',
-    subtitle: 'Serie personal',
-    summary: 'Muros de ladrillo, escaleras y patios del centro de Bogotá. Composición limpia y luz de media tarde.',
-    facts: [
-      { label: 'Lugar', value: 'La Candelaria, Bogotá' },
-      { label: 'Coordenadas', value: '4°35′N 74°04′O' },
-      { label: 'Rol', value: 'Fotografía y edición' },
-      { label: 'Tipo', value: 'Arquitectura' },
-    ],
-    preview: [
-      {
-        height: 860,
-        photos: [
-          { id: 'brick', width: 672 },
-          { id: 'stairs', width: 672 },
-        ],
-      },
-      { height: 520, photos: [{ id: 'brick', width: 1360 }] },
-    ],
-    cover: 'brick',
-    gallery: [
-      {
-        height: 860,
-        photos: [
-          { id: 'stairs', width: 672 },
-          { id: 'brick', width: 672 },
-        ],
-      },
-    ],
-  },
-  {
-    slug: 'invernadero',
-    category: 'people',
-    title: 'Invernadero',
-    subtitle: 'Retrato · proyecto de ejemplo',
-    summary: 'Retrato con luz natural entre plantas: una sesión tranquila, sin flash, donde la persona marca el ritmo.',
-    facts: [
-      { label: 'Lugar', value: 'Bogotá' },
-      { label: 'Luz', value: 'Natural' },
-      { label: 'Rol', value: 'Fotografía y edición' },
-      { label: 'Tipo', value: 'Retrato' },
-    ],
-    preview: [
-      {
-        height: 760,
-        photos: [
-          { id: 'portrait', width: 560 },
-          { id: 'portrait', width: 784 },
-        ],
-      },
-    ],
-    cover: 'portrait',
-    gallery: [
-      {
-        height: 760,
-        photos: [
-          { id: 'portrait', width: 560 },
-          { id: 'portrait', width: 784 },
-        ],
-      },
-    ],
-    isExample: true,
-  },
-  {
-    slug: 'campana-textil',
-    category: 'people',
-    title: 'Campaña textil',
-    subtitle: 'Moda · proyecto de ejemplo',
-    summary: 'Lookbook en exteriores para una marca de ropa: prendas en movimiento y color del lugar.',
-    facts: [
-      { label: 'Lugar', value: 'Bogotá' },
-      { label: 'Formato', value: 'Lookbook' },
-      { label: 'Rol', value: 'Fotografía y dirección de arte' },
-      { label: 'Tipo', value: 'Moda' },
-    ],
-    preview: [
-      {
-        height: 600,
-        photos: [
-          { id: 'fashion', width: 443 },
-          { id: 'fashion', width: 443 },
-          { id: 'fashion', width: 442 },
-        ],
-      },
-    ],
-    cover: 'fashion',
-    gallery: [
-      {
-        height: 600,
-        photos: [
-          { id: 'fashion', width: 443 },
-          { id: 'fashion', width: 443 },
-          { id: 'fashion', width: 442 },
-        ],
-      },
-    ],
-    isExample: true,
-  },
-  {
-    slug: 'bodegon',
-    category: 'product',
-    title: 'Bodegón',
-    subtitle: 'Producto · proyecto de ejemplo',
-    summary: 'Producto en estudio con luz suave y fondos limpios, pensado para tienda en línea, catálogo y redes.',
-    facts: [
-      { label: 'Lugar', value: 'Estudio, Chapinero' },
-      { label: 'Formato', value: 'Catálogo y tienda en línea' },
-      { label: 'Rol', value: 'Fotografía y edición' },
-      { label: 'Tipo', value: 'Producto' },
-    ],
-    preview: [
-      {
-        height: 600,
-        photos: [
-          { id: 'product', width: 896 },
-          { id: 'camera', width: 448 },
-        ],
-      },
-      {
-        height: 328,
-        photos: [
-          { id: 'product', width: 328 },
-          { id: 'camera', width: 328 },
-          { id: 'product', width: 328 },
-          { id: 'camera', width: 328 },
-        ],
-      },
-    ],
-    cover: 'product',
-    gallery: [
-      {
-        height: 600,
-        photos: [
-          { id: 'camera', width: 448 },
-          { id: 'product', width: 896 },
-        ],
-      },
-    ],
-    isExample: true,
-  },
-  {
-    slug: 'cianotipias',
-    category: 'personal',
-    title: 'Cianotipias',
-    subtitle: 'del azul al color',
+    title: 'Interiores',
+    subtitle: 'Arquitectura e interiores',
     summary:
-      'Mi serie personal: cada foto existe primero en azul de Prusia, como una cianotipia, y después en color. Pasa el cursor sobre una foto para revelarla.',
+      'Bares y restaurantes con su propia luz: madera, bombillos y el ambiente de cada lugar. También casas frente a un lago y un pasillo de guadua que se abre hacia la luz.',
     facts: [
-      { label: 'Técnica', value: 'Cianotipia digital' },
-      { label: 'Serie', value: 'Paisaje, arquitectura y retrato' },
+      { label: 'Tipo', value: 'Arquitectura e interiores' },
+      { label: 'Fotos', value: '6' },
     ],
     preview: [
       {
-        height: 440,
+        height: 620,
         photos: [
-          { id: 'paramo', width: 328 },
-          { id: 'stairs', width: 328 },
-          { id: 'portrait', width: 328 },
-          { id: 'clouds', width: 328 },
+          { id: 'restaurantBar', width: 930 },
+          { id: 'barDining', width: 414 },
+        ],
+      },
+      {
+        height: 437,
+        photos: [
+          { id: 'barCounter', width: 685 },
+          { id: 'restaurantHall', width: 659 },
         ],
       },
     ],
-    cover: 'clouds',
+    cover: 'restaurantBar',
     gallery: [
       {
-        height: 560,
+        height: 620,
         photos: [
-          { id: 'paramo', width: 443 },
-          { id: 'stairs', width: 443 },
-          { id: 'portrait', width: 442 },
+          { id: 'restaurantBar', width: 930 },
+          { id: 'barDining', width: 414 },
         ],
       },
       {
-        height: 560,
+        height: 437,
         photos: [
-          { id: 'cocora', width: 672 },
-          { id: 'brick', width: 672 },
+          { id: 'barCounter', width: 685 },
+          { id: 'restaurantHall', width: 659 },
+        ],
+      },
+      {
+        height: 620,
+        photos: [
+          { id: 'lakeHouses', width: 930 },
+          { id: 'caneCorridor', width: 414 },
         ],
       },
     ],
-    cyanotype: true,
+  },
+  {
+    slug: 'pareja',
+    category: 'people',
+    title: 'Pareja',
+    subtitle: 'Sesión de pareja',
+    summary: 'Una sesión de pareja con luz baja y velas: las manos, los anillos y los abrazos cuentan la historia.',
+    facts: [
+      { label: 'Tipo', value: 'Retrato de pareja' },
+      { label: 'Fotos', value: '4' },
+    ],
+    preview: [
+      {
+        height: 600,
+        photos: [
+          { id: 'coupleHands', width: 443 },
+          { id: 'coupleGuitar', width: 443 },
+          { id: 'coupleEmbrace', width: 442 },
+        ],
+      },
+    ],
+    cover: 'coupleHug',
+    gallery: [
+      { height: 760, photos: [{ id: 'coupleHug', width: 1360 }] },
+      {
+        height: 664,
+        photos: [
+          { id: 'coupleHands', width: 443 },
+          { id: 'coupleGuitar', width: 443 },
+          { id: 'coupleEmbrace', width: 442 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'retratos',
+    category: 'fashion',
+    title: 'Retratos',
+    subtitle: 'Retrato y moda',
+    summary: 'Retratos de estudio con luz controlada: el gesto, la piel y la textura, del color al blanco y negro.',
+    facts: [
+      { label: 'Tipo', value: 'Retrato y moda' },
+      { label: 'Fotos', value: '4' },
+    ],
+    preview: [
+      {
+        height: 520,
+        photos: [
+          { id: 'leafPortrait', width: 358 },
+          { id: 'monochromePortrait', width: 358 },
+          { id: 'handPortrait', width: 298 },
+          { id: 'whiteShirt', width: 298 },
+        ],
+      },
+    ],
+    cover: 'leafPortrait',
+    coverPosition: '50% 35%',
+    gallery: [
+      {
+        height: 840,
+        photos: [
+          { id: 'leafPortrait', width: 672 },
+          { id: 'monochromePortrait', width: 672 },
+        ],
+      },
+      {
+        height: 840,
+        photos: [
+          { id: 'handPortrait', width: 672 },
+          { id: 'whiteShirt', width: 672 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'bodegones',
+    category: 'product',
+    title: 'Bodegones',
+    subtitle: 'Producto',
+    summary: 'Bebidas, perfume, comida y joyería: cada producto con una luz y un color pensados para él.',
+    facts: [
+      { label: 'Tipo', value: 'Producto' },
+      { label: 'Fotos', value: '4' },
+    ],
+    preview: [
+      {
+        height: 520,
+        photos: [
+          { id: 'beer', width: 358 },
+          { id: 'perfume', width: 358 },
+          { id: 'iceCream', width: 298 },
+          { id: 'necklace', width: 298 },
+        ],
+      },
+    ],
+    cover: 'necklace',
+    coverPosition: '50% 55%',
+    gallery: [
+      {
+        height: 840,
+        photos: [
+          { id: 'beer', width: 672 },
+          { id: 'perfume', width: 672 },
+        ],
+      },
+      {
+        height: 840,
+        photos: [
+          { id: 'iceCream', width: 672 },
+          { id: 'necklace', width: 672 },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'de-cerca',
+    category: 'personal',
+    title: 'De cerca',
+    subtitle: 'Serie personal',
+    summary: 'Mi serie personal: flores, hojas y gotas de lluvia vistas muy de cerca.',
+    facts: [
+      { label: 'Tipo', value: 'Naturaleza y macro' },
+      { label: 'Fotos', value: '5' },
+    ],
+    preview: [
+      {
+        height: 620,
+        photos: [
+          { id: 'rainFlower', width: 930 },
+          { id: 'yellowFlower', width: 414 },
+        ],
+      },
+    ],
+    cover: 'rainFlower',
+    gallery: [
+      {
+        height: 620,
+        photos: [
+          { id: 'rainFlower', width: 930 },
+          { id: 'yellowFlower', width: 414 },
+        ],
+      },
+      {
+        height: 514,
+        photos: [
+          { id: 'dryLeaf', width: 343 },
+          { id: 'leafDrops', width: 343 },
+          { id: 'glassRoses', width: 642 },
+        ],
+      },
+    ],
   },
 ];
 

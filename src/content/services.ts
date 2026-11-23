@@ -6,32 +6,32 @@ export const services: Array<Service> = [
   {
     name: 'Paisaje y naturaleza',
     description: 'Campañas de turismo, hoteles y proyectos que necesitan mostrar un lugar.',
-    photo: 'paramo',
+    photo: 'riverSunset',
   },
   {
     name: 'Arquitectura e interiores',
     description: 'Espacios, fachadas y detalles para estudios, inmobiliarias y marcas.',
-    photo: 'stairs',
+    photo: 'restaurantBar',
   },
   {
     name: 'Retrato',
     description: 'Sesiones personales y de equipo, en locación y con luz natural.',
-    photo: 'portrait',
+    photo: 'coupleHug',
   },
   {
     name: 'Moda y campañas',
     description: 'Lookbooks, campañas y editoriales para marcas de ropa y accesorios.',
-    photo: 'fashion',
+    photo: 'leafPortrait',
   },
   {
     name: 'Producto',
     description: 'Fotos de producto para tienda en línea, catálogo y redes.',
-    photo: 'product',
+    photo: 'perfume',
   },
   {
     name: 'Editorial y turismo',
     description: 'Reportajes de lugar para revistas, guías y destinos.',
-    photo: 'clouds',
+    photo: 'riverCanoe',
   },
 ];
 
@@ -64,10 +64,10 @@ export const faqs = [
 
 /** Options for the photo tile picker on the quote page. */
 export const quoteOptions: Array<{ value: string; photo: PhotoId }> = [
-  { value: 'Paisaje', photo: 'paramo' },
-  { value: 'Naturaleza', photo: 'forest' },
-  { value: 'Arquitectura', photo: 'brick' },
-  { value: 'Retrato', photo: 'portrait' },
-  { value: 'Moda', photo: 'fashion' },
-  { value: 'Producto', photo: 'product' },
+  { value: 'Paisaje', photo: 'goldenSky' },
+  { value: 'Naturaleza', photo: 'rainFlower' },
+  { value: 'Arquitectura', photo: 'caneCorridor' },
+  { value: 'Retrato', photo: 'handPortrait' },
+  { value: 'Moda', photo: 'whiteShirt' },
+  { value: 'Producto', photo: 'necklace' },
 ];

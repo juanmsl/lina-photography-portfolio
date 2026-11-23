@@ -24,7 +24,7 @@ export const QuoteSentPage = () => {
   return (
     <div className='relative isolate flex min-h-dvh flex-col'>
       <div aria-hidden className='absolute inset-0 -z-10'>
-        <Photo id='clouds' silentPlaceholder className='size-full' />
+        <Photo id='goldenSky' silentPlaceholder className='size-full' />
         <div className='absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-ink)_60%,transparent),var(--color-ink))]' />
       </div>
 
