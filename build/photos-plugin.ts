@@ -11,7 +11,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 const VIRTUAL_ID = 'virtual:lina-photos';
 const RESOLVED_ID = `\0${VIRTUAL_ID}`;
 
-export type PhotoSize = 'page' | 'small' | 'thumb' | 'view';
+export type PhotoSize = 'page' | 'tiny' | 'small' | 'thumb' | 'large' | 'full' | 'view';
 export type PhotoUrls = Record<PhotoId, Record<PhotoSize, string>>;
 
 /**
@@ -19,9 +19,9 @@ export type PhotoUrls = Record<PhotoId, Record<PhotoSize, string>>;
  * CLOUDINARY_URL. Signed here, at build time, with the API secret from the
  * environment: only the finished URLs reach the browser and the HTML, never the
  * secret and never an URL to the original. Each URL uses a named transformation
- * (page: no watermark, only Lina's portrait; small and thumb: watermarked, up
- * to 900 and 1600 px; view: the enlarged photo, bigger and watermarked), so
- * editing it does not give access to anything else.
+ * (page: no watermark, only Lina's portrait; tiny, small, thumb, large and
+ * full: the watermarked ladder, from 480 px to the uploaded resolution; view:
+ * the enlarged photo), so editing it does not give access to anything else.
  */
 export const signPhotoUrls = (cloudinaryUrl?: string): PhotoUrls | null => {
   if (!cloudinaryUrl) return null;
@@ -44,8 +44,11 @@ export const signPhotoUrls = (cloudinaryUrl?: string): PhotoUrls | null => {
 
     urls[id] = {
       page: url('lina_page'),
+      tiny: url('lina_tiny'),
       small: url('lina_small'),
       thumb: url('lina_thumb'),
+      large: url('lina_large'),
+      full: url('lina_full'),
       view: url('lina_view'),
     };
   }

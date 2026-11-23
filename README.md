@@ -64,10 +64,14 @@ The photos are served from Cloudinary, never as originals:
 - **Originals** are uploaded as `authenticated` assets (`lina/photos/<name>`): they have no public URL.
 - **Only four versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
   - `lina_page` (up to 1600 px, no watermark): only Lina's own portrait in the hero (`size='page'`).
-  - `lina_small` and `lina_thumb` (up to 900 and 1600 px, watermarked): every photo of her work on the pages
-    (galleries, covers, services, quote tiles, "next project", "Solicitud enviada"); this is `Photo`'s default
-    size, and it picks the 900 px version when the box is at most 900 device pixels wide. They are shown small, so
-    the watermark tile is 16 % of the photo's width.
+  - `lina_tiny`, `lina_small`, `lina_thumb`, `lina_large` and `lina_full` (480, 900, 1600 and 2400 px, and the
+    uploaded resolution, all watermarked): every photo of her work on the pages (galleries, covers, services, quote
+    tiles, "next project", "Solicitud enviada"). They work like a `srcset`: `Photo` takes the lightest size that is
+    sharp for its box on that screen (box size, the crop of `object-cover` and the pixel density; `sizeFor` in
+    `src/photoLoader.ts`) and moves up if the box grows. Meanwhile it shows `lina_tiny` blurred, which arrives
+    first, and fades to the sharp one. A real `<picture>`/`srcset` is not used because the browser would request
+    the Cloudinary URLs directly, and they would show again in the inspector instead of the `blob:` URL. The
+    watermark tile is 16 % of the photo's width, so the marks stay recognizable on photos shown small.
   - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`, tile 10 % of the
     width.
 
@@ -85,7 +89,8 @@ The photos are served from Cloudinary, never as originals:
   the `<img>` in the inspector does not point to Cloudinary (if the download fails it falls back to the direct
   URL). It also disables right click, dragging and the iOS long-press menu.
 - **Loading speed** (`src/photoLoader.ts`): each photo is downloaded once per visit and kept in memory, so it is
-  never fetched twice. The enlarged view first shows the gallery version if it is already loaded and swaps to the
+  never fetched twice. Until the right size arrives, a photo shows the sharpest size of it already downloaded, or
+  the tiny one blurred. The enlarged view first shows the gallery version if it is already loaded and swaps to the
   big one when it arrives; it also preloads the previous and next photos, and a gallery photo starts loading its
   big version on hover. `pnpm cloudinary:setup` generates every version at upload time (eager), so no visitor
   waits for Cloudinary to create one. All of this only discourages: the
