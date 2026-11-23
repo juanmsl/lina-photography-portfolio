@@ -1,16 +1,11 @@
 import type { PhotoId } from './photos.ts';
 
-export type RowPhoto = {
-  id: PhotoId;
-  /** Relative width within the row (design px at 1360). */
-  width: number;
-};
-
-export type PhotoRow = {
-  /** Row height in the desktop design (px at 1360 wide). */
-  height: number;
-  photos: Array<RowPhoto>;
-};
+/**
+ * A row of photos. Each one keeps its own proportions (`dimensions` in the
+ * photo catalog): they share the row's height and split its width, so none is
+ * cropped. On mobile, rows of three or four photos are split in two.
+ */
+export type PhotoRow = Array<PhotoId>;
 
 export type Fact = { label: string; value: string };
 
@@ -68,35 +63,9 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Paisaje y naturaleza' },
       { label: 'Fotos', value: '5' },
     ],
-    preview: [
-      { height: 600, photos: [{ id: 'riverSunset', width: 1360 }] },
-      {
-        height: 664,
-        photos: [
-          { id: 'riverHouses', width: 443 },
-          { id: 'riverCanoe', width: 443 },
-          { id: 'crescentMoon', width: 442 },
-        ],
-      },
-    ],
+    preview: [['riverSunset'], ['riverHouses', 'riverCanoe', 'crescentMoon']],
     cover: 'riverSunset',
-    gallery: [
-      { height: 760, photos: [{ id: 'riverSunset', width: 1360 }] },
-      {
-        height: 840,
-        photos: [
-          { id: 'riverHouses', width: 672 },
-          { id: 'riverCanoe', width: 672 },
-        ],
-      },
-      {
-        height: 840,
-        photos: [
-          { id: 'goldenSky', width: 672 },
-          { id: 'crescentMoon', width: 672 },
-        ],
-      },
-    ],
+    gallery: [['riverSunset'], ['riverHouses', 'riverCanoe'], ['goldenSky', 'crescentMoon']],
   },
   {
     slug: 'interiores',
@@ -110,44 +79,14 @@ export const projects: Array<Project> = [
       { label: 'Fotos', value: '6' },
     ],
     preview: [
-      {
-        height: 620,
-        photos: [
-          { id: 'restaurantBar', width: 930 },
-          { id: 'barDining', width: 414 },
-        ],
-      },
-      {
-        height: 437,
-        photos: [
-          { id: 'barCounter', width: 685 },
-          { id: 'restaurantHall', width: 659 },
-        ],
-      },
+      ['restaurantBar', 'barDining'],
+      ['barCounter', 'restaurantHall'],
     ],
     cover: 'restaurantBar',
     gallery: [
-      {
-        height: 620,
-        photos: [
-          { id: 'restaurantBar', width: 930 },
-          { id: 'barDining', width: 414 },
-        ],
-      },
-      {
-        height: 437,
-        photos: [
-          { id: 'barCounter', width: 685 },
-          { id: 'restaurantHall', width: 659 },
-        ],
-      },
-      {
-        height: 620,
-        photos: [
-          { id: 'lakeHouses', width: 930 },
-          { id: 'caneCorridor', width: 414 },
-        ],
-      },
+      ['restaurantBar', 'barDining'],
+      ['barCounter', 'restaurantHall'],
+      ['lakeHouses', 'caneCorridor'],
     ],
   },
   {
@@ -160,28 +99,9 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Retrato de pareja' },
       { label: 'Fotos', value: '4' },
     ],
-    preview: [
-      {
-        height: 600,
-        photos: [
-          { id: 'coupleHands', width: 443 },
-          { id: 'coupleGuitar', width: 443 },
-          { id: 'coupleEmbrace', width: 442 },
-        ],
-      },
-    ],
+    preview: [['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
     cover: 'coupleHug',
-    gallery: [
-      { height: 760, photos: [{ id: 'coupleHug', width: 1360 }] },
-      {
-        height: 664,
-        photos: [
-          { id: 'coupleHands', width: 443 },
-          { id: 'coupleGuitar', width: 443 },
-          { id: 'coupleEmbrace', width: 442 },
-        ],
-      },
-    ],
+    gallery: [['coupleHug'], ['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
   },
   {
     slug: 'retratos',
@@ -193,34 +113,12 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Retrato y moda' },
       { label: 'Fotos', value: '4' },
     ],
-    preview: [
-      {
-        height: 520,
-        photos: [
-          { id: 'leafPortrait', width: 358 },
-          { id: 'monochromePortrait', width: 358 },
-          { id: 'handPortrait', width: 298 },
-          { id: 'whiteShirt', width: 298 },
-        ],
-      },
-    ],
+    preview: [['leafPortrait', 'monochromePortrait', 'handPortrait', 'whiteShirt']],
     cover: 'leafPortrait',
     coverPosition: '50% 35%',
     gallery: [
-      {
-        height: 840,
-        photos: [
-          { id: 'leafPortrait', width: 672 },
-          { id: 'monochromePortrait', width: 672 },
-        ],
-      },
-      {
-        height: 840,
-        photos: [
-          { id: 'handPortrait', width: 672 },
-          { id: 'whiteShirt', width: 672 },
-        ],
-      },
+      ['leafPortrait', 'monochromePortrait'],
+      ['handPortrait', 'whiteShirt'],
     ],
   },
   {
@@ -233,34 +131,12 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Producto' },
       { label: 'Fotos', value: '4' },
     ],
-    preview: [
-      {
-        height: 520,
-        photos: [
-          { id: 'beer', width: 358 },
-          { id: 'perfume', width: 358 },
-          { id: 'iceCream', width: 298 },
-          { id: 'necklace', width: 298 },
-        ],
-      },
-    ],
+    preview: [['beer', 'perfume', 'iceCream', 'necklace']],
     cover: 'necklace',
     coverPosition: '50% 55%',
     gallery: [
-      {
-        height: 840,
-        photos: [
-          { id: 'beer', width: 672 },
-          { id: 'perfume', width: 672 },
-        ],
-      },
-      {
-        height: 840,
-        photos: [
-          { id: 'iceCream', width: 672 },
-          { id: 'necklace', width: 672 },
-        ],
-      },
+      ['beer', 'perfume'],
+      ['iceCream', 'necklace'],
     ],
   },
   {
@@ -273,32 +149,11 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Naturaleza y macro' },
       { label: 'Fotos', value: '5' },
     ],
-    preview: [
-      {
-        height: 620,
-        photos: [
-          { id: 'rainFlower', width: 930 },
-          { id: 'yellowFlower', width: 414 },
-        ],
-      },
-    ],
+    preview: [['rainFlower', 'yellowFlower']],
     cover: 'rainFlower',
     gallery: [
-      {
-        height: 620,
-        photos: [
-          { id: 'rainFlower', width: 930 },
-          { id: 'yellowFlower', width: 414 },
-        ],
-      },
-      {
-        height: 514,
-        photos: [
-          { id: 'dryLeaf', width: 343 },
-          { id: 'leafDrops', width: 343 },
-          { id: 'glassRoses', width: 642 },
-        ],
-      },
+      ['rainFlower', 'yellowFlower'],
+      ['dryLeaf', 'leafDrops', 'glassRoses'],
     ],
   },
 ];
@@ -307,7 +162,7 @@ export const findProject = (slug?: string) => projects.find(p => p.slug === slug
 
 /** The project's unique photos, in the order they appear on its page. */
 export const projectPhotos = (p: Project): Array<PhotoId> => {
-  const all = [p.cover, ...p.gallery.flatMap(f => f.photos.map(x => x.id))];
+  const all = [p.cover, ...p.gallery.flat()];
 
   return all.filter((id, i) => all.indexOf(id) === i);
 };

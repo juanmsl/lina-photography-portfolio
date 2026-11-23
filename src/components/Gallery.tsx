@@ -1,11 +1,10 @@
-import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
+import { photos, type PhotoId } from '../content/photos';
 import { preloadPhoto } from '../photoLoader';
 
 import { Photo } from './Photo';
 
-import type { PhotoId } from '../content/photos';
 import type { PhotoRow } from '../content/projects';
 
 type GalleryProps = {
@@ -16,71 +15,82 @@ type GalleryProps = {
   className?: string;
 };
 
+/** Width ÷ height of a photo, from the catalog. */
+const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[1];
+
+/** On mobile, rows of three or four photos are split so they are not too small: 3 → 1 + 2, 4 → 2 + 2. */
+const mobileRows = (row: PhotoRow): Array<PhotoRow> => {
+  if (row.length === 3) return [row.slice(0, 1), row.slice(1)];
+
+  if (row.length === 4) return [row.slice(0, 2), row.slice(2)];
+
+  return [row];
+};
+
 /**
- * Photo rows with a 16 px gap. On desktop each row keeps the design's
- * proportions (1360 wide); on mobile multi-photo rows become two columns or
- * one photo per line.
+ * Photo rows that never crop: every photo keeps its own proportions. In a row
+ * the photos share the height and split the width in proportion to their
+ * width ÷ height (flex-grow), and each box has that same aspect ratio, so the
+ * photo fills it exactly. Gap: 8 px on mobile, 16 px on desktop.
  */
-export const Gallery = ({ rows, project, cyanotype, className }: GalleryProps) => (
-  <div className={cn('grid gap-2 md:gap-4', className)}>
-    {rows.map((row, f) => {
-      const total = row.photos.reduce((s, x) => s + x.width, 0);
-      const multiple = row.photos.length > 1;
+export const Gallery = ({ rows, project, cyanotype, className }: GalleryProps) => {
+  const item = (id: PhotoId, key: string) => {
+    // flex-grow in hundredths: if a row's values added up to less than 1 (a vertical photo alone), it would not fill the row.
+    const style = { flex: `${ratio(id) * 100} 1 0%`, aspectRatio: ratio(id) };
 
+    if (cyanotype) {
       return (
-        <div
-          key={f}
-          className={cn(
-            'grid gap-2 md:flex md:gap-4 md:[aspect-ratio:var(--proporcion)]',
-            multiple && 'grid-cols-2',
-            row.photos.length === 3 && '[&>*:first-child]:col-span-2',
-          )}
-          style={{ '--proporcion': `${total} / ${row.height}` } as React.CSSProperties}
-        >
-          {row.photos.map((x, i) => {
-            const box = cn(
-              'w-full md:h-full md:w-auto',
-              multiple ? 'aspect-[4/5] md:aspect-auto' : 'aspect-[4/3] md:aspect-auto',
-              row.photos.length === 3 && i === 0 && 'aspect-[4/3]',
-            );
-            const flexStyle = { flex: `${x.width} 1 0%` };
-
-            if (cyanotype) {
-              return (
-                <div key={i} className={box} style={flexStyle}>
-                  <Photo id={x.id} cyanotype='reveal' className='size-full' />
-                </div>
-              );
-            }
-
-            if (project) {
-              return (
-                <Link
-                  viewTransition
-                  key={i}
-                  to={`/proyectos/${project.slug}/foto/${project.photoIndex(x.id) + 1}`}
-                  onPointerEnter={() => preloadPhoto(x.id, 'view')}
-                  onFocus={() => preloadPhoto(x.id, 'view')}
-                  className={cn(box, 'group block overflow-hidden')}
-                  style={flexStyle}
-                >
-                  <Photo
-                    id={x.id}
-                    size='thumb'
-                    className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
-                  />
-                </Link>
-              );
-            }
-
-            return (
-              <div key={i} className={box} style={flexStyle}>
-                <Photo id={x.id} className='size-full' />
-              </div>
-            );
-          })}
+        <div key={key} className='min-w-0' style={style}>
+          <Photo id={id} cyanotype='reveal' className='size-full' />
         </div>
       );
-    })}
-  </div>
-);
+    }
+
+    if (project) {
+      return (
+        <Link
+          viewTransition
+          key={key}
+          to={`/proyectos/${project.slug}/foto/${project.photoIndex(id) + 1}`}
+          onPointerEnter={() => preloadPhoto(id, 'view')}
+          onFocus={() => preloadPhoto(id, 'view')}
+          className='group block min-w-0 overflow-hidden'
+          style={style}
+        >
+          <Photo
+            id={id}
+            size='thumb'
+            className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
+          />
+        </Link>
+      );
+    }
+
+    return (
+      <div key={key} className='min-w-0' style={style}>
+        <Photo id={id} className='size-full' />
+      </div>
+    );
+  };
+
+  return (
+    <div className={className}>
+      {/* Desktop: the rows as designed. */}
+      <div className='hidden gap-4 md:grid'>
+        {rows.map((row, r) => (
+          <div key={r} className='flex gap-4'>
+            {row.map((id, i) => item(id, `${r}-${i}`))}
+          </div>
+        ))}
+      </div>
+      {/* Mobile: the same rows, with the long ones split in two. Hidden photos are not downloaded. */}
+      <div className='grid gap-2 md:hidden'>
+        {rows.flatMap(mobileRows).map((row, r) => (
+          <div key={r} className='flex gap-2'>
+            {row.map((id, i) => item(id, `${r}-${i}`))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

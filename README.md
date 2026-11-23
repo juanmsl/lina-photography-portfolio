@@ -119,7 +119,8 @@ The photos are served from Cloudinary, never as originals:
    (`river-sunset.jpg`), into `public/photos/`.
 2. Register it in `src/content/photos.ts` (id, file, its width and height in `dimensions`, so the enlarged view
    shows it whole, title and a specific alt text in Spanish) and place it in a
-   project in `src/content/projects.ts` (cover and gallery rows; row widths follow each photo's proportions).
+   project in `src/content/projects.ts` (cover and gallery rows: each row is a list of photo ids; the photos keep
+   their own proportions, never cropped, so a row only decides which photos go side by side).
 3. Run `pnpm cloudinary:setup` and redeploy.
 
 `public/photos/` is ignored by git (except `lina.jpg`): with Cloudinary the site never reads those files, and
