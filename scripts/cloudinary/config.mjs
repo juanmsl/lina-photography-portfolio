@@ -17,7 +17,7 @@ export const photoPublicId = name => `lina/photos/${name}`;
  * relative size on every photo. The mark is white, at 40 % opacity.
  */
 const tiledWatermark = width =>
-  `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,fl_relative,w_${width}/o_40/fl_layer_apply,fl_tiled`;
+  `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,fl_relative,w_${width}/o_20/fl_layer_apply,fl_tiled`;
 
 /** The only versions of a photo that can be delivered (Settings → Security → Strict transformations). */
 export const TRANSFORMATIONS = {
@@ -32,15 +32,15 @@ export const TRANSFORMATIONS = {
    * stay recognizable on photos shown small.
    */
   /** Placeholder shown blurred while the right size loads: up to 480 px, lighter quality. */
-  lina_tiny: `c_limit,w_480,h_480/${tiledWatermark(0.16)}/q_auto:eco/f_auto`,
+  lina_tiny: `c_limit,w_480,h_480/${tiledWatermark(0.05)}/q_auto:eco/f_auto`,
   /** Up to 900 px. */
-  lina_small: `c_limit,w_900,h_900/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  lina_small: `c_limit,w_900,h_900/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** Up to 1600 px. */
-  lina_thumb: `c_limit,w_1600,h_1600/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  lina_thumb: `c_limit,w_1600,h_1600/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** Up to 2400 px. */
-  lina_large: `c_limit,w_2400,h_2400/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  lina_large: `c_limit,w_2400,h_2400/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** The uploaded file at its own resolution (up to 3000 px), for the biggest boxes on dense screens. */
-  lina_full: `${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  lina_full: `${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** Enlarged photo (/proyectos/:slug/foto/:n): up to 2560 px with the watermark (tile 10 % of the width). */
-  lina_view: `c_limit,w_2560,h_2560/${tiledWatermark(0.1)}/q_auto:good/f_auto`,
+  lina_view: `c_limit,w_2560,h_2560/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
 };
