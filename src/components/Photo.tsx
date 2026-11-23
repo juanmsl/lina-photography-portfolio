@@ -1,9 +1,9 @@
 import { cn } from 'polpo/helpers';
 import { useInView } from 'polpo/hooks';
 import { useEffect, useState, type MouseEvent, type RefObject } from 'react';
-import { photoUrls } from 'virtual:lina-photos';
 
 import { photos, type PhotoId } from '../content/photos';
+import { loadedPhoto, loadPhoto, photoSrc, sizeForWidth, type PhotoSize } from '../photoLoader';
 
 type PhotoProps = {
   id: PhotoId;
@@ -19,7 +19,8 @@ type PhotoProps = {
   /** Hides the placeholder description when the file is missing (small boxes). */
   silentPlaceholder?: boolean;
   /**
-   * thumb: with the tiled watermark (default): every photo of Lina's work.
+   * thumb: with the tiled watermark (default): every photo of Lina's work, in
+   * the 900 or 1600 px version depending on how wide the box is.
    * page: without watermark, only for Lina's own portrait.
    * view: the enlarged photo, bigger and watermarked.
    */
@@ -29,53 +30,41 @@ type PhotoProps = {
 const preventSave = (e: MouseEvent) => e.preventDefault();
 
 /**
- * Loads the photo with fetch and shows it from a `blob:` URL, so "copy image
- * address" and the element inspector do not show the Cloudinary URL. It only
- * starts when `start` is true, and frees the blob when the component unmounts.
- * If the fetch fails it falls back to the normal URL (a missing photo then
- * shows the placeholder).
+ * The `blob:` URL of `src` (see `loadPhoto`): right away when it was already
+ * downloaded in this visit, otherwise once the download ends.
  */
-const useBlobSrc = (src: string, start: boolean) => {
-  const [blobSrc, setBlobSrc] = useState<string>();
+const useLoadedPhoto = (src?: string) => {
+  const [result, setResult] = useState<{ src: string; url: string }>();
 
   useEffect(() => {
-    if (!start) return undefined;
+    if (!src || loadedPhoto(src)) return undefined;
 
-    const controller = new AbortController();
-    let objectUrl: string | undefined;
+    let active = true;
 
-    fetch(src, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) throw new Error(String(response.status));
-
-        return response.blob();
-      })
-      .then(blob => {
-        objectUrl = URL.createObjectURL(blob);
-        setBlobSrc(objectUrl);
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setBlobSrc(src);
-      });
+    void loadPhoto(src).then(url => {
+      if (active) setResult({ src, url });
+    });
 
     return () => {
-      controller.abort();
-
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      active = false;
     };
-  }, [src, start]);
+  }, [src]);
 
-  return blobSrc;
+  if (!src) return undefined;
+
+  return loadedPhoto(src) ?? (result?.src === src ? result.url : undefined);
 };
 
 /**
  * Full-bleed photograph inside its box; the container decides the size.
  * With Cloudinary configured it loads a signed version (watermarked, except
- * Lina's portrait; see build/photos-plugin.ts)
- * through a `blob:` URL, once the photo gets close to the viewport (right away
- * with `priority`). Right click, drag and the iOS long-press menu are disabled
- * as a light deterrent. If the file does not exist, it shows a dark placeholder
- * with the description so the layout does not break.
+ * Lina's portrait; see build/photos-plugin.ts) through a `blob:` URL, once the
+ * photo gets close to the viewport (right away with `priority`). Photos are
+ * downloaded once per visit (src/photoLoader.ts). The enlarged view first shows
+ * the smaller version if it was already loaded, then swaps to the big one.
+ * Right click, drag and the iOS long-press menu are disabled as a light
+ * deterrent. If the file does not exist, it shows a dark placeholder with the
+ * description so the layout does not break.
  */
 export const Photo = ({
   id,
@@ -88,16 +77,28 @@ export const Photo = ({
   size = 'thumb',
 }: PhotoProps) => {
   const info = photos[id];
-  const [failed, setFailed] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const reveals = cyanotype === 'reveal';
   const { ref, inView } = useInView({ rootMargin: '400px' });
-  const [seen, setSeen] = useState(Boolean(priority));
-  const blobSrc = useBlobSrc(photoUrls?.[id][size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`, seen);
+  const [version, setVersion] = useState<PhotoSize>();
+  const [failedSrc, setFailedSrc] = useState<string>();
 
+  // Pick the version when the photo is about to be seen: for watermarked photos, by the box's width.
   useEffect(() => {
-    if (inView) setSeen(true);
-  }, [inView]);
+    if (version || !(priority || inView)) return;
+
+    const width = (ref as RefObject<HTMLElement>).current?.getBoundingClientRect().width ?? Infinity;
+
+    setVersion(size === 'thumb' ? sizeForWidth(width) : size);
+  }, [version, priority, inView, ref, size]);
+
+  const src = version && photoSrc(id, version);
+  const loaded = useLoadedPhoto(src);
+  // While the enlarged photo downloads, show the gallery version if it is already here.
+  const preview =
+    size === 'view' && !loaded ? (loadedPhoto(photoSrc(id, 'thumb')) ?? loadedPhoto(photoSrc(id, 'small'))) : undefined;
+  const shown = loaded ?? preview;
+  const failed = shown !== undefined && shown === failedSrc;
 
   const content = (
     <>
@@ -111,14 +112,14 @@ export const Photo = ({
           )}
         </span>
       ) : (
-        blobSrc && (
+        shown && (
           <img
-            src={blobSrc}
+            src={shown}
             alt={info.description}
             decoding='async'
             draggable={false}
             onDragStart={preventSave}
-            onError={() => setFailed(true)}
+            onError={() => setFailedSrc(shown)}
             style={position ? { objectPosition: position } : undefined}
             className={cn(
               'absolute inset-0 size-full object-cover transition-[filter] duration-700 ease-out motion-reduce:transition-none',

@@ -1,5 +1,6 @@
 import { Button, Typography } from 'polpo/components';
 import { useEventListener } from 'polpo/hooks';
+import { useEffect } from 'react';
 import { LuArrowLeft, LuChevronLeft, LuChevronRight, LuMapPin, LuX } from 'react-icons/lu';
 import { Link, Navigate, useNavigate, useParams } from 'react-router';
 
@@ -7,6 +8,7 @@ import { Photo } from '../components/Photo';
 import { PlateFrame } from '../components/PlateFrame';
 import { photos, formatCoordinates } from '../content/photos';
 import { findProject, projectPhotos } from '../content/projects';
+import { loadPhoto, photoSrc, preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
 
@@ -55,6 +57,29 @@ export const PhotoViewerPage = () => {
 
     if (e.key === 'Escape') close();
   });
+
+  const currentId = list.at(current - 1);
+  const nextId = list.at(current % list.length);
+  const previousId = list.at(current - 2);
+
+  // Once the current photo is here, download its neighbors so the next change is instant.
+  useEffect(() => {
+    if (!currentId) return undefined;
+
+    let active = true;
+
+    void loadPhoto(photoSrc(currentId, 'view')).then(() => {
+      if (!active) return;
+
+      if (nextId) preloadPhoto(nextId, 'view');
+
+      if (previousId) preloadPhoto(previousId, 'view');
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [currentId, nextId, previousId]);
 
   if (!p) return <NotFoundPage />;
 

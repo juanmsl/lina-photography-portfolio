@@ -1,6 +1,8 @@
 import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
+import { preloadPhoto } from '../photoLoader';
+
 import { Photo } from './Photo';
 
 import type { PhotoId } from '../content/photos';
@@ -57,6 +59,8 @@ export const Gallery = ({ rows, project, cyanotype, className }: GalleryProps) =
                   viewTransition
                   key={i}
                   to={`/proyectos/${project.slug}/foto/${project.photoIndex(x.id) + 1}`}
+                  onPointerEnter={() => preloadPhoto(x.id, 'view')}
+                  onFocus={() => preloadPhoto(x.id, 'view')}
                   className={cn(box, 'group block overflow-hidden')}
                   style={flexStyle}
                 >

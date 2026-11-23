@@ -10,6 +10,7 @@ import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
 import { findProject, categoryOf, projectPhotos, nextProject } from '../content/projects';
+import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
 
@@ -53,6 +54,8 @@ export const ProjectPage = () => {
         viewTransition
         to={`/proyectos/${p.slug}/foto/1`}
         aria-label='Ver la foto principal ampliada'
+        onPointerEnter={() => preloadPhoto(p.cover, 'view')}
+        onFocus={() => preloadPhoto(p.cover, 'view')}
         className='block'
       >
         <Photo

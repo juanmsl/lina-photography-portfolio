@@ -29,6 +29,8 @@ export const TRANSFORMATIONS = {
    * tile is bigger (16 % of the width) for the marks to stay recognizable.
    */
   lina_thumb: `c_limit,w_1600,h_1600/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  /** The same, up to 900 px, for photos shown small (Photo picks it from the box's width). */
+  lina_small: `c_limit,w_900,h_900/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
   /** Enlarged photo (/proyectos/:slug/foto/:n): up to 2560 px with the watermark (tile 10 % of the width). */
   lina_view: `c_limit,w_2560,h_2560/${tiledWatermark(0.1)}/q_auto:good/f_auto`,
 };

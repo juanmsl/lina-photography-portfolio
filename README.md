@@ -62,11 +62,12 @@ One-time setup in Vercel: **Project → Analytics → Enable** and **Project →
 The photos are served from Cloudinary, never as originals:
 
 - **Originals** are uploaded as `authenticated` assets (`lina/photos/<name>`): they have no public URL.
-- **Only three versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
+- **Only four versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
   - `lina_page` (up to 1600 px, no watermark): only Lina's own portrait in the hero (`size='page'`).
-  - `lina_thumb` (up to 1600 px, watermarked): every photo of her work on the pages (galleries, covers, services,
-    quote tiles, "next project", "Solicitud enviada"); it is `Photo`'s default size. They are shown small, so the
-    watermark tile is 16 % of the photo's width.
+  - `lina_small` and `lina_thumb` (up to 900 and 1600 px, watermarked): every photo of her work on the pages
+    (galleries, covers, services, quote tiles, "next project", "Solicitud enviada"); this is `Photo`'s default
+    size, and it picks the 900 px version when the box is at most 900 device pixels wide. They are shown small, so
+    the watermark tile is 16 % of the photo's width.
   - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`, tile 10 % of the
     width.
 
@@ -82,7 +83,12 @@ The photos are served from Cloudinary, never as originals:
   `public/photos/`. A photo missing in both places shows the dark placeholder.
 - `Photo` downloads each photo with `fetch` once it gets close to the screen and shows it through a `blob:` URL, so
   the `<img>` in the inspector does not point to Cloudinary (if the download fails it falls back to the direct
-  URL). It also disables right click, dragging and the iOS long-press menu. All of this only discourages: the
+  URL). It also disables right click, dragging and the iOS long-press menu.
+- **Loading speed** (`src/photoLoader.ts`): each photo is downloaded once per visit and kept in memory, so it is
+  never fetched twice. The enlarged view first shows the gallery version if it is already loaded and swaps to the
+  big one when it arrives; it also preloads the previous and next photos, and a gallery photo starts loading its
+  big version on hover. `pnpm cloudinary:setup` generates every version at upload time (eager), so no visitor
+  waits for Cloudinary to create one. All of this only discourages: the
   request is still visible in the network tab and anything shown on screen can be captured, which is why only
   reduced versions are public and every photo of her work is watermarked.
 
@@ -93,8 +99,10 @@ The photos are served from Cloudinary, never as originals:
    (`CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>`).
 2. Put that line in `.env.local` at the root of this project (ignored by git; never commit it).
 3. In Vercel: **Settings → Environment Variables → CLOUDINARY_URL** with the same value (Production and Preview).
-4. Run `pnpm cloudinary:setup`. It uploads the watermark and the photos in `public/photos/` and creates the named
-   transformations. Run it again whenever photos are added or the transformations change.
+4. Run `pnpm cloudinary:setup`. It creates the named transformations, uploads the watermark and the photos in
+   `public/photos/` that are not in Cloudinary yet, and generates every version of every photo. Run it again
+   whenever photos are added. After changing a photo file, the watermark or a transformation, run
+   `pnpm cloudinary:setup --force`: it re-uploads everything and purges the cached versions.
 5. In Cloudinary: **Settings → Security → Strict transformations: enabled**. From then on only the named
    transformations can be delivered.
 6. Redeploy on Vercel so the build signs the new URLs.
