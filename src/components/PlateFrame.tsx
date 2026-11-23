@@ -2,17 +2,22 @@ import type { ReactNode } from 'react';
 
 import { cn } from 'polpo/helpers';
 
+import { toMinutes } from '../content/photos';
+
 type PlateFrameProps = {
-  /** The photo's [latG, latM, lonG, lonM]; without it the frame has no labels. */
+  /** The photo's [latG, latM, lonG, lonM] (south and east negative); without it the frame has no labels. */
   coordinates?: [number, number, number, number];
   children: ReactNode;
   className?: string;
 };
 
+/**
+ * Label of a tick: the photo's coordinate moved `delta` minutes (north and west
+ * positive, so it also works south of the equator and east of Greenwich). The
+ * frame shows degrees and minutes without the hemisphere, like a map plate.
+ */
 const formatMinutes = (degrees: number, min: number, delta: number) => {
-  let total = degrees * 60 + min + delta;
-
-  if (total < 0) total = 0;
+  const total = Math.abs(toMinutes(degrees, min) + delta);
 
   return `${Math.floor(total / 60)}°${String(total % 60).padStart(2, '0')}′`;
 };
@@ -54,7 +59,7 @@ export const PlateFrame = ({ coordinates, children, className }: PlateFrameProps
             <span className='absolute right-0 h-px w-2 bg-plate/55' style={{ top: y }} />
             {coordinates && (
               <span
-                className='font-code absolute left-[0.45rem] hidden -translate-y-[130%] whitespace-nowrap text-[0.6875rem] leading-none text-plate/75 md:block'
+                className='font-code absolute left-[0.45rem] hidden -translate-y-[calc(100%+0.3rem)] rotate-180 whitespace-nowrap text-[0.6875rem] leading-none text-plate/75 [writing-mode:vertical-rl] md:block'
                 style={{ top: y }}
               >
                 {formatMinutes(coordinates[0], coordinates[1], d)}

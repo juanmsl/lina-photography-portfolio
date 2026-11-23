@@ -47,7 +47,12 @@ export type PhotoInfo = {
   title: string;
   /** Caption's second voice (region, client, technique). */
   region?: string;
-  /** Coordinates in degrees and minutes, e.g. [4, 38, 75, 29] = 4°38′N 75°29′W. */
+  /**
+   * Coordinates in degrees and minutes: [latitude degrees, minutes, longitude
+   * degrees, minutes]. North and west are positive; south and east take
+   * negative degrees: [4, 38, 75, 29] = 4°38′N 75°29′O, [-1, 30, 71, 30] =
+   * 1°30′S 71°30′O. Below one degree south, write -0: [-0, 30, 71, 30].
+   */
   coordinates?: [number, number, number, number];
   altitude?: string;
   provisional: boolean;
@@ -261,5 +266,16 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   },
 };
 
+/** Negative degrees are south (latitude) or east (longitude); -0 counts too. */
+const isNegative = (degrees: number) => degrees < 0 || Object.is(degrees, -0);
+
+/** Signed minutes of a coordinate: north and west positive, south and east negative. */
+export const toMinutes = (degrees: number, minutes: number) =>
+  (isNegative(degrees) ? -1 : 1) * (Math.abs(degrees) * 60 + minutes);
+
+const formatPart = (degrees: number, minutes: number, positive: string, negative: string) =>
+  `${Math.abs(degrees)}°${String(minutes).padStart(2, '0')}′${isNegative(degrees) ? negative : positive}`;
+
+/** [-1, 30, 71, 30] → "1°30′S 71°30′O". */
 export const formatCoordinates = ([latG, latM, lonG, lonM]: [number, number, number, number]) =>
-  `${latG}°${String(latM).padStart(2, '0')}′N ${lonG}°${String(lonM).padStart(2, '0')}′O`;
+  `${formatPart(latG, latM, 'N', 'S')} ${formatPart(lonG, lonM, 'O', 'E')}`;
