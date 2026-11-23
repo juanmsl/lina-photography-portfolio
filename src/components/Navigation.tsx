@@ -143,7 +143,7 @@ export const Navigation = ({ className }: NavigationProps) => {
             </Button>
           </div>
 
-          <ul className='m-0 mt-32 grid list-none gap-1 p-0'>
+          <ul className='m-0 mt-32 grid list-none gap-10 p-0'>
             {links.map(e => (
               <li key={e.a}>
                 <Link
