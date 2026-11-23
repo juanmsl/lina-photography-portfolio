@@ -79,6 +79,8 @@ export const Photo = ({
   const info = photos[id];
   const [revealed, setRevealed] = useState(false);
   const reveals = cyanotype === 'reveal';
+  // Follows the cyanotype switch (src/cyanotype.ts): every photo of her work, not her own portrait.
+  const followsMode = !cyanotype && size !== 'page';
   const { ref, inView } = useInView({ rootMargin: '400px' });
   const [version, setVersion] = useState<PhotoSize>();
   const [failedSrc, setFailedSrc] = useState<string>();
@@ -127,15 +129,18 @@ export const Photo = ({
               cyanotype && 'contrast-[1.15] brightness-[1.05]',
               reveals && 'group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100',
               reveals && revealed && 'grayscale-0 contrast-100 brightness-100',
+              followsMode &&
+                'cyano:grayscale cyano:contrast-[1.15] cyano:brightness-[1.05] cyano:group-hover/photo:grayscale-0 cyano:group-hover/photo:contrast-100 cyano:group-hover/photo:brightness-100',
             )}
           />
         )
       )}
-      {cyanotype && (
+      {(cyanotype || followsMode) && (
         <span
           aria-hidden
           className={cn(
             'pointer-events-none absolute inset-0 bg-prussian mix-blend-color transition-opacity duration-700 ease-out motion-reduce:transition-none',
+            followsMode && 'opacity-0 cyano:opacity-100 cyano:group-hover/photo:opacity-0',
             reveals && 'group-hover:opacity-0',
             reveals && revealed && 'opacity-0',
           )}
@@ -154,7 +159,7 @@ export const Photo = ({
         ref={ref as RefObject<HTMLButtonElement>}
         onContextMenu={preventSave}
         className={cn(
-          'group relative block cursor-pointer overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]',
+          'group group/photo relative block cursor-pointer overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]',
           className,
         )}
       >
@@ -167,7 +172,10 @@ export const Photo = ({
     <figure
       ref={ref as RefObject<HTMLElement>}
       onContextMenu={preventSave}
-      className={cn('relative m-0 overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]', className)}
+      className={cn(
+        'group/photo relative m-0 overflow-hidden bg-charcoal select-none [-webkit-touch-callout:none]',
+        className,
+      )}
     >
       {content}
     </figure>

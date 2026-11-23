@@ -13,6 +13,9 @@
           document.documentElement.dataset.theme = 'light';
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#F2EFEA');
         }
+        if (localStorage.getItem('lina-cyanotype') === 'on') {
+          document.documentElement.dataset.cyanotype = 'on';
+        }
       } catch (e) {}
     </script>
 
