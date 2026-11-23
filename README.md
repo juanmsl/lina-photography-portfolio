@@ -70,14 +70,17 @@ The photos are served from Cloudinary, never as originals:
     sharp for its box on that screen (box size, the crop of `object-cover` and the pixel density; `sizeFor` in
     `src/photoLoader.ts`) and moves up if the box grows. Meanwhile it shows `lina_tiny` blurred, which arrives
     first, and fades to the sharp one. A real `<picture>`/`srcset` is not used because the browser would request
-    the Cloudinary URLs directly, and they would show again in the inspector instead of the `blob:` URL. The
-    watermark tile is 16 % of the photo's width, so the marks stay recognizable on photos shown small.
-  - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`, tile 10 % of the
-    width.
+    the Cloudinary URLs directly, and they would show again in the inspector instead of the `blob:` URL.
+  - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`.
 
-  The watermark (`lina/watermark`: the LN monogram with the name, in white; `scripts/cloudinary/watermark.svg`) is
-  repeated as a grid over the whole photo (`fl_tiled`), rotated -30° and at 40 % opacity. The tile size is relative
-  to the photo (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
+  The watermark (`lina/watermark`): the LN monogram with the name, in white (`public/watermark.svg`), repeated as a
+  grid over the whole photo (`fl_tiled`). Its settings are in `scripts/cloudinary/watermark.mjs` (`WATERMARK`):
+  the mark is **40 px wide**, rotated **-30°**, with **200 px** of empty space between neighboring marks, at **5 %**
+  opacity. Those pixels are exact inside every delivered image, whatever its size (on screen they scale with the
+  photo). The 40 px is the drawing's own width (the SVG has a wide empty margin, which is left out), and the 200 px
+  is measured between the edges of the rotated drawings. `pnpm cloudinary:setup` builds the tile from those
+  settings (`scripts/cloudinary/watermark.svg`, generated: the rotated mark plus the gap as transparent margin) and
+  uploads it; after changing them, run `pnpm cloudinary:setup --force`.
 - **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
   and exposes them as `virtual:lina-photos`. The secret never reaches the browser, and editing an URL (bigger
   size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the

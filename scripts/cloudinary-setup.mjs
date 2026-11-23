@@ -7,8 +7,9 @@
  *
  * Reads CLOUDINARY_URL (cloudinary://<api_key>:<api_secret>@<cloud_name>) from
  * .env.local. It never prints the secret. It:
- *   1. Uploads the watermark tile (scripts/cloudinary/watermark.svg) as
- *      lina/watermark, if it is missing (or with --force).
+ *   1. Builds the watermark tile (scripts/cloudinary/watermark.svg) from the
+ *      WATERMARK settings in scripts/cloudinary/watermark.mjs and uploads it
+ *      as lina/watermark, if it is missing (or with --force).
  *   2. Creates or updates the named transformations (scripts/cloudinary/config.mjs),
  *      allowed under "Strict transformations".
  *   3. Uploads every new photo in public/photos/ as an *authenticated* asset
@@ -26,6 +27,7 @@ import { basename, extname, join } from 'node:path';
 import { v2 as cloudinary } from 'cloudinary';
 
 import { TRANSFORMATIONS, WATERMARK_ID, photoPublicId } from './cloudinary/config.mjs';
+import { buildWatermarkTile } from './cloudinary/watermark.mjs';
 
 if (!process.env.CLOUDINARY_URL) {
   console.error('Missing CLOUDINARY_URL. Add it to .env.local (see README → Photos on Cloudinary).');
@@ -53,7 +55,10 @@ const exists = async (publicId, type) => {
 };
 
 if (force || !(await exists(WATERMARK_ID, 'upload'))) {
-  await cloudinary.uploader.upload('scripts/cloudinary/watermark.svg', {
+  const tile = await buildWatermarkTile();
+
+  console.log(`✓ Watermark tile built: ${tile.width} × ${tile.height} px`);
+  await cloudinary.uploader.upload(tile.file, {
     public_id: WATERMARK_ID,
     asset_folder: 'lina',
     type: 'upload',
