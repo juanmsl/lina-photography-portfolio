@@ -99,7 +99,7 @@ export const PortfolioPage = () => (
       return (
         <Fragment key={c.id}>
           <div className='px-5 pt-30 pb-6 md:px-10 md:pt-50 md:pb-10'>
-            <DualTitle title={c.name} />
+            <DualTitle title={c.title} voice={c.voice} />
           </div>
           {inCategory.map(p => (
             <ProjectBlock key={p.slug} p={p} />

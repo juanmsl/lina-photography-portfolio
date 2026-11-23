@@ -36,7 +36,7 @@ export const ProjectPage = () => {
             className='inline-flex items-center gap-2.5 t-label font-medium text-ash hover:text-bone'
           >
             <LuArrowLeft size={18} aria-hidden />
-            Portafolio · {c.name}
+            Portafolio · {c.title} {c.voice}
           </Link>
         </div>
         <DualTitle

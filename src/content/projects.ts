@@ -16,8 +16,10 @@ export type Fact = { label: string; value: string };
 
 export type Category = {
   id: 'landscape' | 'architecture' | 'people' | 'fashion' | 'product' | 'personal';
-  /** Name shown in the divider and the breadcrumb: the same as the folder of the original photos. */
-  name: string;
+  /** First word of the divider, in Bricolage. */
+  title: string;
+  /** Second voice of the divider, in Instrument Serif. Named like the folders of the original photos. */
+  voice: string;
 };
 
 export type Project = {
@@ -46,12 +48,12 @@ export type Project = {
 };
 
 export const categories: Array<Category> = [
-  { id: 'landscape', name: 'Paisaje' },
-  { id: 'architecture', name: 'Arquitectura' },
-  { id: 'people', name: 'Personas' },
-  { id: 'fashion', name: 'Moda' },
-  { id: 'product', name: 'Producto' },
-  { id: 'personal', name: 'Personal' },
+  { id: 'landscape', title: 'Fotografía', voice: 'de paisaje' },
+  { id: 'architecture', title: 'Fotografía', voice: 'de arquitectura' },
+  { id: 'people', title: 'Fotografía', voice: 'de personas' },
+  { id: 'fashion', title: 'Fotografía', voice: 'de moda' },
+  { id: 'product', title: 'Fotografía', voice: 'de producto' },
+  { id: 'personal', title: 'Fotografía', voice: 'personal' },
 ];
 
 export const projects: Array<Project> = [
