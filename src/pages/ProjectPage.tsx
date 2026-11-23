@@ -59,6 +59,7 @@ export const ProjectPage = () => {
           id={p.cover}
           size='thumb'
           priority
+          position={p.coverPosition}
           cyanotype={p.cyanotype ? 'fixed' : undefined}
           className='aspect-[4/3] w-full md:aspect-[1440/820]'
         />
@@ -111,7 +112,7 @@ export const ProjectPage = () => {
             <span className='serif-voice -mt-1 t-serif'>siguiente proyecto</span>
           </span>
           <span className='flex items-center gap-8'>
-            <Photo id={next.cover} className='aspect-[440/280] w-full max-w-[27.5rem]' />
+            <Photo id={next.cover} position={next.coverPosition} className='aspect-[440/280] w-full max-w-[27.5rem]' />
             <span className='hidden size-18 shrink-0 place-content-center rounded-full border border-graphite transition-colors group-hover:border-bone md:grid'>
               <LuArrowRight size={26} aria-hidden />
             </span>

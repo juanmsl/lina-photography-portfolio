@@ -1,25 +1,41 @@
 /**
- * Photo catalog.
+ * Photo catalog: Lina's photographs.
  *
- * All of them except `lina` are PROVISIONAL: reference images from the mockups
- * ("Fotos provisionales" page in the Figma file). Replace them with Lina's real
- * photographs before publishing by placing the file at `public/photos/<file>`
- * and running `pnpm cloudinary:setup` (README → Photos on Cloudinary).
- * If a file is missing, the `Photo` component shows a dark placeholder with the
- * description.
+ * Each file lives in `public/photos/<file>` (not committed to git: only the
+ * reduced copies, ready to upload) and is uploaded with
+ * `pnpm cloudinary:setup` (README → Photos on Cloudinary). If a file is
+ * missing, the `Photo` component shows a dark placeholder with the description.
  */
 export type PhotoId =
   | 'lina'
-  | 'paramo'
-  | 'cocora'
-  | 'clouds'
-  | 'forest'
-  | 'brick'
-  | 'stairs'
-  | 'portrait'
-  | 'fashion'
-  | 'product'
-  | 'camera';
+  | 'riverHouses'
+  | 'riverCanoe'
+  | 'riverSunset'
+  | 'goldenSky'
+  | 'crescentMoon'
+  | 'barCounter'
+  | 'barDining'
+  | 'lakeHouses'
+  | 'restaurantBar'
+  | 'restaurantHall'
+  | 'caneCorridor'
+  | 'coupleHands'
+  | 'coupleGuitar'
+  | 'coupleHug'
+  | 'coupleEmbrace'
+  | 'leafPortrait'
+  | 'monochromePortrait'
+  | 'handPortrait'
+  | 'whiteShirt'
+  | 'beer'
+  | 'perfume'
+  | 'iceCream'
+  | 'necklace'
+  | 'glassRoses'
+  | 'yellowFlower'
+  | 'rainFlower'
+  | 'dryLeaf'
+  | 'leafDrops';
 
 export type PhotoInfo = {
   file: string;
@@ -42,83 +58,175 @@ export const photos: Record<PhotoId, PhotoInfo> = {
     title: 'Lina Nieto',
     provisional: false,
   },
-  paramo: {
-    file: 'paramo.jpg',
-    description: 'Páramo con frailejones al amanecer',
-    title: 'Páramo de Chingaza',
-    region: 'Cundinamarca, Colombia',
-    coordinates: [4, 31, 73, 45],
-    altitude: '3.200 m',
-    provisional: true,
+  riverHouses: {
+    file: 'river-houses.jpg',
+    description: 'Casas de madera sobre un río ancho, con plantas flotantes y el cielo nublado',
+    title: 'Casas sobre el agua',
+    provisional: false,
   },
-  cocora: {
-    file: 'cocora.jpg',
-    description: 'Valle con palmas de cera entre la niebla',
-    title: 'Valle del Cocora',
-    region: 'Quindío, Colombia',
-    coordinates: [4, 38, 75, 29],
-    altitude: '2.400 m',
-    provisional: true,
+  riverCanoe: {
+    file: 'river-canoe.jpg',
+    description: 'Dos personas en una canoa sobre un río ancho, con la selva al fondo bajo un cielo con nubes',
+    title: 'Canoa',
+    provisional: false,
   },
-  clouds: {
-    file: 'clouds.jpg',
-    description: 'Mar de nubes sobre la cordillera',
-    title: 'Mar de nubes',
-    region: 'Cordillera Oriental, Colombia',
-    coordinates: [4, 33, 73, 47],
-    provisional: true,
+  riverSunset: {
+    file: 'river-sunset.jpg',
+    description: 'El sol se oculta detrás de la selva y se refleja dorado en el agua del río',
+    title: 'Atardecer en el río',
+    provisional: false,
   },
-  forest: {
-    file: 'forest.jpg',
-    description: 'Bosque de niebla con musgo en los troncos',
-    title: 'Bosque de niebla',
-    region: 'Cundinamarca, Colombia',
-    coordinates: [4, 32, 73, 44],
-    provisional: true,
+  goldenSky: {
+    file: 'golden-sky.jpg',
+    description: 'Cielo dorado con nubes oscuras sobre la línea de árboles y el río al atardecer',
+    title: 'Cielo dorado',
+    provisional: false,
   },
-  brick: {
-    file: 'brick.jpg',
-    description: 'Edificio de ladrillo con luz de media tarde',
-    title: 'Muro de ladrillo',
-    region: 'La Candelaria, Bogotá',
-    coordinates: [4, 35, 74, 4],
-    provisional: true,
+  crescentMoon: {
+    file: 'crescent-moon.jpg',
+    description: 'Luna creciente en el cielo del anochecer, sobre la silueta de un árbol y una casa',
+    title: 'Luna creciente',
+    provisional: false,
   },
-  stairs: {
-    file: 'stairs.jpg',
-    description: 'Escalera de concreto con sombras marcadas',
-    title: 'Escalera',
-    region: 'La Candelaria, Bogotá',
-    coordinates: [4, 35, 74, 4],
-    provisional: true,
+  barCounter: {
+    file: 'bar-counter.jpg',
+    description: 'Barra de un bar con banquetas de madera, estanterías de botellas iluminadas y avisos de neón',
+    title: 'Barra',
+    provisional: false,
   },
-  portrait: {
-    file: 'portrait.jpg',
-    description: 'Retrato con luz natural entre plantas',
-    title: 'Invernadero',
-    region: 'Bogotá, Colombia',
-    provisional: true,
+  barDining: {
+    file: 'bar-dining.jpg',
+    description: 'Mesas junto a la ventana bajo lámparas de bombillos, en un bar de madera oscura con piso de baldosa',
+    title: 'Junto a la ventana',
+    provisional: false,
   },
-  fashion: {
-    file: 'fashion.jpg',
-    description: 'Prenda en movimiento en exteriores',
-    title: 'Campaña textil',
-    region: 'Bogotá, Colombia',
-    provisional: true,
+  lakeHouses: {
+    file: 'lake-houses.jpg',
+    description: 'Casas blancas con techo de teja entre los árboles, con un lago y montañas al fondo',
+    title: 'Casas frente al lago',
+    provisional: false,
   },
-  product: {
-    file: 'product.jpg',
-    description: 'Producto sobre fondo limpio con luz suave',
-    title: 'Bodegón',
-    region: 'Estudio, Chapinero',
-    provisional: true,
+  restaurantBar: {
+    file: 'restaurant-bar.jpg',
+    description: 'Restaurante con pared verde, barra de madera con botellas, mesas puestas y luces colgantes',
+    title: 'Restaurante',
+    provisional: false,
   },
-  camera: {
-    file: 'camera.jpg',
-    description: 'Cámara analógica sobre una mesa',
-    title: 'Cámara',
-    region: 'Estudio, Chapinero',
-    provisional: true,
+  restaurantHall: {
+    file: 'restaurant-hall.jpg',
+    description: 'Salón de restaurante con sillas oscuras, ventanales y un mural de pizarra con los cortes de la res',
+    title: 'Salón',
+    provisional: false,
+  },
+  caneCorridor: {
+    file: 'cane-corridor.jpg',
+    description: 'Pasillo con muros de guadua y puertas de madera que se repiten hasta una salida llena de luz',
+    title: 'Pasillo de guadua',
+    provisional: false,
+  },
+  coupleHands: {
+    file: 'couple-hands.jpg',
+    description: 'Manos de una pareja entrelazadas sobre fondo oscuro; ella lleva un anillo de compromiso',
+    title: 'Anillo',
+    provisional: false,
+  },
+  coupleGuitar: {
+    file: 'couple-guitar.jpg',
+    description: 'Manos de una pareja con sus anillos sobre el mástil de una guitarra',
+    title: 'Guitarra',
+    provisional: false,
+  },
+  coupleHug: {
+    file: 'couple-hug.jpg',
+    description: 'Pareja abrazándose y sonriendo en un balcón de madera decorado con velas y enredaderas',
+    title: 'Abrazo',
+    provisional: false,
+  },
+  coupleEmbrace: {
+    file: 'couple-embrace.jpg',
+    description: 'Pareja abrazada con los ojos cerrados; ella apoya la mano en el pecho de él',
+    title: 'Juntos',
+    provisional: false,
+  },
+  leafPortrait: {
+    file: 'leaf-portrait.jpg',
+    description:
+      'Mujer de labios rojos con el brazo tatuado sosteniendo una hoja verde sobre su cabeza, en fondo negro',
+    title: 'Bajo la hoja',
+    provisional: false,
+  },
+  monochromePortrait: {
+    file: 'monochrome-portrait.jpg',
+    description:
+      'Retrato en blanco y negro de un hombre sin camisa, con los ojos cerrados y los brazos cruzados alrededor de la cabeza',
+    title: 'Blanco y negro',
+    provisional: false,
+  },
+  handPortrait: {
+    file: 'hand-portrait.jpg',
+    description: 'Hombre con barba que se cubre parte del rostro con la mano y mira entre los dedos',
+    title: 'Entre los dedos',
+    provisional: false,
+  },
+  whiteShirt: {
+    file: 'white-shirt.jpg',
+    description: 'Mujer de cabello largo con camisa blanca, la mano en el mentón y la mirada hacia arriba',
+    title: 'Camisa blanca',
+    provisional: false,
+  },
+  beer: {
+    file: 'beer.jpg',
+    description: 'Botella, vaso y lata de cerveza rubia de miel suspendidos sobre un fondo amarillo y blanco',
+    title: 'Cerveza de miel',
+    provisional: false,
+  },
+  perfume: {
+    file: 'perfume.jpg',
+    description: 'Frasco de perfume azul sobre un fondo turquesa cubierto de gotas de agua',
+    title: 'Perfume',
+    provisional: false,
+  },
+  iceCream: {
+    file: 'ice-cream.jpg',
+    description: 'Bola de helado en un vaso de cristal tallado, con flores rosadas sobre una base de mármol',
+    title: 'Helado',
+    provisional: false,
+  },
+  necklace: {
+    file: 'necklace.jpg',
+    description: 'Collar dorado con un dije azul sobre una superficie clara, con margaritas y luz de ventana',
+    title: 'Collar',
+    provisional: false,
+  },
+  glassRoses: {
+    file: 'glass-roses.jpg',
+    description: 'Vasos de vidrio con agua y rosas rosadas sumergidas, sobre un fondo blanco',
+    title: 'Rosas en el agua',
+    provisional: false,
+  },
+  yellowFlower: {
+    file: 'yellow-flower.jpg',
+    description: 'Flor amarilla en espiga sobre un fondo verde oscuro',
+    title: 'Flor amarilla',
+    provisional: false,
+  },
+  rainFlower: {
+    file: 'rain-flower.jpg',
+    description: 'Flor morada que cuelga con gotas de lluvia en los pétalos',
+    title: 'Después de la lluvia',
+    provisional: false,
+  },
+  dryLeaf: {
+    file: 'dry-leaf.jpg',
+    description: 'Hoja seca que cuelga de una rama delgada',
+    title: 'Hoja seca',
+    provisional: false,
+  },
+  leafDrops: {
+    file: 'leaf-drops.jpg',
+    description: 'Hoja café cubierta de gotas de agua, vista muy de cerca',
+    title: 'Gotas',
+    provisional: false,
   },
 };
 

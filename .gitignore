@@ -28,3 +28,7 @@ dist-ssr
 
 # Vercel (local link and build cache)
 .vercel
+
+# Web copies of the photos: they are served from Cloudinary (README → Photos on Cloudinary)
+public/photos/*
+!public/photos/lina.jpg

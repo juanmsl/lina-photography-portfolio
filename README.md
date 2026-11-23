@@ -100,13 +100,26 @@ The photos are served from Cloudinary, never as originals:
    transformations can be delivered.
 6. Redeploy on Vercel so the build signs the new URLs.
 
+### Adding photos
+
+1. Keep the originals outside the repository. Export a web copy of each photo: JPEG, at most 3000 px on the long
+   side and under 10 MB (Cloudinary's limit on the free plan), with a descriptive kebab-case name
+   (`river-sunset.jpg`), into `public/photos/`.
+2. Register it in `src/content/photos.ts` (id, file, title and a specific alt text in Spanish) and place it in a
+   project in `src/content/projects.ts` (cover and gallery rows; row widths follow each photo's proportions).
+3. Run `pnpm cloudinary:setup` and redeploy.
+
+`public/photos/` is ignored by git (except `lina.jpg`): with Cloudinary the site never reads those files, and
+committing them would publish the unwatermarked copies with the repository. The deployed site therefore needs
+`CLOUDINARY_URL` in Vercel; without it the photos show as placeholders.
+
 ## Search engines and link previews
 
 - `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
   route. It is the single source: `PageMeta` applies it while navigating, and the build writes it into the HTML.
   Photo URLs come from a resolver (`PhotoUrl`), so with Cloudinary they are the signed URLs.
 - `build/seo-plugin.ts` (Vite plugin): writes one HTML file per indexable route (`servicios.html`,
-  `proyectos/cordillera.html`…) with its own head, plus `404.html` (`noindex`) and `sitemap.xml`. Every page then
+  `proyectos/rio.html`…) with its own head, plus `404.html` (`noindex`) and `sitemap.xml`. Every page then
   answers 200 with the right tags, even for crawlers and link previews that do not run JavaScript.
 - Not indexed (`noindex, follow`, out of the sitemap): example projects (`isExample`), enlarged photos, "Solicitud
   enviada" and the 404 page.
@@ -198,11 +211,8 @@ PlateFrame, the cyanotype → color reveal and the row Gallery. Everything else 
 
 ## Pending before launch
 
-- **Photos**: only `public/photos/lina.jpg` is real. The rest are listed in `src/content/photos.ts` and expected in
-  `public/photos/` (`paramo.jpg`, `cocora.jpg`, `clouds.jpg`, `forest.jpg`, `brick.jpg`, `stairs.jpg`,
-  `portrait.jpg`, `fashion.jpg`, `product.jpg`, `camera.jpg`). While they are missing, a dark placeholder with the
-  description is shown. Ideally, use Lina's real photographs; after adding them, run `pnpm cloudinary:setup` (see
-  Photos on Cloudinary).
-- **Contact**: WhatsApp, email and Instagram in `src/content/contact.ts` come from the mockup.
+- **Project details**: the six projects (`src/content/projects.ts`) only describe what the photos show. Lina still
+  has to confirm or add the place, client and year of each one (for example, where the river series was taken and
+  which restaurants appear in Interiores), and optionally the region and coordinates of each photo
+  (`src/content/photos.ts`), which the enlarged view shows.
 - **Form**: the quote page simulates the submission; it still needs a service that receives the requests.
-- Invernadero, Campaña textil and Bodegón are example projects.
