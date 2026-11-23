@@ -39,6 +39,8 @@ export type PhotoId =
 
 export type PhotoInfo = {
   file: string;
+  /** Width and height of the file, so the enlarged view shows the whole photo without waiting for it to load. */
+  dimensions: [number, number];
   /** Alt text. */
   description: string;
   /** Short name for the enlarged-photo caption. */
@@ -54,102 +56,119 @@ export type PhotoInfo = {
 export const photos: Record<PhotoId, PhotoInfo> = {
   lina: {
     file: 'lina.jpg',
+    dimensions: [863, 863],
     description: 'Retrato de Lina Nieto con gafas y cabello rizado',
     title: 'Lina Nieto',
     provisional: false,
   },
   riverHouses: {
     file: 'river-houses.jpg',
+    dimensions: [2000, 3000],
     description: 'Casas de madera sobre un río ancho, con plantas flotantes y el cielo nublado',
     title: 'Casas sobre el agua',
     provisional: false,
   },
   riverCanoe: {
     file: 'river-canoe.jpg',
+    dimensions: [2000, 3000],
     description: 'Dos personas en una canoa sobre un río ancho, con la selva al fondo bajo un cielo con nubes',
     title: 'Canoa',
     provisional: false,
   },
   riverSunset: {
     file: 'river-sunset.jpg',
+    dimensions: [3000, 2000],
     description: 'El sol se oculta detrás de la selva y se refleja dorado en el agua del río',
     title: 'Atardecer en el río',
     provisional: false,
   },
   goldenSky: {
     file: 'golden-sky.jpg',
+    dimensions: [2000, 3000],
     description: 'Cielo dorado con nubes oscuras sobre la línea de árboles y el río al atardecer',
     title: 'Cielo dorado',
     provisional: false,
   },
   crescentMoon: {
     file: 'crescent-moon.jpg',
+    dimensions: [2000, 3000],
     description: 'Luna creciente en el cielo del anochecer, sobre la silueta de un árbol y una casa',
     title: 'Luna creciente',
     provisional: false,
   },
   barCounter: {
     file: 'bar-counter.jpg',
+    dimensions: [3000, 1916],
     description: 'Barra de un bar con banquetas de madera, estanterías de botellas iluminadas y avisos de neón',
     title: 'Barra',
     provisional: false,
   },
   barDining: {
     file: 'bar-dining.jpg',
+    dimensions: [2000, 3000],
     description: 'Mesas junto a la ventana bajo lámparas de bombillos, en un bar de madera oscura con piso de baldosa',
     title: 'Junto a la ventana',
     provisional: false,
   },
   lakeHouses: {
     file: 'lake-houses.jpg',
+    dimensions: [3000, 2000],
     description: 'Casas blancas con techo de teja entre los árboles, con un lago y montañas al fondo',
     title: 'Casas frente al lago',
     provisional: false,
   },
   restaurantBar: {
     file: 'restaurant-bar.jpg',
+    dimensions: [3000, 2000],
     description: 'Restaurante con pared verde, barra de madera con botellas, mesas puestas y luces colgantes',
     title: 'Restaurante',
     provisional: false,
   },
   restaurantHall: {
     file: 'restaurant-hall.jpg',
+    dimensions: [3000, 1990],
     description: 'Salón de restaurante con sillas oscuras, ventanales y un mural de pizarra con los cortes de la res',
     title: 'Salón',
     provisional: false,
   },
   caneCorridor: {
     file: 'cane-corridor.jpg',
+    dimensions: [2000, 3000],
     description: 'Pasillo con muros de guadua y puertas de madera que se repiten hasta una salida llena de luz',
     title: 'Pasillo de guadua',
     provisional: false,
   },
   coupleHands: {
     file: 'couple-hands.jpg',
+    dimensions: [2000, 3000],
     description: 'Manos de una pareja entrelazadas sobre fondo oscuro; ella lleva un anillo de compromiso',
     title: 'Anillo',
     provisional: false,
   },
   coupleGuitar: {
     file: 'couple-guitar.jpg',
+    dimensions: [2000, 3000],
     description: 'Manos de una pareja con sus anillos sobre el mástil de una guitarra',
     title: 'Guitarra',
     provisional: false,
   },
   coupleHug: {
     file: 'couple-hug.jpg',
+    dimensions: [3000, 2000],
     description: 'Pareja abrazándose y sonriendo en un balcón de madera decorado con velas y enredaderas',
     title: 'Abrazo',
     provisional: false,
   },
   coupleEmbrace: {
     file: 'couple-embrace.jpg',
+    dimensions: [2000, 3000],
     description: 'Pareja abrazada con los ojos cerrados; ella apoya la mano en el pecho de él',
     title: 'Juntos',
     provisional: false,
   },
   leafPortrait: {
     file: 'leaf-portrait.jpg',
+    dimensions: [1638, 2048],
     description:
       'Mujer de labios rojos con el brazo tatuado sosteniendo una hoja verde sobre su cabeza, en fondo negro',
     title: 'Bajo la hoja',
@@ -157,6 +176,7 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   },
   monochromePortrait: {
     file: 'monochrome-portrait.jpg',
+    dimensions: [1638, 2048],
     description:
       'Retrato en blanco y negro de un hombre sin camisa, con los ojos cerrados y los brazos cruzados alrededor de la cabeza',
     title: 'Blanco y negro',
@@ -164,66 +184,77 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   },
   handPortrait: {
     file: 'hand-portrait.jpg',
+    dimensions: [2000, 3000],
     description: 'Hombre con barba que se cubre parte del rostro con la mano y mira entre los dedos',
     title: 'Entre los dedos',
     provisional: false,
   },
   whiteShirt: {
     file: 'white-shirt.jpg',
+    dimensions: [2000, 3000],
     description: 'Mujer de cabello largo con camisa blanca, la mano en el mentón y la mirada hacia arriba',
     title: 'Camisa blanca',
     provisional: false,
   },
   beer: {
     file: 'beer.jpg',
+    dimensions: [1638, 2048],
     description: 'Botella, vaso y lata de cerveza rubia de miel suspendidos sobre un fondo amarillo y blanco',
     title: 'Cerveza de miel',
     provisional: false,
   },
   perfume: {
     file: 'perfume.jpg',
+    dimensions: [1638, 2048],
     description: 'Frasco de perfume azul sobre un fondo turquesa cubierto de gotas de agua',
     title: 'Perfume',
     provisional: false,
   },
   iceCream: {
     file: 'ice-cream.jpg',
+    dimensions: [2000, 3000],
     description: 'Bola de helado en un vaso de cristal tallado, con flores rosadas sobre una base de mármol',
     title: 'Helado',
     provisional: false,
   },
   necklace: {
     file: 'necklace.jpg',
+    dimensions: [2000, 3000],
     description: 'Collar dorado con un dije azul sobre una superficie clara, con margaritas y luz de ventana',
     title: 'Collar',
     provisional: false,
   },
   glassRoses: {
     file: 'glass-roses.jpg',
+    dimensions: [2048, 1638],
     description: 'Vasos de vidrio con agua y rosas rosadas sumergidas, sobre un fondo blanco',
     title: 'Rosas en el agua',
     provisional: false,
   },
   yellowFlower: {
     file: 'yellow-flower.jpg',
+    dimensions: [2000, 3000],
     description: 'Flor amarilla en espiga sobre un fondo verde oscuro',
     title: 'Flor amarilla',
     provisional: false,
   },
   rainFlower: {
     file: 'rain-flower.jpg',
+    dimensions: [3000, 2000],
     description: 'Flor morada que cuelga con gotas de lluvia en los pétalos',
     title: 'Después de la lluvia',
     provisional: false,
   },
   dryLeaf: {
     file: 'dry-leaf.jpg',
+    dimensions: [2000, 3000],
     description: 'Hoja seca que cuelga de una rama delgada',
     title: 'Hoja seca',
     provisional: false,
   },
   leafDrops: {
     file: 'leaf-drops.jpg',
+    dimensions: [1080, 1620],
     description: 'Hoja café cubierta de gotas de agua, vista muy de cerca',
     title: 'Gotas',
     provisional: false,

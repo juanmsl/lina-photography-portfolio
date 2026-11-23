@@ -92,17 +92,30 @@ export const PhotoViewerPage = () => {
           <LuChevronLeft size={22} aria-hidden />
         </CircleButton>
 
-        <PlateFrame coordinates={info.coordinates} className='mx-auto w-full max-w-[73.5rem]'>
-          <div className='relative'>
-            <Photo id={id} size='view' priority className='aspect-[4/5] w-full sm:aspect-[1120/700]' />
-            {locationLabel && (
-              <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-10 md:left-15'>
-                <LuMapPin size={16} aria-hidden />
-                <span className='font-code tracking-[0.02em]'>{locationLabel}</span>
-              </span>
-            )}
-          </div>
-        </PlateFrame>
+        {/*
+         * The frame takes the photo's own proportions, so it is shown whole (never
+         * cropped), as big as the screen allows: as wide as the column and no taller
+         * than --max-h (the viewport minus the top bar and the caption).
+         */}
+        <div
+          className='mx-auto flex min-w-0 flex-1 justify-center [--max-h:max(16rem,calc(100dvh-18rem))] [--pad:0.75rem] md:[--max-h:max(20rem,calc(100dvh-19rem))] md:[--pad:1.75rem]'
+          style={{ '--photo-ratio': info.dimensions[0] / info.dimensions[1] } as React.CSSProperties}
+        >
+          <PlateFrame
+            coordinates={info.coordinates}
+            className='w-[min(100%,73.5rem,calc(var(--max-h)*var(--photo-ratio)+2*var(--pad)))]'
+          >
+            <div className='relative'>
+              <Photo id={id} size='view' priority className='aspect-[var(--photo-ratio)] w-full' />
+              {locationLabel && (
+                <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-10 md:left-15'>
+                  <LuMapPin size={16} aria-hidden />
+                  <span className='font-code tracking-[0.02em]'>{locationLabel}</span>
+                </span>
+              )}
+            </div>
+          </PlateFrame>
+        </div>
 
         <CircleButton label='Foto siguiente' onClick={() => goTo(current + 1)} className='hidden md:inline-flex'>
           <LuChevronRight size={22} aria-hidden />
