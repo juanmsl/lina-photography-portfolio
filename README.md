@@ -63,11 +63,10 @@ The photos are served from Cloudinary, never as originals:
 
 - **Originals** are uploaded as `authenticated` assets (`lina/photos/<name>`): they have no public URL.
 - **Only three versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
-  - `lina_page` (up to 1600 px, no watermark): photos that cannot be enlarged (hero portrait, cyanotype galleries,
-    services, "next project", "Solicitud enviada").
-  - `lina_thumb` (up to 1600 px, watermarked): photos that open the enlarged view (the galleries on the home page
-    and in each project, and each project's cover). They are shown small, so the watermark tile is 16 % of the
-    photo's width.
+  - `lina_page` (up to 1600 px, no watermark): only Lina's own portrait in the hero (`size='page'`).
+  - `lina_thumb` (up to 1600 px, watermarked): every photo of her work on the pages (galleries, covers, services,
+    quote tiles, "next project", "Solicitud enviada"); it is `Photo`'s default size. They are shown small, so the
+    watermark tile is 16 % of the photo's width.
   - `lina_view` (up to 2560 px, watermarked): the enlarged photo on `/proyectos/:slug/foto/:n`, tile 10 % of the
     width.
 
@@ -85,7 +84,7 @@ The photos are served from Cloudinary, never as originals:
   the `<img>` in the inspector does not point to Cloudinary (if the download fails it falls back to the direct
   URL). It also disables right click, dragging and the iOS long-press menu. All of this only discourages: the
   request is still visible in the network tab and anything shown on screen can be captured, which is why only
-  reduced versions are public and the ones that can be enlarged are watermarked.
+  reduced versions are public and every photo of her work is watermarked.
 
 ### Setup
 

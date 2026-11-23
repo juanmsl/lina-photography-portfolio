@@ -45,7 +45,7 @@ export const PortfolioPage = () => (
       className='relative -mt-[var(--header-h)] flex min-h-[48.75rem] flex-col pt-[var(--header-h)] md:min-h-[min(100dvh,58.75rem)]'
     >
       <div className='absolute inset-x-0 top-0 h-[38.75rem] md:inset-y-0 md:left-[40%] md:h-auto'>
-        <Photo id='lina' grayscale priority position='50% 30%' className='size-full' />
+        <Photo id='lina' size='page' grayscale priority position='50% 30%' className='size-full' />
         <div
           aria-hidden
           className='absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,var(--color-ink)_100%)] md:bg-[linear-gradient(to_right,var(--color-ink)_0%,transparent_38%),linear-gradient(to_bottom,color-mix(in_srgb,var(--color-ink)_55%,transparent)_0%,transparent_14%,transparent_70%,var(--color-ink)_100%)]'
