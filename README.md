@@ -104,7 +104,8 @@ The photos are served from Cloudinary, never as originals:
 1. Keep the originals outside the repository. Export a web copy of each photo: JPEG, at most 3000 px on the long
    side and under 10 MB (Cloudinary's limit on the free plan), with a descriptive kebab-case name
    (`river-sunset.jpg`), into `public/photos/`.
-2. Register it in `src/content/photos.ts` (id, file, title and a specific alt text in Spanish) and place it in a
+2. Register it in `src/content/photos.ts` (id, file, its width and height in `dimensions`, so the enlarged view
+   shows it whole, title and a specific alt text in Spanish) and place it in a
    project in `src/content/projects.ts` (cover and gallery rows; row widths follow each photo's proportions).
 3. Run `pnpm cloudinary:setup` and redeploy.
 
