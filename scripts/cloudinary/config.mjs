@@ -40,7 +40,7 @@ export const TRANSFORMATIONS = {
   /** Up to 2400 px. */
   lina_large: `c_limit,w_2400,h_2400/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** The uploaded file at its own resolution (up to 3000 px), for the biggest boxes on dense screens. */
-  lina_full: `${tiledWatermark(0.16)}/q_auto:good/f_auto`,
+  lina_full: `${tiledWatermark(0.05)}/q_auto:good/f_auto`,
   /** Enlarged photo (/proyectos/:slug/foto/:n): up to 2560 px with the watermark (tile 10 % of the width). */
   lina_view: `c_limit,w_2560,h_2560/${tiledWatermark(0.05)}/q_auto:good/f_auto`,
 };
