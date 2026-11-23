@@ -95,6 +95,7 @@ export const projects: Array<Project> = [
         ],
       },
     ],
+    blueToColor: 'riverSunset',
   },
   {
     slug: 'interiores',
@@ -298,6 +299,48 @@ export const projects: Array<Project> = [
         ],
       },
     ],
+  },
+  {
+    slug: 'cianotipias',
+    category: 'personal',
+    title: 'Cianotipias',
+    subtitle: 'del azul al color',
+    summary:
+      'Cada foto existe primero en azul de Prusia, como una cianotipia, y después en color. Pasa el cursor sobre una foto para revelarla.',
+    facts: [
+      { label: 'Técnica', value: 'Cianotipia digital' },
+      { label: 'Serie', value: 'Paisaje, arquitectura y retrato' },
+    ],
+    preview: [
+      {
+        height: 440,
+        photos: [
+          { id: 'riverCanoe', width: 328 },
+          { id: 'caneCorridor', width: 328 },
+          { id: 'coupleEmbrace', width: 328 },
+          { id: 'crescentMoon', width: 328 },
+        ],
+      },
+    ],
+    cover: 'lakeHouses',
+    gallery: [
+      {
+        height: 664,
+        photos: [
+          { id: 'riverHouses', width: 443 },
+          { id: 'caneCorridor', width: 443 },
+          { id: 'coupleEmbrace', width: 442 },
+        ],
+      },
+      {
+        height: 448,
+        photos: [
+          { id: 'lakeHouses', width: 672 },
+          { id: 'restaurantHall', width: 672 },
+        ],
+      },
+    ],
+    cyanotype: true,
   },
 ];
 
