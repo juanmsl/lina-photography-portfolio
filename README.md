@@ -17,6 +17,7 @@ Requires Node 24 (`.nvmrc`) and pnpm 11.10.0 (`packageManager`; `corepack enable
 ```sh
 pnpm install
 pnpm dev       # dev server
+pnpm dev:lan   # dev server reachable from other devices on the same network (http://<your-ip>:5173)
 pnpm build     # type check + build to dist/
 pnpm lint      # ESLint (polpo-eslint-config)
 pnpm lint:fix  # ESLint with automatic fixes
