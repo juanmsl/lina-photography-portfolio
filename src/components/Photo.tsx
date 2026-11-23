@@ -19,8 +19,8 @@ type PhotoProps = {
   /** Hides the placeholder description when the file is missing (small boxes). */
   silentPlaceholder?: boolean;
   /**
-   * page: without watermark, for photos that cannot be enlarged (default).
-   * thumb: with the tiled watermark, for photos that link to the enlarged view.
+   * thumb: with the tiled watermark (default): every photo of Lina's work.
+   * page: without watermark, only for Lina's own portrait.
    * view: the enlarged photo, bigger and watermarked.
    */
   size?: 'page' | 'thumb' | 'view';
@@ -70,8 +70,8 @@ const useBlobSrc = (src: string, start: boolean) => {
 
 /**
  * Full-bleed photograph inside its box; the container decides the size.
- * With Cloudinary configured it loads a signed version (watermarked when the
- * photo can be enlarged or is the enlarged one; see build/photos-plugin.ts)
+ * With Cloudinary configured it loads a signed version (watermarked, except
+ * Lina's portrait; see build/photos-plugin.ts)
  * through a `blob:` URL, once the photo gets close to the viewport (right away
  * with `priority`). Right click, drag and the iOS long-press menu are disabled
  * as a light deterrent. If the file does not exist, it shows a dark placeholder
@@ -85,7 +85,7 @@ export const Photo = ({
   priority,
   position,
   silentPlaceholder,
-  size = 'page',
+  size = 'thumb',
 }: PhotoProps) => {
   const info = photos[id];
   const [failed, setFailed] = useState(false);

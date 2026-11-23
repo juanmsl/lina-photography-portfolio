@@ -21,12 +21,12 @@ const tiledWatermark = width =>
 
 /** The only versions of a photo that can be delivered (Settings → Security → Strict transformations). */
 export const TRANSFORMATIONS = {
-  /** Photos that cannot be enlarged (hero, services, cyanotypes…): up to 1600 px, without watermark. */
+  /** Lina's own portrait (hero): up to 1600 px, without watermark. */
   lina_page: 'c_limit,w_1600,h_1600/q_auto:good/f_auto',
   /**
-   * Photos that open the enlarged view (galleries and project covers): up to
-   * 1600 px with the watermark. They are shown small, so the tile is bigger
-   * (16 % of the width) for the marks to stay recognizable.
+   * Every photo of Lina's work on the pages (galleries, covers, services,
+   * quote…): up to 1600 px with the watermark. They are shown small, so the
+   * tile is bigger (16 % of the width) for the marks to stay recognizable.
    */
   lina_thumb: `c_limit,w_1600,h_1600/${tiledWatermark(0.16)}/q_auto:good/f_auto`,
   /** Enlarged photo (/proyectos/:slug/foto/:n): up to 2560 px with the watermark (tile 10 % of the width). */
