@@ -17,7 +17,7 @@ export const photoPublicId = name => `lina/photos/${name}`;
  * relative size on every photo. The mark is white, at 40 % opacity.
  */
 const tiledWatermark = width =>
-  `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,fl_relative,w_${width}/o_20/fl_layer_apply,fl_tiled`;
+  `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,fl_relative,w_${width}/o_05/fl_layer_apply,fl_tiled`;
 
 /** The only versions of a photo that can be delivered (Settings → Security → Strict transformations). */
 export const TRANSFORMATIONS = {
