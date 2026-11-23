@@ -3,21 +3,46 @@ import { photoUrls } from 'virtual:lina-photos';
 import { photos, type PhotoId } from './content/photos';
 
 /**
- * page: Lina's portrait, no watermark. small / thumb: watermarked, up to 900 /
- * 1600 px (`Photo` picks one from the box's width). view: the enlarged photo.
+ * page: Lina's portrait, no watermark. tiny, small, thumb, large, full: Lina's
+ * work with the watermark, from 480 px to the uploaded resolution (`Photo`
+ * picks one with `sizeFor`). view: the enlarged photo.
  */
-export type PhotoSize = 'page' | 'small' | 'thumb' | 'view';
+export type PhotoSize = 'page' | 'tiny' | 'small' | 'thumb' | 'large' | 'full' | 'view';
 
-/** Widest box, in device pixels, served with the `small` version. */
-const SMALL_MAX_WIDTH = 900;
+/** The watermarked sizes from sharpest to lightest, with the longest side each one can reach. */
+export const LADDER: Array<[PhotoSize, number]> = [
+  ['full', Infinity],
+  ['large', 2400],
+  ['thumb', 1600],
+  ['small', 900],
+  ['tiny', 480],
+];
 
 /** URL of a photo in a size: the signed Cloudinary URL, or the local file when Cloudinary is not configured. */
 export const photoSrc = (id: PhotoId, size: PhotoSize) =>
   photoUrls?.[id][size] ?? `${import.meta.env.BASE_URL}photos/${photos[id].file}`;
 
-/** The watermarked version that is sharp enough for a box this wide (CSS px) on this screen. */
-export const sizeForWidth = (cssWidth: number): 'small' | 'thumb' =>
-  cssWidth * (window.devicePixelRatio || 1) <= SMALL_MAX_WIDTH ? 'small' : 'thumb';
+/**
+ * The lightest watermarked size that is sharp in a box of this size (CSS px),
+ * like the browser does with srcset/sizes: the photo covers the box (cropped,
+ * object-cover), so it needs its longest side scaled by the larger of the two
+ * ratios, times the screen's pixel density (capped at 3).
+ */
+export const sizeFor = (id: PhotoId, boxWidth: number, boxHeight: number): PhotoSize => {
+  const [width, height] = photos[id].dimensions;
+  const density = Math.min(window.devicePixelRatio || 1, 3);
+  const needed = Math.max(width, height) * Math.max(boxWidth / width, boxHeight / height) * density;
+  const fitting = LADDER.filter(([size, max]) => size !== 'tiny' && needed <= max);
+
+  return fitting.at(-1)?.[0] ?? 'full';
+};
+
+/** Position of a size in the ladder (higher is sharper); -1 for page and view. */
+export const sharpness = (size: PhotoSize) => {
+  const index = LADDER.findIndex(([s]) => s === size);
+
+  return index < 0 ? -1 : LADDER.length - index;
+};
 
 const loaded = new Map<string, string>();
 const loading = new Map<string, Promise<string>>();

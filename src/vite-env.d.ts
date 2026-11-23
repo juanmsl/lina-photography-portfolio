@@ -4,5 +4,8 @@ declare module 'virtual:lina-photos' {
   import type { PhotoId } from './content/photos';
 
   /** Signed Cloudinary URL of every photo and size (build/photos-plugin.ts), or null without CLOUDINARY_URL. */
-  export const photoUrls: Record<PhotoId, Record<'page' | 'small' | 'thumb' | 'view', string>> | null;
+  export const photoUrls: Record<
+    PhotoId,
+    Record<'page' | 'tiny' | 'small' | 'thumb' | 'large' | 'full' | 'view', string>
+  > | null;
 }

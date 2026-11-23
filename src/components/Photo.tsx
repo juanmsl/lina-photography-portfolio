@@ -3,7 +3,7 @@ import { useInView } from 'polpo/hooks';
 import { useEffect, useState, type MouseEvent, type RefObject } from 'react';
 
 import { photos, type PhotoId } from '../content/photos';
-import { loadedPhoto, loadPhoto, photoSrc, sizeForWidth, type PhotoSize } from '../photoLoader';
+import { LADDER, loadedPhoto, loadPhoto, photoSrc, sharpness, sizeFor, type PhotoSize } from '../photoLoader';
 
 type PhotoProps = {
   id: PhotoId;
@@ -20,7 +20,7 @@ type PhotoProps = {
   silentPlaceholder?: boolean;
   /**
    * thumb: with the tiled watermark (default): every photo of Lina's work, in
-   * the 900 or 1600 px version depending on how wide the box is.
+   * the size that is sharp for its box on this screen (see `sizeFor`).
    * page: without watermark, only for Lina's own portrait.
    * view: the enlarged photo, bigger and watermarked.
    */
@@ -84,22 +84,56 @@ export const Photo = ({
   const { ref, inView } = useInView({ rootMargin: '400px' });
   const [version, setVersion] = useState<PhotoSize>();
   const [failedSrc, setFailedSrc] = useState<string>();
+  const watermarked = size !== 'page';
 
-  // Pick the version when the photo is about to be seen: for watermarked photos, by the box's width.
+  /*
+   * Pick the size once the photo is about to be seen. Lina's work takes the
+   * lightest size that is sharp for its box on this screen, like srcset; if
+   * the box grows (a wider window), it moves up to a sharper size, never down.
+   */
   useEffect(() => {
-    if (version || !(priority || inView)) return;
+    if (!(priority || inView)) return undefined;
 
-    const width = (ref as RefObject<HTMLElement>).current?.getBoundingClientRect().width ?? Infinity;
+    if (size !== 'thumb') {
+      setVersion(size);
 
-    setVersion(size === 'thumb' ? sizeForWidth(width) : size);
-  }, [version, priority, inView, ref, size]);
+      return undefined;
+    }
+
+    const box = (ref as RefObject<HTMLElement>).current;
+
+    if (!box) return undefined;
+
+    const update = () => {
+      const { width, height } = box.getBoundingClientRect();
+
+      if (!width || !height) return;
+
+      const next = sizeFor(id, width, height);
+
+      setVersion(current => (current && sharpness(current) >= sharpness(next) ? current : next));
+    };
+
+    update();
+
+    const observer = new ResizeObserver(update);
+
+    observer.observe(box);
+
+    return () => observer.disconnect();
+  }, [priority, inView, ref, size, id]);
 
   const src = version && photoSrc(id, version);
   const loaded = useLoadedPhoto(src);
-  // While the enlarged photo downloads, show the gallery version if it is already here.
-  const preview =
-    size === 'view' && !loaded ? (loadedPhoto(photoSrc(id, 'thumb')) ?? loadedPhoto(photoSrc(id, 'small'))) : undefined;
-  const shown = loaded ?? preview;
+  /*
+   * Until it arrives: the sharpest watermarked size of this photo already
+   * downloaded (from another page or the gallery), or else the tiny one, shown
+   * blurred, which loads at the same time and arrives first.
+   */
+  const fallback = watermarked && !loaded ? LADDER.map(([s]) => loadedPhoto(photoSrc(id, s))).find(Boolean) : undefined;
+  const tiny = useLoadedPhoto(watermarked && version && !loaded && !fallback ? photoSrc(id, 'tiny') : undefined);
+  const shown = loaded ?? fallback ?? tiny;
+  const blurred = shown !== undefined && !loaded && shown === loadedPhoto(photoSrc(id, 'tiny'));
   const failed = shown !== undefined && shown === failedSrc;
 
   const content = (
@@ -124,7 +158,8 @@ export const Photo = ({
             onError={() => setFailedSrc(shown)}
             style={position ? { objectPosition: position } : undefined}
             className={cn(
-              'absolute inset-0 size-full object-cover transition-[filter] duration-700 ease-out motion-reduce:transition-none',
+              'absolute inset-0 size-full object-cover transition-[filter,scale] duration-700 ease-out motion-reduce:transition-none',
+              blurred && 'scale-[1.04] blur-lg',
               (grayscale || cyanotype) && 'grayscale',
               cyanotype && 'contrast-[1.15] brightness-[1.05]',
               reveals && 'group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100',
