@@ -180,6 +180,19 @@ The site opens in the dark theme, always, unless the visitor turns the light on.
   `text-on-photo` / `text-on-photo-ink`, which never change; Prussian blue and gold are not overridden.
 - Figma: page "D · Cuarto claro" with every screen in the light theme and the `D Claro/` paint styles.
 
+## Cyanotype mode
+
+A second switch next to the light bulb (`src/components/CyanotypeToggle.tsx`, a drop that turns Prussian blue when
+on) shows every photo of Lina's work as a cyanotype; each one goes back to color under the pointer, and turning
+the switch off brings all of them back. Her own portrait in the hero is left out.
+
+- **State:** `src/cyanotype.ts` sets `data-cyanotype="on"` on `<html>` and stores the choice in `localStorage`
+  (`lina-cyanotype`); the inline script in `index.html` applies it before the first paint.
+- **Styles:** the `cyano:` variant (`@custom-variant` in `src/index.css`) applies only while that attribute is set.
+  `Photo` uses it to add the grayscale filter and the Prussian blue color layer, and removes both on hover of the
+  photo (`group/photo`), with the same 0.7 s fade. Nothing re-renders when the switch changes.
+- On touch screens there is no hover, so the photos stay blue until the switch is turned off.
+
 ## Loader and page transitions
 
 - **Initial loader:** `#splash` in `index.html` (inline CSS, so it shows before the JS arrives): the LN monogram

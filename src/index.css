@@ -9,6 +9,9 @@
 @import "@fontsource/hanken-grotesk/600.css";
 @import "@fontsource/geist-mono/400.css";
 
+/* Cyanotype mode (src/cyanotype.ts): styles that apply while <html> has data-cyanotype="on". */
+@custom-variant cyano (&:where([data-cyanotype='on'] *));
+
 /*
  * D · Cuarto oscuro — Polpo theme.
  * Values come from the D/ styles in the Figma file (w3WthJXOQOkFUEW9wKw6Gy).

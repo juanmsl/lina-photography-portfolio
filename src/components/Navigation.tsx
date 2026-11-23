@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 
 import { contact } from '../content/contact';
 
+import { CyanotypeToggle } from './CyanotypeToggle';
 import { Logo } from './Logo';
 import { Logotype } from './Logotype';
 import { ThemeToggle } from './ThemeToggle';
@@ -91,6 +92,7 @@ export const Navigation = ({ className }: NavigationProps) => {
         </ul>
 
         <div className='flex items-center gap-3'>
+          <CyanotypeToggle />
           <ThemeToggle />
 
           <Button
