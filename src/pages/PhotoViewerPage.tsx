@@ -164,11 +164,11 @@ export const PhotoViewerPage = () => {
             <div className='relative'>
               <Photo id={id} size='view' priority className='aspect-[var(--photo-ratio)] w-full' />
               {/*
-               * Labels written on the photo: the place, and the camera settings when
-               * switched on (on mobile above the place, on desktop facing it on the right).
+               * Labels written on the photo, bottom left: the place, and above it the
+               * camera settings when switched on.
                */}
               {(locationLabel || (cameraShown && cameraLabels.length > 0)) && (
-                <div className='absolute inset-x-3 bottom-3 flex flex-col-reverse items-start gap-1.5 t-small font-medium text-white max-md:text-[0.625rem] md:inset-x-6 md:bottom-6 md:flex-row md:items-center md:justify-between md:gap-6'>
+                <div className='absolute inset-x-3 bottom-3 flex flex-col-reverse items-start gap-1.5 t-small font-medium text-white max-md:text-[0.625rem] md:inset-x-6 md:bottom-6 md:gap-2'>
                   {locationLabel && (
                     <span className='flex items-center gap-2 md:gap-2.5'>
                       <LuMapPin aria-hidden className='size-[0.8125rem] shrink-0 md:size-4' />
@@ -176,7 +176,7 @@ export const PhotoViewerPage = () => {
                     </span>
                   )}
                   {cameraShown && cameraLabels.length > 0 && (
-                    <span className='flex items-center gap-2 md:ml-auto md:gap-2.5'>
+                    <span className='flex items-center gap-2 md:gap-2.5'>
                       <LuAperture aria-hidden className='size-[0.8125rem] shrink-0 md:size-4' />
                       <span className='font-code md:tracking-[0.02em]'>
                         <span className='sr-only'>Datos de toma: </span>
