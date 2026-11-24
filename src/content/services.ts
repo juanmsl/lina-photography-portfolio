@@ -14,7 +14,7 @@ export const services: Array<Service> = [
     photo: 'restaurantBar',
   },
   {
-    name: 'Retrato',
+    name: 'Retrato y eventos',
     description: 'Sesiones personales y de equipo, en locación y con luz natural.',
     photo: 'coupleHug',
   },
@@ -26,12 +26,7 @@ export const services: Array<Service> = [
   {
     name: 'Producto',
     description: 'Fotos de producto para tienda en línea, catálogo y redes.',
-    photo: 'perfume',
-  },
-  {
-    name: 'Editorial y turismo',
-    description: 'Reportajes de lugar para revistas, guías y destinos.',
-    photo: 'riverCanoe',
+    photo: 'necklace',
   },
 ];
 
@@ -66,8 +61,8 @@ export const faqs = [
 export const quoteOptions: Array<{ value: string; photo: PhotoId }> = [
   { value: 'Paisaje', photo: 'goldenSky' },
   { value: 'Naturaleza', photo: 'rainFlower' },
-  { value: 'Arquitectura', photo: 'caneCorridor' },
+  { value: 'Arquitectura', photo: 'restaurantBar' },
   { value: 'Retrato', photo: 'handPortrait' },
-  { value: 'Moda', photo: 'whiteShirt' },
+  { value: 'Moda', photo: 'leafPortrait' },
   { value: 'Producto', photo: 'necklace' },
 ];

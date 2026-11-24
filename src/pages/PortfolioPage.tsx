@@ -61,7 +61,7 @@ export const PortfolioPage = () => (
           {contact.base} · {contact.baseCoordinates}
         </Typography>
         <Typography noPadding className='m-0 hidden text-ash md:block'>
-          Paisaje · naturaleza · arquitectura · retrato · moda · producto
+          Paisaje · Naturaleza · Arquitectura · Retrato · Moda · Producto
         </Typography>
       </div>
     </section>
@@ -75,13 +75,21 @@ export const PortfolioPage = () => (
       <Typography id='about-title' variant='header1' as='h2' noPadding align='center' className='m-0'>
         ¿Quién soy?
       </Typography>
-      <Typography noPadding align='center' className='mx-auto mt-6 max-w-[45rem] t-lead md:mt-10'>
-        Soy Lina Nieto, fotógrafa en Bogotá. Empecé fotografiando montaña, páramo y ciudad; de ahí viene mi forma de
-        mirar: paciencia, luz natural y composición limpia.
+
+      <Typography noPadding align='center' className='mx-auto mt-6 max-w-180 t-lead md:mt-10'>
+        ¡Holi! Qué lindo tenerte aquí, yo soy Lina Nieto.
+      </Typography>
+
+      <Typography noPadding align='center' className='mx-auto mt-6 max-w-180 t-lead md:mt-10'>
+        Para mí, la fotografía es una forma de detener el tiempo, de inmortalizar instantes que suelen perderse entre las prisas de lo cotidiano. Una invitación a observar con calma, descubrir lo extraordinario en los pequeños detalles y conservar aquello que merece permanecer.
+      </Typography>
+
+      <Typography noPadding align='center' className='mx-auto mt-6 max-w-180 t-lead md:mt-10'>
+        Mi mirada nace de la conexión con la naturaleza y la curiosidad por descubrir nuevas perspectivas. Una sensibilidad que llevo al retrato, la moda, la arquitectura y la fotografía de producto, donde cada imagen es una oportunidad para contar una historia.
       </Typography>
       <FactSheet
         columns={3}
-        className='mx-auto mt-8 max-w-[50rem] md:mt-10'
+        className='mx-auto mt-8 max-w-200 md:mt-10'
         data={[
           { label: 'Base', value: contact.base },
           { label: 'Enfoque', value: 'Paisaje, naturaleza, arquitectura' },

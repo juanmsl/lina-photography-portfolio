@@ -6,9 +6,9 @@
 export const SITE_URL = 'https://linanieto.com';
 
 export const contact = {
-  whatsappDisplay: '+57 312 758 5785',
+  whatsappDisplay: '+57 319 595 5082',
   /** Digits only, with country code, for wa.me. */
-  whatsappNumber: '573127585785',
+  whatsappNumber: '573195955082',
   email: 'linamanigo@gmail.com',
   instagram: '@lix_marie',
   instagramUrl: 'https://instagram.com/lix_marie',

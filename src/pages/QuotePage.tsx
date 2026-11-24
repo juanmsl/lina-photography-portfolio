@@ -54,7 +54,7 @@ export const QuotePage = () => {
       <section aria-labelledby='quote-title' className='px-5 pt-20 pb-12 md:px-10 md:pt-40 md:pb-24'>
         <DualTitle id='quote-title' as='h1' level='hero' title='Cotizar' voice='cuéntame tu proyecto' />
         <Typography noPadding align='center' className='mx-auto mt-8 max-w-[40rem] t-lead text-ash md:mt-10'>
-          Respondo con una propuesta: alcance, fechas y valor. Los campos con * son obligatorios.
+          Respondo con una propuesta: alcance, fechas y valor.<br />Los campos con * son obligatorios.
         </Typography>
       </section>
 

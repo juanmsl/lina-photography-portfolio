@@ -51,9 +51,9 @@ export const PhotoViewerPage = () => {
   const close = () => p && navigate(`/proyectos/${p.slug}`, { viewTransition: true });
 
   useEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') goTo(current - 1);
+    if (['ArrowLeft', 'ArrowUp'].includes(e.key)) goTo(current - 1);
 
-    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (['ArrowRight', 'ArrowDown'].includes(e.key)) goTo(current + 1);
 
     if (e.key === 'Escape') close();
   });
@@ -89,7 +89,7 @@ export const PhotoViewerPage = () => {
 
   const id = list[current - 1];
   const info = photos[id];
-  const locationLabel = [info.title, info.coordinates && formatCoordinates(info.coordinates), info.altitude]
+  const locationLabel = [info.region, info.coordinates && formatCoordinates(info.coordinates), info.altitude]
     .filter(Boolean)
     .join(' · ');
 
@@ -133,7 +133,7 @@ export const PhotoViewerPage = () => {
             <div className='relative'>
               <Photo id={id} size='view' priority className='aspect-[var(--photo-ratio)] w-full' />
               {locationLabel && (
-                <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-10 md:left-15'>
+                <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-6 md:left-6'>
                   <LuMapPin size={16} aria-hidden />
                   <span className='font-code tracking-[0.02em]'>{locationLabel}</span>
                 </span>
