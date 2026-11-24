@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 
-import { Footer } from '../components/ContactSection';
+import { Footer, SocialFacts } from '../components/ContactSection';
 import { DualTitle } from '../components/DualTitle';
 import { FactItem } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
@@ -153,7 +153,7 @@ export const QuotePage = () => {
             </div>
             <dl className='m-0 grid gap-6'>
               <FactItem label='Correo' value={contact.email} />
-              <FactItem label='Instagram' value={contact.instagram} />
+              <SocialFacts />
             </dl>
           </aside>
         </div>
