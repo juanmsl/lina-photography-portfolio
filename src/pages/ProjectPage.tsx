@@ -44,9 +44,7 @@ export const ProjectPage = () => {
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li aria-current='page'>
-              {p.title}
-            </li>
+            <li aria-current='page'>{p.title}</li>
           </ol>
         </nav>
 
