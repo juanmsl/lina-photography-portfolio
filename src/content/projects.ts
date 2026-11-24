@@ -74,7 +74,10 @@ export const projects: Array<Project> = [
       ['riverCanoe', 'crescentMoon'],
     ],
     cover: 'riverSunset',
-    gallery: [['riverHouses', 'riverCanoe'], ['goldenSky', 'crescentMoon']],
+    gallery: [
+      ['riverHouses', 'riverCanoe'],
+      ['goldenSky', 'crescentMoon'],
+    ],
   },
   {
     slug: 'interiores',
@@ -124,9 +127,7 @@ export const projects: Array<Project> = [
     preview: [['leafPortrait', 'monochromePortrait', 'handPortrait', 'whiteShirt']],
     cover: 'leafPortrait',
     coverPosition: '50% 35%',
-    gallery: [
-      ['monochromePortrait', 'handPortrait', 'whiteShirt'],
-    ],
+    gallery: [['monochromePortrait', 'handPortrait', 'whiteShirt']],
   },
   {
     slug: 'gastronomia',
