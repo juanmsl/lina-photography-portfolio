@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
  * After changing them, run `pnpm cloudinary:setup --force`: it rebuilds the
  * tile (scripts/cloudinary/watermark.svg), uploads it and regenerates the photos.
  */
-export const WATERMARK = { width: 40, gap: 200, angle: -30, opacity: 5 };
+export const WATERMARK = { width: 30, gap: 300, angle: -30, opacity: 10 };
 
 const MARK_FILE = new URL('../../public/watermark.svg', import.meta.url);
 

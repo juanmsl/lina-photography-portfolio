@@ -53,17 +53,20 @@ export const categories: Array<Category> = [
 
 export const projects: Array<Project> = [
   {
-    slug: 'rio',
+    slug: 'amazonas',
     category: 'landscape',
-    title: 'Río',
-    subtitle: 'Paisaje y naturaleza',
+    title: 'Amazonas',
+    subtitle: 'La magia del pulmon del mundo',
     summary:
       'Un río ancho en medio de la selva, del cielo gris al dorado del atardecer: casas sobre el agua, canoas y la primera luna de la noche.',
     facts: [
       { label: 'Tipo', value: 'Paisaje y naturaleza' },
       { label: 'Fotos', value: '5' },
     ],
-    preview: [['riverSunset'], ['riverHouses', 'riverCanoe', 'crescentMoon']],
+    preview: [
+      ['riverSunset', 'riverHouses'],
+      ['riverCanoe', 'crescentMoon'],
+    ],
     cover: 'riverSunset',
     gallery: [['riverSunset'], ['riverHouses', 'riverCanoe'], ['goldenSky', 'crescentMoon']],
   },
@@ -90,9 +93,9 @@ export const projects: Array<Project> = [
     ],
   },
   {
-    slug: 'pareja',
+    slug: 'compromise',
     category: 'people',
-    title: 'Pareja',
+    title: 'Compromiso',
     subtitle: 'Sesión de pareja',
     summary: 'Una sesión de pareja con luz baja y velas: las manos, los anillos y los abrazos cuentan la historia.',
     facts: [
@@ -104,7 +107,7 @@ export const projects: Array<Project> = [
     gallery: [['coupleHug'], ['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
   },
   {
-    slug: 'retratos',
+    slug: 'portraits',
     category: 'fashion',
     title: 'Retratos',
     subtitle: 'Retrato y moda',
@@ -122,38 +125,50 @@ export const projects: Array<Project> = [
     ],
   },
   {
-    slug: 'bodegones',
+    slug: 'gastronomy',
     category: 'product',
-    title: 'Bodegones',
-    subtitle: 'Producto',
-    summary: 'Bebidas, perfume, comida y joyería: cada producto con una luz y un color pensados para él.',
+    title: 'Gastronomía',
+    subtitle: 'Bebidas y alimentos',
+    summary: 'Bebidas y alimentos: resaltando frescura, temperatura y texturas.',
     facts: [
       { label: 'Tipo', value: 'Producto' },
-      { label: 'Fotos', value: '4' },
+      { label: 'Fotos', value: '2' },
     ],
-    preview: [['beer', 'perfume', 'iceCream', 'necklace']],
-    cover: 'necklace',
-    coverPosition: '50% 55%',
-    gallery: [
-      ['beer', 'perfume'],
-      ['iceCream', 'necklace'],
-    ],
+    preview: [['beer', 'iceCream']],
+    cover: 'iceCream',
+    coverPosition: '50% 10%',
+    gallery: [['beer', 'iceCream']],
   },
   {
-    slug: 'de-cerca',
+    slug: 'beauty',
+    category: 'product',
+    title: 'Belleza',
+    subtitle: 'Producto',
+    summary: 'Perfumes y joyería: destacando colores, reflejos y detalles finos',
+    facts: [
+      { label: 'Tipo', value: 'Producto' },
+      { label: 'Fotos', value: '2' },
+    ],
+    preview: [['perfume', 'necklace']],
+    cover: 'necklace',
+    coverPosition: '50% 60%',
+    gallery: [['perfume', 'necklace']],
+  },
+  {
+    slug: 'macro',
     category: 'personal',
-    title: 'De cerca',
+    title: 'Macro',
     subtitle: 'Serie personal',
     summary: 'Mi serie personal: flores, hojas y gotas de lluvia vistas muy de cerca.',
     facts: [
       { label: 'Tipo', value: 'Naturaleza y macro' },
       { label: 'Fotos', value: '5' },
     ],
-    preview: [['rainFlower', 'yellowFlower']],
+    preview: [['rainFlower', 'leafDrops', 'yellowFlower']],
     cover: 'rainFlower',
     gallery: [
-      ['rainFlower', 'yellowFlower'],
-      ['dryLeaf', 'leafDrops', 'glassRoses'],
+      ['yellowFlower', 'dryLeaf'],
+      ['leafDrops', 'glassRoses'],
     ],
   },
 ];
