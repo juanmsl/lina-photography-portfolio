@@ -51,9 +51,9 @@ export const CategoryPage = () => {
     <>
       <Navigation />
 
-      <section aria-labelledby='category-title' className='px-5 pt-16 pb-6 md:px-10 md:pt-30 md:pb-10'>
+      <section aria-labelledby='category-title' className='px-5 pt-10 pb-6 md:px-10 md:pt-20 md:pb-10'>
         {others.length > 1 && (
-          <nav aria-label='Categorías' className='mb-10 md:mb-14'>
+          <nav aria-label='Categorías' className='mb-20 md:mb-30'>
             <ul className='m-0 flex list-none flex-wrap justify-center gap-2 p-0'>
               {others.map(o => (
                 <li key={o.id}>

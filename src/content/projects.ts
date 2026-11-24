@@ -74,7 +74,10 @@ export const projects: Array<Project> = [
       ['riverCanoe', 'crescentMoon'],
     ],
     cover: 'riverSunset',
-    gallery: [['riverSunset'], ['riverHouses', 'riverCanoe'], ['goldenSky', 'crescentMoon']],
+    gallery: [
+      ['riverHouses', 'riverCanoe'],
+      ['goldenSky', 'crescentMoon'],
+    ],
   },
   {
     slug: 'interiores',
@@ -93,13 +96,12 @@ export const projects: Array<Project> = [
     ],
     cover: 'restaurantBar',
     gallery: [
-      ['restaurantBar', 'barDining'],
       ['barCounter', 'restaurantHall'],
-      ['lakeHouses', 'caneCorridor'],
+      ['barDining', 'lakeHouses', 'caneCorridor'],
     ],
   },
   {
-    slug: 'compromise',
+    slug: 'compromiso',
     category: 'people',
     title: 'Compromiso',
     subtitle: 'Sesión de pareja',
@@ -110,10 +112,10 @@ export const projects: Array<Project> = [
     ],
     preview: [['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
     cover: 'coupleHug',
-    gallery: [['coupleHug'], ['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
+    gallery: [['coupleHands', 'coupleGuitar', 'coupleEmbrace']],
   },
   {
-    slug: 'portraits',
+    slug: 'retratos',
     category: 'fashion',
     title: 'Retratos',
     subtitle: 'Retrato y moda',
@@ -125,17 +127,14 @@ export const projects: Array<Project> = [
     preview: [['leafPortrait', 'monochromePortrait', 'handPortrait', 'whiteShirt']],
     cover: 'leafPortrait',
     coverPosition: '50% 35%',
-    gallery: [
-      ['leafPortrait', 'monochromePortrait'],
-      ['handPortrait', 'whiteShirt'],
-    ],
+    gallery: [['monochromePortrait', 'handPortrait', 'whiteShirt']],
   },
   {
-    slug: 'gastronomy',
+    slug: 'gastronomia',
     category: 'product',
     title: 'Gastronomía',
     subtitle: 'Bebidas y alimentos',
-    summary: 'Bebidas y alimentos: resaltando frescura, temperatura y texturas.',
+    summary: 'Bebidas y alimentos: Resaltando frescura, temperatura y texturas.',
     facts: [
       { label: 'Tipo', value: 'Producto' },
       { label: 'Fotos', value: '2' },
@@ -146,7 +145,7 @@ export const projects: Array<Project> = [
     gallery: [['beer', 'iceCream']],
   },
   {
-    slug: 'beauty',
+    slug: 'belleza',
     category: 'product',
     title: 'Belleza',
     subtitle: 'Producto',
