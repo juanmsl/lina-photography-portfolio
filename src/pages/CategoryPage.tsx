@@ -52,19 +52,19 @@ export const CategoryPage = () => {
       <Navigation />
 
       <section aria-labelledby='category-title' className='px-5 pt-16 pb-6 md:px-10 md:pt-30 md:pb-10'>
-        <nav aria-label='Ruta' className='flex justify-center'>
-          <ol className='m-0 flex list-none items-center gap-2.5 p-0 font-code t-small tracking-[0.02em] text-ash'>
-            <li>
-              <Link viewTransition to='/' className='hover:text-bone'>
-                Portafolio
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li aria-current='page'>
-              {c.title} {c.voice}
-            </li>
-          </ol>
-        </nav>
+        {others.length > 1 && (
+          <nav aria-label='Categorías' className='mb-10 md:mb-14'>
+            <ul className='m-0 flex list-none flex-wrap justify-center gap-2 p-0'>
+              {others.map(o => (
+                <li key={o.id}>
+                  <ChipLink to={categoryPath(o)} active={o === c}>
+                    {o.label}
+                  </ChipLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
         <DualTitle id='category-title' as='h1' title={c.title} voice={c.voice} className='mt-8 md:mt-10' />
 
@@ -83,20 +83,6 @@ export const CategoryPage = () => {
             ]}
           />
         </div>
-
-        {others.length > 1 && (
-          <nav aria-label='Categorías' className='mt-10 md:mt-14'>
-            <ul className='m-0 flex list-none flex-wrap justify-center gap-2 p-0'>
-              {others.map(o => (
-                <li key={o.id}>
-                  <ChipLink to={categoryPath(o)} active={o === c}>
-                    {o.label}
-                  </ChipLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
       </section>
 
       {list.map(p => (
