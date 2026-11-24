@@ -6,7 +6,16 @@
  */
 import { SITE_URL } from './content/contact.ts';
 import { photos, type PhotoId } from './content/photos.ts';
-import { findProject, projectPhotos, projects } from './content/projects.ts';
+import {
+  activeCategories,
+  categoryOf,
+  categoryPath,
+  categoryProjects,
+  findCategory,
+  findProject,
+  projectPhotos,
+  projects,
+} from './content/projects.ts';
 
 export type RouteMeta = {
   title: string;
@@ -169,6 +178,48 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
       : notFound;
   }
 
+  const category = /^\/categorias\/([^/]+)$/.exec(path);
+
+  if (category) {
+    const c = findCategory(category[1]);
+
+    if (!c) return notFound;
+
+    const name = `${c.title} ${c.voice}`;
+    const list = categoryProjects(c);
+    const description =
+      c.intro ?? `${name} de ${PERSON_NAME}, fotógrafa en Bogotá: ${list.map(p => p.title).join(', ')}.`;
+    const cover = list.map(p => p.cover).find(id => !photos[id].provisional);
+
+    return {
+      ...base(`${name} · ${SITE_NAME}`, description),
+      // Only categories with real work are indexed.
+      indexable: list.some(p => !p.isExample),
+      image: cover ? photoUrl(cover, 'thumb') : OG_IMAGE,
+      imageAlt: cover ? photos[cover].description : OG_IMAGE_ALT,
+      jsonLd: graph(
+        {
+          '@type': 'CollectionPage',
+          url: absoluteUrl(path),
+          name,
+          description,
+          inLanguage: 'es-CO',
+          isPartOf: { '@id': website['@id'] },
+          about: { '@id': PERSON_ID },
+          hasPart: list.map(p => ({
+            '@type': 'CreativeWork',
+            name: p.title,
+            url: absoluteUrl(`/proyectos/${p.slug}`),
+          })),
+        },
+        breadcrumbs([
+          ['Portafolio', '/'],
+          [name, path],
+        ]),
+      ),
+    };
+  }
+
   const project = /^\/proyectos\/([^/]+)$/.exec(path);
 
   if (project) {
@@ -200,6 +251,7 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
         },
         breadcrumbs([
           ['Portafolio', '/'],
+          [`${categoryOf(p).title} ${categoryOf(p).voice}`, categoryPath(categoryOf(p))],
           [p.title, path],
         ]),
       ),
@@ -211,4 +263,10 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
 
 /** Every indexable route: they get their own HTML file and go into the sitemap. */
 export const indexableRoutes = (): Array<string> =>
-  ['/', '/servicios', '/cotizar', ...projects.map(p => `/proyectos/${p.slug}`)].filter(r => metaFor(r).indexable);
+  [
+    '/',
+    '/servicios',
+    '/cotizar',
+    ...activeCategories().map(categoryPath),
+    ...projects.map(p => `/proyectos/${p.slug}`),
+  ].filter(r => metaFor(r).indexable);

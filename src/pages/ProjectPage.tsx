@@ -1,5 +1,5 @@
 import { Typography } from 'polpo/components';
-import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
+import { LuArrowRight } from 'react-icons/lu';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -9,7 +9,7 @@ import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
-import { findProject, categoryOf, projectPhotos, nextProject } from '../content/projects';
+import { findProject, categoryOf, categoryPath, projectPhotos, nextProject } from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
@@ -30,16 +30,24 @@ export const ProjectPage = () => {
       <Navigation />
 
       <section aria-labelledby='project-title' className='px-5 pt-16 pb-10 md:px-10 md:pt-30 md:pb-16'>
-        <div className='flex justify-center'>
-          <Link
-            viewTransition
-            to='/'
-            className='inline-flex items-center gap-2.5 t-label font-medium text-ash hover:text-bone'
-          >
-            <LuArrowLeft size={18} aria-hidden />
-            Portafolio · {c.title} {c.voice}
-          </Link>
-        </div>
+        <nav aria-label='Ruta' className='flex justify-center'>
+          <ol className='m-0 flex list-none items-center gap-2.5 p-0 font-code t-small tracking-[0.02em] text-ash'>
+            <li>
+              <Link viewTransition to='/' className='hover:text-bone'>
+                Portafolio
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li aria-current='page'>
+              <Link viewTransition to={categoryPath(c)} className='hover:text-bone'>
+                {c.title} {c.voice}
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li aria-current='page'>{p.title}</li>
+          </ol>
+        </nav>
+
         <DualTitle
           id='project-title'
           as='h1'
