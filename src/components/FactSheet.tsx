@@ -4,7 +4,11 @@ import { cn } from 'polpo/helpers';
 import type { Fact } from '../content/projects';
 
 /** D/Fact: graphite rule on top, label and value. */
-export const FactItem = ({ label, value, className }: Fact & { className?: string }) => (
+export const FactItem = ({
+  label,
+  value,
+  className,
+}: Omit<Fact, 'value'> & { value: React.ReactNode; className?: string }) => (
   <div className={cn('border-t border-graphite pt-3.5', className)}>
     <Typography variant='small' as='dt' noPadding className='meta-label m-0'>
       {label}

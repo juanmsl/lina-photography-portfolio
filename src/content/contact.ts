@@ -11,7 +11,9 @@ export const contact = {
   whatsappNumber: '573195955082',
   email: 'linamanigo@gmail.com',
   instagram: '@lix_marie',
-  instagramUrl: 'https://instagram.com/lix_marie',
+  instagramUrl: 'https://www.instagram.com/lix_marie/',
+  tiktok: '@lix_marie',
+  tiktokUrl: 'https://www.tiktok.com/@lix_marie',
   base: 'Bogotá, Colombia',
   baseCoordinates: '4°36′N 74°04′O',
 };

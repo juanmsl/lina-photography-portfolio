@@ -4,7 +4,7 @@
  * `PageMeta` (in the browser) and by the build step in `vite.config.ts`, which
  * writes one HTML file per indexable route and the sitemap.
  */
-import { SITE_URL } from './content/contact.ts';
+import { contact, SITE_URL } from './content/contact.ts';
 import { photos, type PhotoId } from './content/photos.ts';
 import {
   activeCategories,
@@ -63,6 +63,7 @@ const person = (photoUrl: PhotoUrl) => ({
     '@type': 'Place',
     address: { '@type': 'PostalAddress', addressLocality: 'Bogotá', addressCountry: 'CO' },
   },
+  sameAs: [contact.instagramUrl, contact.tiktokUrl],
   knowsAbout: [
     'Fotografía de paisaje',
     'Fotografía de naturaleza',

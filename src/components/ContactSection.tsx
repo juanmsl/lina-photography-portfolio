@@ -9,6 +9,30 @@ import { Logo } from './Logo';
 
 const YEAR = new Date().getFullYear();
 
+/** Link to a social profile, opened in a new tab. */
+export const SocialLink = ({ href, handle, network }: { href: string; handle: string; network: string }) => (
+  <a
+    href={href}
+    target='_blank'
+    rel='noopener noreferrer'
+    className='underline-offset-[0.2em] decoration-1 hover:underline'
+  >
+    {handle}
+    <span className='sr-only'> en {network} (se abre en una pestaña nueva)</span>
+  </a>
+);
+
+/** Instagram and TikTok, as fact items with working links. */
+export const SocialFacts = () => (
+  <>
+    <FactItem
+      label='Instagram'
+      value={<SocialLink href={contact.instagramUrl} handle={contact.instagram} network='Instagram' />}
+    />
+    <FactItem label='TikTok' value={<SocialLink href={contact.tiktokUrl} handle={contact.tiktok} network='TikTok' />} />
+  </>
+);
+
 /** Contact actions: Quote (primary) and WhatsApp (outlined). */
 export const ContactActions = () => {
   const navigate = useNavigate();
@@ -44,10 +68,10 @@ export const ContactSection = ({ withChannels = true, withText = true }: Contact
       <ContactActions />
     </div>
     {withChannels && (
-      <dl className='mx-auto mt-10 grid max-w-[51rem] gap-4 sm:grid-cols-3 sm:gap-12'>
+      <dl className='mx-auto mt-10 grid max-w-[51rem] gap-4 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-6 lg:max-w-[64rem] lg:grid-cols-4'>
         <FactItem label='WhatsApp' value={contact.whatsappDisplay} />
         <FactItem label='Correo' value={contact.email} />
-        <FactItem label='Instagram' value={contact.instagram} />
+        <SocialFacts />
       </dl>
     )}
   </section>
