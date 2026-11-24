@@ -246,4 +246,10 @@ PlateFrame, the cyanotype → color reveal and the row Gallery. Everything else 
   has to confirm or add the place, client and year of each one (for example, where the river series was taken and
   which restaurants appear in Interiores), and optionally the region and coordinates of each photo
   (`src/content/photos.ts`), which the enlarged view shows.
+- **Camera settings**: the enlarged view has a switch (aperture icon, or the I key) that shows the ISO, exposure
+  time, aperture and focal length on the photo. It only appears for photos with a `camera` field in
+  `src/content/photos.ts`, e.g. `camera: { iso: 100, exposure: '1/250', aperture: 5.6, focalLength: 18 }`; every
+  value is optional. Today only "Geografía de un hogar" has it (read from its EXIF); the other exports have no
+  camera data, so Lina has to add the values by hand or export again with metadata. The visitor's choice is
+  remembered (`src/cameraData.ts`).
 - **Form**: the quote page simulates the submission; it still needs a service that receives the requests.

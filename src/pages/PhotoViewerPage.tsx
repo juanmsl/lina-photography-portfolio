@@ -1,12 +1,13 @@
 import { Button, Typography } from 'polpo/components';
 import { useEventListener } from 'polpo/hooks';
 import { useEffect } from 'react';
-import { LuArrowLeft, LuChevronLeft, LuChevronRight, LuMapPin, LuX } from 'react-icons/lu';
+import { LuAperture, LuArrowLeft, LuChevronLeft, LuChevronRight, LuMapPin, LuX } from 'react-icons/lu';
 import { Link, Navigate, useNavigate, useParams } from 'react-router';
 
+import { setCameraDataShown, useCameraDataShown } from '../cameraData';
 import { Photo } from '../components/Photo';
 import { PlateFrame } from '../components/PlateFrame';
-import { photos, formatCoordinates } from '../content/photos';
+import { photos, formatCamera, formatCoordinates } from '../content/photos';
 import { findProject, projectPhotos } from '../content/projects';
 import { loadPhoto, photoSrc, preloadPhoto } from '../photoLoader';
 
@@ -17,19 +18,28 @@ const CircleButton = ({
   onClick,
   children,
   className,
+  pressed,
+  title,
 }: {
   label: string;
   onClick: () => void;
   children: React.ReactNode;
   className?: string;
+  /** For switches: aria-pressed, and filled in bone while on. */
+  pressed?: boolean;
+  title?: string;
 }) => (
   <Button
     forIcon
     variant='outlined'
     radius='full'
     aria-label={label}
+    aria-pressed={pressed}
+    title={title}
     onClick={onClick}
-    className={`size-12 shrink-0 border-graphite text-bone hover:border-bone md:size-14 ${className ?? ''}`}
+    className={`size-12 shrink-0 md:size-14 ${
+      pressed ? 'border-bone bg-bone text-ink hover:border-bone' : 'border-graphite text-bone hover:border-bone'
+    } ${className ?? ''}`}
   >
     {children}
   </Button>
@@ -50,15 +60,23 @@ export const PhotoViewerPage = () => {
   };
   const close = () => p && navigate(`/proyectos/${p.slug}`, { viewTransition: true });
 
+  const currentId = list.at(current - 1);
+  const cameraShown = useCameraDataShown();
+  const cameraLabels = currentId ? formatCamera(photos[currentId].camera) : [];
+
   useEventListener('keydown', (e: KeyboardEvent) => {
     if (['ArrowLeft', 'ArrowUp'].includes(e.key)) goTo(current - 1);
 
     if (['ArrowRight', 'ArrowDown'].includes(e.key)) goTo(current + 1);
 
     if (e.key === 'Escape') close();
+
+    // I: show or hide the camera settings ("datos de toma"), when the photo has them.
+    if ((e.key === 'i' || e.key === 'I') && !e.metaKey && !e.ctrlKey && !e.altKey && cameraLabels.length) {
+      setCameraDataShown(!cameraShown);
+    }
   });
 
-  const currentId = list.at(current - 1);
   const nextId = list.at(current % list.length);
   const previousId = list.at(current - 2);
 
@@ -107,9 +125,22 @@ export const PhotoViewerPage = () => {
         <Typography variant='small' noPadding className='font-code m-0 tracking-[0.02em] text-ash' aria-live='polite'>
           {current} / {list.length}
         </Typography>
-        <CircleButton label='Cerrar' onClick={close}>
-          <LuX size={22} aria-hidden />
-        </CircleButton>
+        <div className='flex items-center gap-2.5 md:gap-3'>
+          {/* Only for photos with camera settings. */}
+          {cameraLabels.length > 0 && (
+            <CircleButton
+              label={cameraShown ? 'Ocultar datos de toma' : 'Mostrar datos de toma'}
+              title={`${cameraShown ? 'Ocultar' : 'Mostrar'} datos de toma (I)`}
+              pressed={cameraShown}
+              onClick={() => setCameraDataShown(!cameraShown)}
+            >
+              <LuAperture size={22} aria-hidden />
+            </CircleButton>
+          )}
+          <CircleButton label='Cerrar' onClick={close}>
+            <LuX size={22} aria-hidden />
+          </CircleButton>
+        </div>
       </div>
 
       <div className='mt-6 flex flex-1 items-center gap-6 md:mt-6 md:gap-6'>
@@ -132,11 +163,28 @@ export const PhotoViewerPage = () => {
           >
             <div className='relative'>
               <Photo id={id} size='view' priority className='aspect-[var(--photo-ratio)] w-full' />
-              {locationLabel && (
-                <span className='absolute bottom-4 left-4 flex items-center gap-2.5 t-small font-medium text-white md:bottom-6 md:left-6'>
-                  <LuMapPin size={16} aria-hidden />
-                  <span className='font-code tracking-[0.02em]'>{locationLabel}</span>
-                </span>
+              {/*
+               * Labels written on the photo: the place, and the camera settings when
+               * switched on (on mobile above the place, on desktop facing it on the right).
+               */}
+              {(locationLabel || (cameraShown && cameraLabels.length > 0)) && (
+                <div className='absolute inset-x-3 bottom-3 flex flex-col-reverse items-start gap-1.5 t-small font-medium text-white max-md:text-[0.625rem] md:inset-x-6 md:bottom-6 md:flex-row md:items-center md:justify-between md:gap-6'>
+                  {locationLabel && (
+                    <span className='flex items-center gap-2 md:gap-2.5'>
+                      <LuMapPin aria-hidden className='size-[0.8125rem] shrink-0 md:size-4' />
+                      <span className='font-code md:tracking-[0.02em]'>{locationLabel}</span>
+                    </span>
+                  )}
+                  {cameraShown && cameraLabels.length > 0 && (
+                    <span className='flex items-center gap-2 md:ml-auto md:gap-2.5'>
+                      <LuAperture aria-hidden className='size-[0.8125rem] shrink-0 md:size-4' />
+                      <span className='font-code md:tracking-[0.02em]'>
+                        <span className='sr-only'>Datos de toma: </span>
+                        {cameraLabels.join(' · ')}
+                      </span>
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           </PlateFrame>
