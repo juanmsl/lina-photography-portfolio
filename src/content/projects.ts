@@ -63,7 +63,10 @@ export const projects: Array<Project> = [
       { label: 'Tipo', value: 'Paisaje y naturaleza' },
       { label: 'Fotos', value: '5' },
     ],
-    preview: [['riverSunset', 'riverHouses'], ['riverCanoe', 'crescentMoon']],
+    preview: [
+      ['riverSunset', 'riverHouses'],
+      ['riverCanoe', 'crescentMoon'],
+    ],
     cover: 'riverSunset',
     gallery: [['riverSunset'], ['riverHouses', 'riverCanoe'], ['goldenSky', 'crescentMoon']],
   },
@@ -134,9 +137,7 @@ export const projects: Array<Project> = [
     preview: [['beer', 'iceCream']],
     cover: 'iceCream',
     coverPosition: '50% 10%',
-    gallery: [
-      ['beer', 'iceCream'],
-    ],
+    gallery: [['beer', 'iceCream']],
   },
   {
     slug: 'beauty',
@@ -151,9 +152,7 @@ export const projects: Array<Project> = [
     preview: [['perfume', 'necklace']],
     cover: 'necklace',
     coverPosition: '50% 60%',
-    gallery: [
-      ['perfume', 'necklace'],
-    ],
+    gallery: [['perfume', 'necklace']],
   },
   {
     slug: 'macro',

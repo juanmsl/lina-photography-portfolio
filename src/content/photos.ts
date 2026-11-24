@@ -79,7 +79,8 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   riverCanoe: {
     file: 'river-canoe.jpg',
     dimensions: [2000, 3000],
-    description: 'Dos personas en una canoa sobre un río ancho, con la selva al fondo bajo un cielo con nubes, compartiendo el mismo camino',
+    description:
+      'Dos personas en una canoa sobre un río ancho, con la selva al fondo bajo un cielo con nubes, compartiendo el mismo camino',
     title: 'Dos almas y un horizonte',
     region: 'Triple Frontera, Amazonas',
     coordinates: [-4, 14, 69, 58],
@@ -89,7 +90,8 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   riverSunset: {
     file: 'river-sunset.jpg',
     dimensions: [3000, 2000],
-    description: 'El sol se oculta detrás de la selva y se refleja dorado en el agua del río, como una despedida cálida antes de que llegue la noche',
+    description:
+      'El sol se oculta detrás de la selva y se refleja dorado en el agua del río, como una despedida cálida antes de que llegue la noche',
     title: 'Ultimo abrazo del sol',
     region: 'Triple Frontera, Amazonas',
     coordinates: [-4, 14, 69, 58],
@@ -99,7 +101,8 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   goldenSky: {
     file: 'golden-sky.jpg',
     dimensions: [2000, 3000],
-    description: 'Cielo dorado con nubes oscuras sobre la línea de árboles y el río al atardecer, donde la luz encuentra refugio en el horizonte',
+    description:
+      'Cielo dorado con nubes oscuras sobre la línea de árboles y el río al atardecer, donde la luz encuentra refugio en el horizonte',
     title: 'Despues del último rayo',
     region: 'Triple Frontera, Amazonas',
     coordinates: [-4, 14, 69, 58],
@@ -109,7 +112,8 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   crescentMoon: {
     file: 'crescent-moon.jpg',
     dimensions: [2000, 3000],
-    description: 'Luna creciente en el cielo del anochecer, sobre la silueta de un árbol y una casa, donde dos mundos se encuentran durante unos instantes',
+    description:
+      'Luna creciente en el cielo del anochecer, sobre la silueta de un árbol y una casa, donde dos mundos se encuentran durante unos instantes',
     title: 'El susurro de la noche',
     region: 'Amazonas, Colombia',
     coordinates: [-4, 8, 70, 1],
@@ -139,7 +143,8 @@ export const photos: Record<PhotoId, PhotoInfo> = {
   lakeHouses: {
     file: 'lake-houses.jpg',
     dimensions: [3000, 2000],
-    description: 'Casas blancas con techo de teja entre los árboles, con un lago y montañas al fondo, un espacio entre tejados y montañas',
+    description:
+      'Casas blancas con techo de teja entre los árboles, con un lago y montañas al fondo, un espacio entre tejados y montañas',
     title: 'Geografía de un hogar',
     region: 'Guatavita, Colombia',
     coordinates: [4, 56, 73, 50],

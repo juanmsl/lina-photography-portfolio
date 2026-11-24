@@ -81,11 +81,15 @@ export const PortfolioPage = () => (
       </Typography>
 
       <Typography noPadding align='center' className='mx-auto mt-6 max-w-180 t-lead md:mt-10'>
-        Para mí, la fotografía es una forma de detener el tiempo, de inmortalizar instantes que suelen perderse entre las prisas de lo cotidiano. Una invitación a observar con calma, descubrir lo extraordinario en los pequeños detalles y conservar aquello que merece permanecer.
+        Para mí, la fotografía es una forma de detener el tiempo, de inmortalizar instantes que suelen perderse entre
+        las prisas de lo cotidiano. Una invitación a observar con calma, descubrir lo extraordinario en los pequeños
+        detalles y conservar aquello que merece permanecer.
       </Typography>
 
       <Typography noPadding align='center' className='mx-auto mt-6 max-w-180 t-lead md:mt-10'>
-        Mi mirada nace de la conexión con la naturaleza y la curiosidad por descubrir nuevas perspectivas. Una sensibilidad que llevo al retrato, la moda, la arquitectura y la fotografía de producto, donde cada imagen es una oportunidad para contar una historia.
+        Mi mirada nace de la conexión con la naturaleza y la curiosidad por descubrir nuevas perspectivas. Una
+        sensibilidad que llevo al retrato, la moda, la arquitectura y la fotografía de producto, donde cada imagen es
+        una oportunidad para contar una historia.
       </Typography>
       <FactSheet
         columns={3}
