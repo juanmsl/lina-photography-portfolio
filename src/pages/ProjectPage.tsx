@@ -38,7 +38,7 @@ export const ProjectPage = () => {
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li aria-current='page'>
+            <li>
               <Link viewTransition to={categoryPath(c)} className='hover:text-bone'>
                 {c.title} {c.voice}
               </Link>
