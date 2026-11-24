@@ -9,7 +9,7 @@ import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
-import { findProject, categoryOf, projectPhotos, nextProject } from '../content/projects';
+import { findProject, categoryOf, categoryPath, projectPhotos, nextProject } from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
@@ -33,7 +33,7 @@ export const ProjectPage = () => {
         <div className='flex justify-center'>
           <Link
             viewTransition
-            to='/'
+            to={categoryPath(c)}
             className='inline-flex items-center gap-2.5 t-label font-medium text-ash hover:text-bone'
           >
             <LuArrowLeft size={18} aria-hidden />

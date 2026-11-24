@@ -9,6 +9,7 @@
   "rewrites": [
     { "source": "/proyectos/:slug/foto/:n", "destination": "/404.html" },
     { "source": "/proyectos/:slug", "destination": "/404.html" },
+    { "source": "/categorias/:slug", "destination": "/404.html" },
     { "source": "/cotizar/enviada", "destination": "/404.html" }
   ],
   "headers": [

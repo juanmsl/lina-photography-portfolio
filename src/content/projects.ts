@@ -11,10 +11,16 @@ export type Fact = { label: string; value: string };
 
 export type Category = {
   id: 'landscape' | 'architecture' | 'people' | 'fashion' | 'product' | 'personal';
+  /** URL of its page: /categorias/<slug>. */
+  slug: string;
+  /** Short name for the category chips. */
+  label: string;
   /** First word of the divider, in Bricolage. */
   title: string;
   /** Second voice of the divider, in Instrument Serif. Named like the folders of the original photos. */
   voice: string;
+  /** Optional introduction on the category page, written by Lina. */
+  intro?: string;
 };
 
 export type Project = {
@@ -43,12 +49,12 @@ export type Project = {
 };
 
 export const categories: Array<Category> = [
-  { id: 'landscape', title: 'Fotografía', voice: 'de paisaje' },
-  { id: 'architecture', title: 'Fotografía', voice: 'de arquitectura' },
-  { id: 'people', title: 'Fotografía', voice: 'de personas' },
-  { id: 'fashion', title: 'Fotografía', voice: 'de moda' },
-  { id: 'product', title: 'Fotografía', voice: 'de producto' },
-  { id: 'personal', title: 'Fotografía', voice: 'personal' },
+  { id: 'landscape', slug: 'paisaje', label: 'Paisaje', title: 'Fotografía', voice: 'de paisaje' },
+  { id: 'architecture', slug: 'arquitectura', label: 'Arquitectura', title: 'Fotografía', voice: 'de arquitectura' },
+  { id: 'people', slug: 'personas', label: 'Personas', title: 'Fotografía', voice: 'de personas' },
+  { id: 'fashion', slug: 'moda', label: 'Moda', title: 'Fotografía', voice: 'de moda' },
+  { id: 'product', slug: 'producto', label: 'Producto', title: 'Fotografía', voice: 'de producto' },
+  { id: 'personal', slug: 'personal', label: 'Personal', title: 'Fotografía', voice: 'personal' },
 ];
 
 export const projects: Array<Project> = [
@@ -185,3 +191,27 @@ export const projectPhotos = (p: Project): Array<PhotoId> => {
 export const nextProject = (p: Project) => projects[(projects.indexOf(p) + 1) % projects.length];
 
 export const categoryOf = (p: Project) => categories.find(c => c.id === p.category)!;
+
+/** Projects of a category, in catalog order. */
+export const categoryProjects = (c: Category) => projects.filter(p => p.category === c.id);
+
+/** Categories with at least one project: only these have a page and a chip. */
+export const activeCategories = () => categories.filter(c => categoryProjects(c).length > 0);
+
+export const findCategory = (slug?: string) => activeCategories().find(c => c.slug === slug);
+
+export const categoryPath = (c: Category) => `/categorias/${c.slug}`;
+
+/** The unique photos of a category's projects. */
+export const categoryPhotoCount = (c: Category) => new Set(categoryProjects(c).flatMap(projectPhotos)).size;
+
+/** The categories before and after this one (wrapping around), among those with projects. */
+export const neighborCategories = (c: Category) => {
+  const list = activeCategories();
+  const i = list.indexOf(c);
+
+  return {
+    previous: list[(i - 1 + list.length) % list.length],
+    next: list[(i + 1) % list.length],
+  };
+};

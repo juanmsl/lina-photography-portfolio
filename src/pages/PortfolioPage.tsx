@@ -1,39 +1,15 @@
 import { Typography } from 'polpo/components';
 import { Fragment } from 'react';
 
+import { ChipLink } from '../components/ChipLink';
 import { ContactSection, Footer } from '../components/ContactSection';
 import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
-import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
-import { ProjectHeading } from '../components/ProjectHeading';
+import { ProjectBlock } from '../components/ProjectBlock';
 import { contact } from '../content/contact';
-import { categories, projectPhotos, projects, type Project } from '../content/projects';
-
-const ProjectBlock = ({ p }: { p: Project }) => {
-  const order = projectPhotos(p);
-
-  return (
-    <article aria-labelledby={`project-${p.slug}`} className='px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-30'>
-      <div id={`project-${p.slug}`}>
-        <ProjectHeading title={p.title} subtitle={p.subtitle} a={`/proyectos/${p.slug}`} />
-      </div>
-      <div className='mx-auto mt-8 max-w-[40rem] md:mt-10'>
-        <Typography noPadding align='center' className='t-lead text-ash'>
-          {p.summary}
-        </Typography>
-        <FactSheet data={p.facts} className='mt-8 md:mt-10' />
-      </div>
-      <Gallery
-        rows={p.preview}
-        cyanotype={p.cyanotype}
-        project={p.cyanotype ? undefined : { slug: p.slug, photoIndex: id => order.indexOf(id) }}
-        className='mt-8 md:mt-16'
-      />
-    </article>
-  );
-};
+import { activeCategories, categoryPath, categoryProjects } from '../content/projects';
 
 export const PortfolioPage = () => (
   <>
@@ -102,23 +78,20 @@ export const PortfolioPage = () => (
       />
     </section>
 
-    {/* Projects by type */}
-    {categories.map(c => {
-      const inCategory = projects.filter(p => p.category === c.id);
-
-      if (!inCategory.length) return null;
-
-      return (
-        <Fragment key={c.id}>
-          <div className='px-5 pt-30 pb-6 md:px-10 md:pt-50 md:pb-10'>
-            <DualTitle title={c.title} voice={c.voice} />
-          </div>
-          {inCategory.map(p => (
-            <ProjectBlock key={p.slug} p={p} />
-          ))}
-        </Fragment>
-      );
-    })}
+    {/* Projects by type; each divider links to the category's page. */}
+    {activeCategories().map(c => (
+      <Fragment key={c.id}>
+        <div className='flex flex-col items-center px-5 pt-30 pb-6 md:px-10 md:pt-50 md:pb-10'>
+          <DualTitle title={c.title} voice={c.voice} />
+          <ChipLink to={categoryPath(c)} className='mt-8 md:mt-10'>
+            Ver la categoría<span className='sr-only'> {`${c.title} ${c.voice}`}</span>
+          </ChipLink>
+        </div>
+        {categoryProjects(c).map(p => (
+          <ProjectBlock key={p.slug} p={p} />
+        ))}
+      </Fragment>
+    ))}
 
     <ContactSection />
     <Footer />
