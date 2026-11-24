@@ -37,6 +37,20 @@ export type PhotoId =
   | 'dryLeaf'
   | 'leafDrops';
 
+/**
+ * Camera settings of a photo ("datos de toma"). Any of them may be missing;
+ * the viewer shows the ones it has.
+ */
+export type CameraSettings = {
+  iso?: number;
+  /** Exposure time as written by photographers: '1/250', '1/8', '2' (seconds). */
+  exposure?: string;
+  /** f-number: 5.6 → f/5.6. */
+  aperture?: number;
+  /** Focal length in millimeters. */
+  focalLength?: number;
+};
+
 export type PhotoInfo = {
   file: string;
   /** Width and height of the file, so the enlarged view shows the whole photo without waiting for it to load. */
@@ -55,6 +69,11 @@ export type PhotoInfo = {
    */
   coordinates?: [number, number, number, number];
   altitude?: string;
+  /**
+   * Camera settings (from the RAW or the export's metadata). The enlarged view
+   * only shows its "datos de toma" button when the photo has at least one.
+   */
+  camera?: CameraSettings;
   provisional: boolean;
 };
 
@@ -149,6 +168,7 @@ export const photos: Record<PhotoId, PhotoInfo> = {
     region: 'Guatavita, Colombia',
     coordinates: [4, 56, 73, 50],
     altitude: '2668m',
+    camera: { iso: 100, exposure: '1/250', aperture: 5.6, focalLength: 18 },
     provisional: false,
   },
   restaurantBar: {
@@ -317,3 +337,14 @@ const formatPart = (degrees: number, minutes: number, positive: string, negative
 /** [-1, 30, 71, 30] → "1°30′S 71°30′O". */
 export const formatCoordinates = ([latG, latM, lonG, lonM]: [number, number, number, number]) =>
   `${formatPart(latG, latM, 'N', 'S')} ${formatPart(lonG, lonM, 'O', 'E')}`;
+
+/** Camera settings as short labels, in the order photographers read them: ['ISO 100', '1/250 s', 'f/5.6', '18 mm']. */
+export const formatCamera = (camera?: CameraSettings): Array<string> =>
+  camera
+    ? [
+        camera.iso !== undefined && `ISO ${camera.iso}`,
+        camera.exposure && `${camera.exposure} s`,
+        camera.aperture !== undefined && `f/${camera.aperture}`,
+        camera.focalLength !== undefined && `${camera.focalLength} mm`,
+      ].filter((label): label is string => Boolean(label))
+    : [];
