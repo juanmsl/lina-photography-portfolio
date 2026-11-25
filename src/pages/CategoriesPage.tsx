@@ -203,8 +203,15 @@ const Carousel = ({ c }: { c: Category }) => {
             'transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
             opacity === 0 && 'pointer-events-none',
           );
-          const content = (
-            <>
+
+          /*
+           * The card itself stays the same element when it becomes (or stops
+           * being) the current photo, so its move is animated like the others;
+           * only the layer on top changes: a link to the photo viewer in the
+           * middle, a button that brings the photo to the middle on the sides.
+           */
+          return (
+            <div key={s.key} data-current={centered || undefined} className={className} style={style}>
               <Photo
                 id={s.id}
                 position={s.id === s.p.cover ? s.p.coverPosition : undefined}
@@ -216,39 +223,26 @@ const Carousel = ({ c }: { c: Category }) => {
                 className='pointer-events-none absolute inset-0 z-10 bg-on-photo-ink transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
                 style={{ opacity: dim, transition: dragging || jumps ? 'none' : undefined }}
               />
-            </>
-          );
-
-          if (centered) {
-            return (
-              <Link
-                key={s.key}
-                data-current
-                viewTransition
-                draggable={false}
-                to={`/proyectos/${s.p.slug}/foto/${s.n}`}
-                onPointerEnter={() => preloadPhoto(s.id, 'view')}
-                onFocus={() => preloadPhoto(s.id, 'view')}
-                className={className}
-                style={style}
-              >
-                {content}
-              </Link>
-            );
-          }
-
-          return (
-            <button
-              key={s.key}
-              type='button'
-              tabIndex={-1}
-              aria-hidden
-              onClick={() => step(ringOffset(i, active, cards.length))}
-              className={className}
-              style={style}
-            >
-              {content}
-            </button>
+              {centered ? (
+                <Link
+                  viewTransition
+                  draggable={false}
+                  aria-label={`Ampliar foto: ${photos[s.id].title}`}
+                  to={`/proyectos/${s.p.slug}/foto/${s.n}`}
+                  onPointerEnter={() => preloadPhoto(s.id, 'view')}
+                  onFocus={() => preloadPhoto(s.id, 'view')}
+                  className='absolute inset-0 z-20'
+                />
+              ) : (
+                <button
+                  type='button'
+                  tabIndex={-1}
+                  aria-hidden
+                  onClick={() => step(ringOffset(i, active, cards.length))}
+                  className='absolute inset-0 z-20 cursor-pointer'
+                />
+              )}
+            </div>
           );
         })}
       </div>
