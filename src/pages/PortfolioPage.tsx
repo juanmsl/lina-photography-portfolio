@@ -1,5 +1,6 @@
 import { Typography } from 'polpo/components';
 import { Fragment } from 'react';
+import { Link } from 'react-router';
 
 import { ChipLink } from '../components/ChipLink';
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -9,7 +10,20 @@ import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { ProjectBlock } from '../components/ProjectBlock';
 import { contact } from '../content/contact';
-import { activeCategories, categoryPath, categoryProjects } from '../content/projects';
+import { activeCategories, categoryPath, categoryProjects, type Category } from '../content/projects';
+
+/**
+ * The words under the hero photo, each linking to its category page (only
+ * categories with projects have one). Nature goes to landscape and portrait to people.
+ */
+const heroCategories: Array<[label: string, id: Category['id']]> = [
+  ['Paisaje', 'landscape'],
+  ['Naturaleza', 'landscape'],
+  ['Arquitectura', 'architecture'],
+  ['Retrato', 'people'],
+  ['Moda', 'fashion'],
+  ['Producto', 'product'],
+];
 
 export const PortfolioPage = () => (
   <>
@@ -36,9 +50,26 @@ export const PortfolioPage = () => (
         <Typography variant='small' noPadding className='font-code m-0 tracking-[0.02em] text-ash'>
           {contact.base} · {contact.baseCoordinates}
         </Typography>
-        <Typography noPadding className='m-0 hidden text-ash md:block'>
-          Paisaje · Naturaleza · Arquitectura · Retrato · Moda · Producto
-        </Typography>
+        <nav aria-label='Categorías del portafolio' className='hidden md:block'>
+          <Typography noPadding className='m-0 text-ash'>
+            {heroCategories.map(([label, id], i) => {
+              const c = activeCategories().find(category => category.id === id);
+
+              return (
+                <Fragment key={label}>
+                  {i > 0 && ' · '}
+                  {c ? (
+                    <Link viewTransition to={categoryPath(c)} className='transition-colors hover:text-bone'>
+                      {label}
+                    </Link>
+                  ) : (
+                    label
+                  )}
+                </Fragment>
+              );
+            })}
+          </Typography>
+        </nav>
       </div>
     </section>
 
