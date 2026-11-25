@@ -78,13 +78,20 @@ export const CategoryPage = () => {
           className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
         >
           <NeighborLink
+            noun='categoría'
             to={categoryPath(previous)}
             direction='previous'
             text={previous.voice}
             srText={previous.title}
           />
           {next !== previous && (
-            <NeighborLink to={categoryPath(next)} direction='next' text={next.voice} srText={next.title} />
+            <NeighborLink
+              noun='categoría'
+              to={categoryPath(next)}
+              direction='next'
+              text={next.voice}
+              srText={next.title}
+            />
           )}
         </nav>
       )}

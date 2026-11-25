@@ -129,8 +129,10 @@ export const ProjectPage = () => {
           aria-label='Otros proyectos'
           className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
         >
-          <NeighborLink to={`/proyectos/${previous.slug}`} direction='previous' text={previous.title} />
-          {next !== previous && <NeighborLink to={`/proyectos/${next.slug}`} direction='next' text={next.title} />}
+          <NeighborLink noun='proyecto' to={`/proyectos/${previous.slug}`} direction='previous' text={previous.title} />
+          {next !== previous && (
+            <NeighborLink noun='proyecto' to={`/proyectos/${next.slug}`} direction='next' text={next.title} />
+          )}
         </nav>
       )}
 
