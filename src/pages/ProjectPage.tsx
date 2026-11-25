@@ -1,5 +1,6 @@
 import { Typography } from 'polpo/components';
-import { LuArrowRight } from 'react-icons/lu';
+import { FaHome } from 'react-icons/fa';
+import { FaCamera } from 'react-icons/fa6';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -7,9 +8,17 @@ import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
 import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
+import { NeighborLink } from '../components/NeighborLink';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
-import { findProject, categoryOf, categoryPath, projectPhotos, nextProject } from '../content/projects';
+import {
+  findProject,
+  categoryOf,
+  categoryPath,
+  projectPhotos,
+  nextProject,
+  previousProject,
+} from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
@@ -23,6 +32,7 @@ export const ProjectPage = () => {
   const c = categoryOf(p);
   const order = projectPhotos(p);
   const next = nextProject(p);
+  const previous = previousProject(p);
   const photoIndex = { slug: p.slug, photoIndex: (id: (typeof order)[number]) => order.indexOf(id) };
 
   return (
@@ -30,16 +40,18 @@ export const ProjectPage = () => {
       <Navigation />
 
       <section aria-labelledby='project-title' className='px-5 pt-16 pb-10 md:px-10 md:pt-30 md:pb-16'>
-        <nav aria-label='Ruta' className='flex justify-center'>
+        <nav aria-label='Ruta' className='flex justify-center mb-20'>
           <ol className='m-0 flex list-none items-center gap-2.5 p-0 font-code t-small tracking-[0.02em] text-ash'>
-            <li>
-              <Link viewTransition to='/' className='hover:text-bone'>
+            <li className='flex gap-2 items-center'>
+              <FaHome />
+              <Link viewTransition to='/' className='hover:text-bone border-b'>
                 Portafolio
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li>
-              <Link viewTransition to={categoryPath(c)} className='hover:text-bone'>
+            <li className='flex gap-2 items-center'>
+              <FaCamera />
+              <Link viewTransition to={categoryPath(c)} className='hover:text-bone border-b'>
                 {c.title} {c.voice}
               </Link>
             </li>
@@ -110,26 +122,17 @@ export const ProjectPage = () => {
         </section>
       )}
 
-      <nav aria-label='Siguiente proyecto' className='border-t border-graphite px-5 py-12 md:px-10 md:py-16'>
-        <Link
-          viewTransition
-          to={`/proyectos/${next.slug}`}
-          className='group flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-12'
+      {previous !== p && (
+        <nav
+          aria-label='Otros proyectos'
+          className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
         >
-          <span className='flex flex-col'>
-            <Typography variant='header2' as='span' noPadding className='m-0'>
-              {next.title}
-            </Typography>
-            <span className='serif-voice -mt-1 t-serif'>siguiente proyecto</span>
-          </span>
-          <span className='flex items-center gap-8'>
-            <Photo id={next.cover} position={next.coverPosition} className='aspect-[440/280] w-full max-w-[27.5rem]' />
-            <span className='hidden size-18 shrink-0 place-content-center rounded-full border border-graphite transition-colors group-hover:border-bone md:grid'>
-              <LuArrowRight size={26} aria-hidden />
-            </span>
-          </span>
-        </Link>
-      </nav>
+          <NeighborLink noun='proyecto' to={`/proyectos/${previous.slug}`} direction='previous' text={previous.title} />
+          {next !== previous && (
+            <NeighborLink noun='proyecto' to={`/proyectos/${next.slug}`} direction='next' text={next.title} />
+          )}
+        </nav>
+      )}
 
       <ContactSection withText />
       <Footer />
