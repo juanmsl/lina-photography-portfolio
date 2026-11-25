@@ -20,6 +20,10 @@ import {
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
+import {LiaHomeSolid} from "react-icons/lia";
+import {LuCamera} from "react-icons/lu";
+import {FaCamera} from "react-icons/fa6";
+import {FaHome} from "react-icons/fa";
 
 export const ProjectPage = () => {
   const { slug } = useParams();
@@ -38,16 +42,18 @@ export const ProjectPage = () => {
       <Navigation />
 
       <section aria-labelledby='project-title' className='px-5 pt-16 pb-10 md:px-10 md:pt-30 md:pb-16'>
-        <nav aria-label='Ruta' className='flex justify-center'>
+        <nav aria-label='Ruta' className='flex justify-center mb-20'>
           <ol className='m-0 flex list-none items-center gap-2.5 p-0 font-code t-small tracking-[0.02em] text-ash'>
-            <li>
-              <Link viewTransition to='/' className='hover:text-bone'>
+            <li className='flex gap-2 items-center'>
+              <FaHome />
+              <Link viewTransition to='/' className='hover:text-bone border-b'>
                 Portafolio
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li>
-              <Link viewTransition to={categoryPath(c)} className='hover:text-bone'>
+            <li className='flex gap-2 items-center'>
+              <FaCamera />
+              <Link viewTransition to={categoryPath(c)} className='hover:text-bone border-b'>
                 {c.title} {c.voice}
               </Link>
             </li>
