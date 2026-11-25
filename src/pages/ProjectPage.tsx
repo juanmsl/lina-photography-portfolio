@@ -1,5 +1,4 @@
 import { Typography } from 'polpo/components';
-import { FaHome } from 'react-icons/fa';
 import { FaCamera, FaImages } from 'react-icons/fa6';
 import { Link, useParams } from 'react-router';
 
@@ -42,13 +41,6 @@ export const ProjectPage = () => {
       <section aria-labelledby='project-title' className='px-5 pt-16 pb-10 md:px-10 md:pt-30 md:pb-16'>
         <nav aria-label='Ruta' className='flex justify-center mb-20'>
           <ol className='m-0 flex list-none items-center gap-2.5 p-0 font-code t-small tracking-[0.02em] text-ash'>
-            <li className='flex gap-2 items-center'>
-              <FaHome />
-              <Link viewTransition to='/' className='hover:text-bone border-b'>
-                Portafolio
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
             <li className='flex gap-2 items-center'>
               <FaImages />
               <Link viewTransition to={`/categorias?c=${c.slug}`} className='hover:text-bone border-b'>

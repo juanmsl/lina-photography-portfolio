@@ -310,7 +310,7 @@ export const CategoriesPage = () => {
         <section aria-labelledby='categories-title' className='px-5 pt-14 text-center md:px-10 md:pt-24'>
           <DualTitle id='categories-title' as='h1' title='Portafolio' voice='por categorías' />
           <Typography noPadding align='center' className='mx-auto mt-6 max-w-[40rem] t-lead text-ash md:mt-8'>
-            Elige una categoría y recorre las fotos de sus proyectos.
+            Elige una categoría y recorre las fotos de mis proyectos.
           </Typography>
         </section>
 
