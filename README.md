@@ -158,12 +158,15 @@ src/
 docs/                  DESIGN.md (design system), PRODUCT.md (product context) and SEO.md
 ```
 
-Routes (kept in Spanish because visitors see them): `/`, `/categorias/:slug`, `/proyectos/:slug`,
+Routes (kept in Spanish because visitors see them): `/`, `/categorias`, `/categorias/:slug`, `/proyectos/:slug`,
 `/proyectos/:slug/foto/:n`, `/servicios`, `/cotizar`, `/cotizar/enviada`.
 
 Each category with projects (`slug` in `categories`, `src/content/projects.ts`) gets a page at `/categorias/:slug`
 with its projects, chips to the other categories and the previous and next one; the portfolio dividers link to it.
 The page shows an introduction only when the category has an `intro` text.
+
+`/categorias` (in the main navigation) shows every category's photos in a carousel, with chips to switch category
+(kept in the address as `?c=<slug>`); the middle photo opens the photo viewer and the caption links to its project.
 
 ## Logo and logotype
 

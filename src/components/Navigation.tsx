@@ -14,6 +14,7 @@ import { ThemeToggle } from './ThemeToggle';
 
 const links = [
   { label: 'Portafolio', a: '/' },
+  { label: 'Categorías', a: '/categorias' },
   { label: 'Servicios', a: '/servicios' },
   { label: 'Sobre mí', a: '/#quien-soy' },
   { label: 'Contacto', a: '/#contacto' },
