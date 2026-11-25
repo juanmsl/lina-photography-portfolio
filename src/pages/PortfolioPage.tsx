@@ -1,5 +1,6 @@
 import { Typography } from 'polpo/components';
 import { Fragment } from 'react';
+import { Link } from 'react-router';
 
 import { ChipLink } from '../components/ChipLink';
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -36,9 +37,18 @@ export const PortfolioPage = () => (
         <Typography variant='small' noPadding className='font-code m-0 tracking-[0.02em] text-ash'>
           {contact.base} · {contact.baseCoordinates}
         </Typography>
-        <Typography noPadding className='m-0 hidden text-ash md:block'>
-          Paisaje · Naturaleza · Arquitectura · Retrato · Moda · Producto
-        </Typography>
+        <nav aria-label='Categorías del portafolio' className='hidden md:block'>
+          <Typography noPadding className='m-0 text-ash'>
+            {activeCategories().map((c, i) => (
+              <Fragment key={c.id}>
+                {i > 0 && ' · '}
+                <Link viewTransition to={categoryPath(c)} className='transition-colors hover:text-bone'>
+                  {c.label}
+                </Link>
+              </Fragment>
+            ))}
+          </Typography>
+        </nav>
       </div>
     </section>
 
