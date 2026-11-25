@@ -34,12 +34,12 @@ export const ProjectPage = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation solid />
 
-      {/* The cover fills the screen, behind the navigation. It is where the photo and the title of the reel arrive. */}
+      {/* The cover fills the screen below the navigation. It is where the photo and the title of the reel arrive. */}
       <header
         aria-labelledby='project-title'
-        className='relative -mt-[var(--header-h)] h-dvh min-h-[32rem] overflow-hidden'
+        className='relative h-[calc(100dvh-var(--header-h))] min-h-[28rem] overflow-hidden'
       >
         <Link
           viewTransition
@@ -64,7 +64,7 @@ export const ProjectPage = () => {
           className='pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-ink/75 to-transparent'
         />
 
-        <nav aria-label='Ruta' className='absolute top-[calc(var(--header-h)+1.5rem)] left-5 z-10 md:left-10'>
+        <nav aria-label='Ruta' className='absolute top-6 left-5 z-10 md:left-10'>
           <Link
             viewTransition
             to={`${categoryPath(c)}?p=${p.slug}`}
