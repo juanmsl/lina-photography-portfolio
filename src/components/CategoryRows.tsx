@@ -2,16 +2,59 @@ import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
+import { type PhotoId } from '../content/photos';
 import { categoryPath, categoryProjects, projectPhotos, type Category, type Project } from '../content/projects';
+import { preloadPhoto } from '../photoLoader';
 
 import { ChipLink } from './ChipLink';
 import { DualTitle } from './DualTitle';
 import { Photo } from './Photo';
 
 /**
+ * One photo of a project. Like the gallery, it opens in the photo viewer
+ * (preloading the big version on hover); in the cyanotype series it only
+ * reveals its color.
+ */
+const ProjectPhoto = ({
+  p,
+  id,
+  position,
+  className,
+}: {
+  p: Project;
+  id: PhotoId;
+  position?: string;
+  className?: string;
+}) => {
+  const photo = (
+    <Photo
+      id={id}
+      position={position}
+      cyanotype={p.cyanotype ? 'reveal' : undefined}
+      className='absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
+    />
+  );
+
+  if (p.cyanotype) return <span className={cn('relative block min-w-0 overflow-hidden', className)}>{photo}</span>;
+
+  return (
+    <Link
+      viewTransition
+      to={`/proyectos/${p.slug}/foto/${projectPhotos(p).indexOf(id) + 1}`}
+      onPointerEnter={() => preloadPhoto(id, 'view')}
+      onFocus={() => preloadPhoto(id, 'view')}
+      className={cn('group relative block min-w-0 overflow-hidden', className)}
+    >
+      {photo}
+    </Link>
+  );
+};
+
+/**
  * A project as one row: title, second voice and photo count on the left and a
  * strip of two or three of its photos on the right. Every row has the same
- * height, so the section grows evenly. The whole row links to the project.
+ * height, so the section grows evenly. Each photo opens the photo viewer; the
+ * text, the project page.
  */
 const ProjectRow = ({ p }: { p: Project }) => {
   const all = projectPhotos(p);
@@ -19,14 +62,19 @@ const ProjectRow = ({ p }: { p: Project }) => {
   const photosLabel = `${all.length} ${all.length === 1 ? 'foto' : 'fotos'}`;
 
   return (
-    <Link
-      viewTransition
-      to={`/proyectos/${p.slug}`}
-      className='group flex flex-col gap-3 border-t border-graphite pt-5 pb-6 md:flex-row md:gap-10 md:py-7'
-    >
-      <span className='flex items-end justify-between gap-4 md:w-[18.75rem] md:shrink-0 md:flex-col md:items-start md:justify-start md:gap-3.5'>
+    <div className='flex flex-col gap-3 border-t border-graphite pt-5 pb-6 md:flex-row md:gap-10 md:py-7'>
+      <Link
+        viewTransition
+        to={`/proyectos/${p.slug}`}
+        className='group/title flex items-end justify-between gap-4 md:w-[18.75rem] md:shrink-0 md:flex-col md:items-start md:justify-start md:gap-3.5'
+      >
         <span className='flex flex-col'>
-          <Typography variant='header3' as='span' noPadding className='m-0'>
+          <Typography
+            variant='header3'
+            as='span'
+            noPadding
+            className='m-0 decoration-2 underline-offset-[0.12em] group-hover/title:underline'
+          >
             {p.title}
           </Typography>
           <span className='serif-voice t-serif'>{p.subtitle}</span>
@@ -38,20 +86,19 @@ const ProjectRow = ({ p }: { p: Project }) => {
         <span className='hidden t-label font-semibold underline underline-offset-[0.2em] md:inline'>
           Ver proyecto →
         </span>
-      </span>
-      <span className={cn('grid flex-1 gap-1.5 md:gap-3', shown.length >= 3 ? 'grid-cols-3' : 'grid-cols-2')}>
+      </Link>
+      <div className={cn('grid flex-1 gap-1.5 md:gap-3', shown.length >= 3 ? 'grid-cols-3' : 'grid-cols-2')}>
         {shown.map((id, i) => (
-          <span key={id} className='relative h-35 overflow-hidden md:h-65'>
-            <Photo
-              id={id}
-              position={i === 0 ? p.coverPosition : undefined}
-              cyanotype={p.cyanotype ? 'reveal' : undefined}
-              className='absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
-            />
-          </span>
+          <ProjectPhoto
+            key={id}
+            p={p}
+            id={id}
+            position={i === 0 ? p.coverPosition : undefined}
+            className='h-35 md:h-65'
+          />
         ))}
-      </span>
-    </Link>
+      </div>
+    </div>
   );
 };
 
