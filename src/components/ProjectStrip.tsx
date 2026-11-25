@@ -148,7 +148,7 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
                         className='absolute inset-0 bg-linear-to-t from-on-photo-ink/75 via-transparent to-transparent'
                       />
                       <span className='sr-only'>{q.title}</span>
-                      <Outline className='absolute -right-2 -bottom-6 hidden text-[9.75rem] opacity-85 md:block'>
+                      <Outline className='absolute -right-4 -bottom-25 hidden text-[12rem] opacity-85 md:block'>
                         {pad(i + 1)}
                       </Outline>
                       <span className='font-code absolute bottom-4 left-4 t-small tracking-[0.02em] text-on-photo/85 md:bottom-6 md:left-6'>
@@ -162,7 +162,7 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
                       onClick={() => go(i)}
                       className='absolute inset-0 z-10 cursor-pointer'
                     >
-                      <Outline className='absolute right-2 -bottom-3 hidden text-[6rem] opacity-85 md:block'>
+                      <Outline className='absolute -right-2 -bottom-12 hidden text-[6rem] opacity-85 md:block'>
                         {pad(i + 1)}
                       </Outline>
                     </button>
