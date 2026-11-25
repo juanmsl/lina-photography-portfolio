@@ -1,5 +1,6 @@
 import { Typography } from 'polpo/components';
-import { LuArrowRight } from 'react-icons/lu';
+import { cn } from 'polpo/helpers';
+import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -9,10 +10,45 @@ import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
-import { findProject, categoryOf, categoryPath, projectPhotos, nextProject } from '../content/projects';
+import {
+  findProject,
+  categoryOf,
+  categoryPath,
+  projectPhotos,
+  nextProject,
+  previousProject,
+  type Project,
+} from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
+
+/** Link to the previous or next project: its cover, a round arrow, its title and the direction in the second voice. */
+const NeighborProject = ({ p, direction }: { p: Project; direction: 'previous' | 'next' }) => {
+  const isNext = direction === 'next';
+
+  return (
+    <Link
+      viewTransition
+      to={`/proyectos/${p.slug}`}
+      rel={isNext ? 'next' : 'prev'}
+      className={cn('group flex flex-col gap-5 md:gap-6', isNext && 'md:items-end md:text-right')}
+    >
+      <Photo id={p.cover} position={p.coverPosition} className='aspect-[440/280] w-full' />
+      <span className={cn('flex items-center gap-5 md:gap-6', isNext && 'md:flex-row-reverse')}>
+        <span className='grid size-14 shrink-0 place-content-center rounded-full border border-graphite transition-colors group-hover:border-bone md:size-18'>
+          {isNext ? <LuArrowRight size={24} aria-hidden /> : <LuArrowLeft size={24} aria-hidden />}
+        </span>
+        <span className='flex flex-col'>
+          <Typography variant='header2' as='span' noPadding className='m-0'>
+            {p.title}
+          </Typography>
+          <span className='serif-voice -mt-1 t-serif'>{isNext ? 'siguiente proyecto' : 'proyecto anterior'}</span>
+        </span>
+      </span>
+    </Link>
+  );
+};
 
 export const ProjectPage = () => {
   const { slug } = useParams();
@@ -23,6 +59,7 @@ export const ProjectPage = () => {
   const c = categoryOf(p);
   const order = projectPhotos(p);
   const next = nextProject(p);
+  const previous = previousProject(p);
   const photoIndex = { slug: p.slug, photoIndex: (id: (typeof order)[number]) => order.indexOf(id) };
 
   return (
@@ -110,25 +147,12 @@ export const ProjectPage = () => {
         </section>
       )}
 
-      <nav aria-label='Siguiente proyecto' className='border-t border-graphite px-5 py-12 md:px-10 md:py-16'>
-        <Link
-          viewTransition
-          to={`/proyectos/${next.slug}`}
-          className='group flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-12'
-        >
-          <span className='flex flex-col'>
-            <Typography variant='header2' as='span' noPadding className='m-0'>
-              {next.title}
-            </Typography>
-            <span className='serif-voice -mt-1 t-serif'>siguiente proyecto</span>
-          </span>
-          <span className='flex items-center gap-8'>
-            <Photo id={next.cover} position={next.coverPosition} className='aspect-[440/280] w-full max-w-[27.5rem]' />
-            <span className='hidden size-18 shrink-0 place-content-center rounded-full border border-graphite transition-colors group-hover:border-bone md:grid'>
-              <LuArrowRight size={26} aria-hidden />
-            </span>
-          </span>
-        </Link>
+      <nav
+        aria-label='Otros proyectos'
+        className='grid gap-14 border-t border-graphite px-5 py-12 md:grid-cols-2 md:gap-10 md:px-10 md:py-16'
+      >
+        <NeighborProject p={previous} direction='previous' />
+        <NeighborProject p={next} direction='next' />
       </nav>
 
       <ContactSection withText />

@@ -189,6 +189,8 @@ export const projectPhotos = (p: Project): Array<PhotoId> => {
 
 export const nextProject = (p: Project) => projects[(projects.indexOf(p) + 1) % projects.length];
 
+export const previousProject = (p: Project) => projects[(projects.indexOf(p) - 1 + projects.length) % projects.length];
+
 export const categoryOf = (p: Project) => categories.find(c => c.id === p.category)!;
 
 /** Projects of a category, in catalog order. */
