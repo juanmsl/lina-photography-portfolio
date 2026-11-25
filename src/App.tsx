@@ -4,6 +4,7 @@ import { useLayoutEffect } from 'react';
 import { createBrowserRouter, Outlet, useLocation, useParams } from 'react-router';
 
 import { PageMeta } from './components/PageMeta';
+import { CategoriesPage } from './pages/CategoriesPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PhotoViewerPage } from './pages/PhotoViewerPage';
@@ -69,6 +70,7 @@ export const router = createBrowserRouter(
       element: <AppLayout />,
       children: [
         { path: '/', element: <PortfolioPage /> },
+        { path: '/categorias', element: <CategoriesPage /> },
         { path: '/categorias/:slug', element: <CategoryPage /> },
         { path: '/proyectos/:slug', element: <ProjectPage /> },
         { path: '/proyectos/:slug/foto/:n', element: <PhotoViewerPage /> },

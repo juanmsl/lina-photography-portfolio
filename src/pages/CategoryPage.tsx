@@ -7,7 +7,8 @@ import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
 import { NeighborLink } from '../components/NeighborLink';
-import { ProjectBlock } from '../components/ProjectBlock';
+import { ProjectPreview } from '../components/ProjectPreview';
+import { ProjectStrip } from '../components/ProjectStrip';
 import {
   activeCategories,
   categoryPath,
@@ -15,9 +16,24 @@ import {
   categoryProjects,
   findCategory,
   neighborCategories,
+  type Project,
 } from '../content/projects';
+import { useProjectSelection } from '../projectSelection';
 
 import { NotFoundPage } from './NotFoundPage';
+
+/** The projects of the category, one selected at a time, and the photos of the selected one. */
+const CategoryProjects = ({ list }: { list: Array<Project> }) => {
+  const selection = useProjectSelection(list.length);
+  const selected = list[selection.active];
+
+  return (
+    <>
+      <ProjectStrip list={list} {...selection} />
+      {selected && <ProjectPreview p={selected} />}
+    </>
+  );
+};
 
 /** A category: its heading, links to the other categories and all its projects. */
 export const CategoryPage = () => {
@@ -68,9 +84,8 @@ export const CategoryPage = () => {
         </div>
       </section>
 
-      {list.map(p => (
-        <ProjectBlock key={p.slug} p={p} headingAs='h2' />
-      ))}
+      {/* Remounted per category, so each one starts at its first project. */}
+      <CategoryProjects key={c.id} list={list} />
 
       {others.length > 1 && (
         <nav
