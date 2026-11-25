@@ -3,6 +3,7 @@ import { cn } from 'polpo/helpers';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
+import { type PhotoId } from '../content/photos';
 import {
   categoryPath,
   categoryPhotoCount,
@@ -11,6 +12,7 @@ import {
   type Category,
   type Project,
 } from '../content/projects';
+import { preloadPhoto } from '../photoLoader';
 
 import { ChipLink } from './ChipLink';
 import { DualTitle } from './DualTitle';
@@ -38,33 +40,76 @@ const rowHeight = (k: number, single: boolean) => {
   return single ? 'h-[38.75rem]' : 'h-[27.5rem]';
 };
 
-/** A project's cover with its title written on the photo, over a dark fade at the bottom. */
-const Cover = ({ p, large, className }: { p: Project; large?: boolean; className?: string }) => (
-  <Link
-    viewTransition
-    to={`/proyectos/${p.slug}`}
-    className={cn('group relative block min-w-0 overflow-hidden', className)}
-  >
+/**
+ * One photo of a project. Like the gallery, it opens in the photo viewer
+ * (preloading the big version on hover); in the cyanotype series it only
+ * reveals its color.
+ */
+const ProjectPhoto = ({
+  p,
+  id,
+  position,
+  className,
+}: {
+  p: Project;
+  id: PhotoId;
+  position?: string;
+  className?: string;
+}) => {
+  const photo = (
     <Photo
-      id={p.cover}
-      position={p.coverPosition}
+      id={id}
+      position={position}
       cyanotype={p.cyanotype ? 'reveal' : undefined}
       className='absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
     />
+  );
+
+  if (p.cyanotype) return <span className={cn('relative block min-w-0 overflow-hidden', className)}>{photo}</span>;
+
+  return (
+    <Link
+      viewTransition
+      to={`/proyectos/${p.slug}/foto/${projectPhotos(p).indexOf(id) + 1}`}
+      onPointerEnter={() => preloadPhoto(id, 'view')}
+      onFocus={() => preloadPhoto(id, 'view')}
+      className={cn('group relative block min-w-0 overflow-hidden', className)}
+    >
+      {photo}
+    </Link>
+  );
+};
+
+/**
+ * A project's cover with its title written on the photo, over a dark fade at
+ * the bottom. The photo opens the photo viewer; the title, the project page.
+ */
+const Cover = ({ p, large, className }: { p: Project; large?: boolean; className?: string }) => (
+  <div className={cn('relative min-w-0', className)}>
+    <ProjectPhoto p={p} id={p.cover} position={p.coverPosition} className='size-full' />
     <span
       aria-hidden
       className='pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-on-photo-ink/80 to-transparent'
     />
-    <span className='absolute inset-x-5 bottom-5 flex flex-col text-on-photo md:inset-x-8 md:bottom-8'>
-      <Typography variant={large ? 'header2' : 'header3'} as='span' noPadding className='m-0 text-on-photo'>
+    <Link
+      viewTransition
+      to={`/proyectos/${p.slug}`}
+      className='group/title absolute bottom-5 left-5 flex max-w-[calc(100%-2.5rem)] flex-col text-on-photo md:bottom-8 md:left-8 md:max-w-[calc(100%-4rem)]'
+    >
+      <Typography
+        variant={large ? 'header2' : 'header3'}
+        as='span'
+        noPadding
+        className='m-0 text-on-photo decoration-2 underline-offset-[0.12em] group-hover/title:underline'
+      >
         {p.title}
       </Typography>
       <span className='serif-voice t-serif text-on-photo/85'>{p.subtitle}</span>
       <span className='font-code mt-2 t-small tracking-[0.02em] text-on-photo/85'>
         {count(projectPhotos(p).length, 'foto', 'fotos')} · Ver proyecto →
       </span>
-    </span>
-  </Link>
+    </Link>
+  </div>
 );
 
 /** Mobile: the covers in a row that slides, with the next one peeking and a position indicator. */
@@ -104,7 +149,7 @@ const Carousel = ({ list }: { list: Array<Project> }) => {
  * A category on the portfolio page with all its projects together: the
  * heading on the left with the counts and the link to the category, and the
  * project covers side by side with the title written on each photo. On mobile
- * the covers slide.
+ * the covers slide. Photos open the photo viewer; titles open the project.
  */
 export const CategoryCovers = ({ c }: { c: Category }) => {
   const list = categoryProjects(c);
