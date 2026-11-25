@@ -1,15 +1,13 @@
 import { Typography } from 'polpo/components';
-import { Fragment } from 'react';
 
-import { ChipLink } from '../components/ChipLink';
+import { CategoryMosaics } from '../components/CategoryMosaics';
 import { ContactSection, Footer } from '../components/ContactSection';
 import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
-import { ProjectBlock } from '../components/ProjectBlock';
 import { contact } from '../content/contact';
-import { activeCategories, categoryPath, categoryProjects } from '../content/projects';
+import { activeCategories } from '../content/projects';
 
 export const PortfolioPage = () => (
   <>
@@ -78,19 +76,9 @@ export const PortfolioPage = () => (
       />
     </section>
 
-    {/* Projects by type; each divider links to the category's page. */}
+    {/* Projects by type, grouped: each category shows all its projects together and links to its page. */}
     {activeCategories().map(c => (
-      <Fragment key={c.id}>
-        <div className='flex flex-col items-center px-5 pt-30 pb-6 md:px-10 md:pt-50 md:pb-10'>
-          <DualTitle title={c.title} voice={c.voice} />
-          <ChipLink to={categoryPath(c)} className='mt-8 md:mt-10'>
-            Ver la categoría<span className='sr-only'> {`${c.title} ${c.voice}`}</span>
-          </ChipLink>
-        </div>
-        {categoryProjects(c).map(p => (
-          <ProjectBlock key={p.slug} p={p} />
-        ))}
-      </Fragment>
+      <CategoryMosaics key={c.id} c={c} />
     ))}
 
     <ContactSection />
