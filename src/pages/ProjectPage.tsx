@@ -1,6 +1,6 @@
 import { Typography } from 'polpo/components';
 import { FaHome } from 'react-icons/fa';
-import { FaCamera } from 'react-icons/fa6';
+import { FaCamera, FaImages } from 'react-icons/fa6';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -46,6 +46,13 @@ export const ProjectPage = () => {
               <FaHome />
               <Link viewTransition to='/' className='hover:text-bone border-b'>
                 Portafolio
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li className='flex gap-2 items-center'>
+              <FaImages />
+              <Link viewTransition to={`/categorias?c=${c.slug}`} className='hover:text-bone border-b'>
+                Categorías
               </Link>
             </li>
             <li aria-hidden>/</li>
