@@ -2,7 +2,9 @@ import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
+import { type PhotoId } from '../content/photos';
 import { categoryPath, categoryProjects, projectPhotos, type Category, type Project } from '../content/projects';
+import { preloadPhoto } from '../photoLoader';
 
 import { ChipLink } from './ChipLink';
 import { DualTitle } from './DualTitle';
@@ -26,18 +28,57 @@ const mosaicHeight = (k: number) =>
   ({ 1: 'md:h-[40rem]', 2: 'md:h-[32.5rem]', 3: 'md:h-[23.75rem]' })[k] ?? 'md:h-[23.75rem]';
 
 /**
+ * One photo of a project. Like the gallery, it opens in the photo viewer
+ * (preloading the big version on hover); in the cyanotype series it only
+ * reveals its color.
+ */
+const ProjectPhoto = ({
+  p,
+  id,
+  position,
+  className,
+}: {
+  p: Project;
+  id: PhotoId;
+  position?: string;
+  className?: string;
+}) => {
+  const photo = (
+    <Photo
+      id={id}
+      position={position}
+      cyanotype={p.cyanotype ? 'reveal' : undefined}
+      className='absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
+    />
+  );
+
+  if (p.cyanotype) return <span className={cn('relative block min-w-0 overflow-hidden', className)}>{photo}</span>;
+
+  return (
+    <Link
+      viewTransition
+      to={`/proyectos/${p.slug}/foto/${projectPhotos(p).indexOf(id) + 1}`}
+      onPointerEnter={() => preloadPhoto(id, 'view')}
+      onFocus={() => preloadPhoto(id, 'view')}
+      className={cn('group relative block min-w-0 overflow-hidden', className)}
+    >
+      {photo}
+    </Link>
+  );
+};
+
+/**
  * A project as a card: up to three of its photos (the cover large and two
  * small beside it, or two equal ones), then its title, second voice and
- * photo count. The whole card links to the project.
+ * photo count. Each photo opens the photo viewer; the text, the project page.
  */
 const MosaicCard = ({ p, k }: { p: Project; k: number }) => {
   const all = projectPhotos(p);
   const shown = all.slice(0, 3);
-  const cyanotype = p.cyanotype ? 'reveal' : undefined;
 
   return (
-    <Link viewTransition to={`/proyectos/${p.slug}`} className='group flex min-w-0 flex-1 flex-col gap-3 md:gap-4'>
-      <span
+    <div className='flex min-w-0 flex-1 flex-col gap-3 md:gap-4'>
+      <div
         className={cn(
           'grid h-60 gap-1.5 md:gap-2',
           mosaicHeight(k),
@@ -46,29 +87,30 @@ const MosaicCard = ({ p, k }: { p: Project; k: number }) => {
         )}
       >
         {shown.map((id, i) => (
-          <span
+          <ProjectPhoto
             key={id}
-            className={cn('relative min-h-0 overflow-hidden', shown.length === 3 && i === 0 && 'row-span-2')}
-          >
-            <Photo
-              id={id}
-              position={i === 0 ? p.coverPosition : undefined}
-              cyanotype={cyanotype}
-              className='absolute inset-0 size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
-            />
-          </span>
+            p={p}
+            id={id}
+            position={i === 0 ? p.coverPosition : undefined}
+            className={cn('min-h-0', shown.length === 3 && i === 0 && 'row-span-2')}
+          />
         ))}
-      </span>
-      <span className='flex flex-col'>
-        <Typography variant='header3' as='span' noPadding className='m-0'>
+      </div>
+      <Link viewTransition to={`/proyectos/${p.slug}`} className='group/title flex flex-col self-start'>
+        <Typography
+          variant='header3'
+          as='span'
+          noPadding
+          className='m-0 decoration-2 underline-offset-[0.12em] group-hover/title:underline'
+        >
           {p.title}
         </Typography>
         <span className='serif-voice t-serif'>{p.subtitle}</span>
         <span className='font-code mt-2 t-small tracking-[0.02em] text-ash'>
           {all.length} {all.length === 1 ? 'foto' : 'fotos'} · Ver proyecto →
         </span>
-      </span>
-    </Link>
+      </Link>
+    </div>
   );
 };
 
