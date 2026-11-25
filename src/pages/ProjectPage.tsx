@@ -1,4 +1,6 @@
 import { Typography } from 'polpo/components';
+import { FaHome } from 'react-icons/fa';
+import { FaCamera } from 'react-icons/fa6';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -20,10 +22,6 @@ import {
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
-import {LiaHomeSolid} from "react-icons/lia";
-import {LuCamera} from "react-icons/lu";
-import {FaCamera} from "react-icons/fa6";
-import {FaHome} from "react-icons/fa";
 
 export const ProjectPage = () => {
   const { slug } = useParams();
