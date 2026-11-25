@@ -49,9 +49,6 @@ export const CategoryPage = () => {
       <Navigation />
 
       <main>
-        <h1 className='sr-only'>
-          {c.title} {c.voice}
-        </h1>
         {c.intro && <p className='sr-only'>{c.intro}</p>}
         {/* Remounted per category, so each one starts at its first project (or the one in the address). */}
         <CategoryReel key={c.id} c={c} />

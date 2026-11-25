@@ -96,8 +96,8 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
       className={cn(
         'relative isolate h-[calc(100dvh-var(--header-h))] min-h-[36rem] overflow-hidden overscroll-contain',
         // Photo height; width follows (portrait on mobile, 4:3 on desktop) and the title sits a bit to its left.
-        '[--card-h:50cqh] [--card-w:calc(var(--card-h)*3/4)] [--title-shift:2.5rem]',
-        'md:[--card-h:54cqh] md:[--card-w:min(calc(var(--card-h)*4/3),46cqw)] md:[--title-shift:11rem]',
+        '[--card-h:48cqh] [--card-w:calc(var(--card-h)*3/4)] [--title-shift:2.5rem]',
+        'md:[--card-h:50cqh] md:[--card-w:min(calc(var(--card-h)*10/7),46cqw)] md:[--title-shift:11rem]',
       )}
     >
       <ul className='m-0 list-none p-0'>
@@ -110,7 +110,7 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
           return (
             <li
               key={p.slug}
-              className='absolute top-1/2 left-1/2'
+              className='absolute top-[calc(50%+1rem)] left-1/2'
               style={{
                 width: 'var(--card-w)',
                 height: 'var(--card-h)',
@@ -137,6 +137,14 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
                     aria-hidden
                     className='pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-ink/70 via-ink/30 to-transparent'
                   />
+                  <div className='pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2.5 bg-linear-to-t from-ink/85 via-ink/50 to-transparent px-4 pt-14 pb-4 md:gap-3 md:px-6 md:pb-5'>
+                    <p className='m-0 line-clamp-2 max-w-[28rem] text-[0.8125rem] leading-snug text-bone md:text-base'>
+                      {p.summary}
+                    </p>
+                    <span className='font-brand t-small tracking-[0.02em] text-bone uppercase'>
+                      {projectPhotos(p).length} {projectPhotos(p).length === 1 ? 'foto' : 'fotos'} · Ver proyecto →
+                    </span>
+                  </div>
                   {!p.cyanotype && (
                     <Link
                       viewTransition
@@ -160,6 +168,18 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
           );
         })}
       </ul>
+
+      {/* Category title, top center; the photo peeking above fades out behind it. */}
+      <span
+        aria-hidden
+        className='pointer-events-none absolute inset-x-0 top-0 z-[5] h-24 bg-linear-to-b from-ink to-transparent md:h-32'
+      />
+      <h1 className='absolute inset-x-0 top-3 z-10 m-0 flex items-baseline justify-center gap-2.5 text-bone md:top-5 md:gap-3'>
+        <Typography variant='header3' as='span' noPadding className='m-0 text-[1.625rem]! md:text-[2.5rem]!'>
+          {category.title}
+        </Typography>
+        <span className='serif-voice text-[1.625rem]! leading-none md:text-[2.5rem]!'>{category.voice}</span>
+      </h1>
 
       {/* Title and second voice, over the left edge of the photo (the soft shade on the photo keeps it readable). */}
       <div
@@ -212,13 +232,12 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
 
       {count > 1 && (
         <>
-          {/* Position: top right on mobile, bottom right with the arrow on desktop. */}
-          <div className='absolute top-5 right-5 z-20 font-code t-small text-bone md:right-10 md:bottom-10 md:top-auto md:flex md:flex-col md:items-end md:gap-1'>
+          {/* Position: just above the category bar on mobile, bottom right with the arrow on desktop. */}
+          <div className='absolute right-5 bottom-28 z-20 font-code t-small text-bone md:right-10 md:bottom-10 md:flex md:flex-col md:items-end md:gap-1'>
             <span aria-live='polite'>
               <span className='sr-only'>Proyecto </span>
               {pad(active + 1)} / {pad(count)}
             </span>
-            <span className='hidden text-ash md:block'>{projectPhotos(selected).length} fotos</span>
             <button
               type='button'
               onClick={next}
