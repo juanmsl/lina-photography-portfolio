@@ -4,12 +4,19 @@ import { Link, useParams } from 'react-router';
 import { ContactSection, Footer } from '../components/ContactSection';
 import { FactSheet } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
+import { NeighborLink } from '../components/NeighborLink';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
 import { StaggeredGallery } from '../components/StaggeredGallery';
-import { categoryOf, categoryPath, categoryProjects, findProject, projectPhotos } from '../content/projects';
+import {
+  categoryOf,
+  categoryPath,
+  findProject,
+  nextProject,
+  previousProject,
+  projectPhotos,
+} from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
-import { pad } from '../projectSelection';
 
 import { NotFoundPage } from './NotFoundPage';
 
@@ -20,9 +27,8 @@ export const ProjectPage = () => {
   if (!p) return <NotFoundPage />;
 
   const c = categoryOf(p);
-  const siblings = categoryProjects(c);
-  const position = siblings.indexOf(p);
-  const next = siblings.length > 1 ? siblings[(position + 1) % siblings.length] : undefined;
+  const next = nextProject(p);
+  const previous = previousProject(p);
   const order = projectPhotos(p);
   const photoIndex = { slug: p.slug, photoIndex: (id: (typeof order)[number]) => order.indexOf(id) };
 
@@ -123,32 +129,16 @@ export const ProjectPage = () => {
         </section>
       )}
 
-      {/* The next project of the category peeks from below, like in the reel. */}
-      {next && (
-        <Link
-          viewTransition
-          to={`/proyectos/${next.slug}`}
-          rel='next'
-          onPointerEnter={() => preloadPhoto(next.cover, 'thumb')}
-          className='group relative block h-[26rem] overflow-hidden border-t border-graphite md:h-[34rem]'
+      {previous !== p && (
+        <nav
+          aria-label='Otros proyectos'
+          className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
         >
-          <span className='absolute top-6 left-5 font-code t-small tracking-[0.02em] text-ash uppercase md:top-10 md:left-10'>
-            Siguiente proyecto · {pad(position + 2 > siblings.length ? 1 : position + 2)} / {pad(siblings.length)}
-          </span>
-          <span className='absolute top-20 left-1/2 aspect-[3/4] w-[min(70vw,17rem)] -translate-x-1/2 md:top-24 md:aspect-[4/3] md:w-[min(46vw,37.5rem)]'>
-            <Photo
-              id={next.cover}
-              position={next.coverPosition}
-              className='size-full opacity-60 transition-opacity duration-500 group-hover:opacity-100'
-            />
-          </span>
-          <span className='pointer-events-none absolute top-52 left-5 z-10 text-bone md:top-60 md:left-[max(2.5rem,calc(50%-min(23vw,18.75rem)-11rem))]'>
-            <Typography variant='header3' as='span' noPadding className='m-0 block'>
-              {next.title}
-            </Typography>
-            <span className='serif-voice t-serif -mt-[0.1em] block pl-8 md:pl-12'>{next.subtitle.toLowerCase()}</span>
-          </span>
-        </Link>
+          <NeighborLink noun='proyecto' to={`/proyectos/${previous.slug}`} direction='previous' text={previous.title} />
+          {next !== previous && (
+            <NeighborLink noun='proyecto' to={`/proyectos/${next.slug}`} direction='next' text={next.title} />
+          )}
+        </nav>
       )}
 
       <ContactSection withText />

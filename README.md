@@ -167,8 +167,8 @@ its title over the edge of the photo, the previous and next peeking above and be
 left. The mouse wheel, ↑ ↓, a swipe, the dots and the arrow move it (it is circular); the selected project is kept in
 the address as `?p=<slug>`. Clicking the photo or the title opens `/proyectos/:slug`: the cover and the title travel
 there (view transition names `project-cover` and `project-title`, see index.css). The project page opens with the cover
-full screen, then text, facts, the photos two by two (`StaggeredGallery`) and the next project of the category peeking
-from below; "← Category · Resumen" goes back to the reel on that project.
+full screen, then text, facts, the photos two by two (`StaggeredGallery`) and the previous and next project links;
+"← Category · Resumen" goes back to the reel on that project.
 
 `/categorias` (in the main navigation) shows every category's photos in a carousel, with chips to switch category
 (kept in the address as `?c=<slug>`); the middle photo opens the photo viewer and the caption links to its project.
