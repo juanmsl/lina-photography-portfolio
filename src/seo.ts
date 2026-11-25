@@ -179,6 +179,35 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
       : notFound;
   }
 
+  if (path === '/categorias') {
+    const labels = activeCategories().map(c => c.label.toLowerCase());
+    const description = `Recorre las fotos de ${PERSON_NAME} por categoría: ${labels.join(', ')}.`;
+
+    return {
+      ...base(`Portafolio por categorías · ${SITE_NAME}`, description),
+      jsonLd: graph(
+        {
+          '@type': 'CollectionPage',
+          url: absoluteUrl(path),
+          name: 'Portafolio por categorías',
+          description,
+          inLanguage: 'es-CO',
+          isPartOf: { '@id': website['@id'] },
+          about: { '@id': PERSON_ID },
+          hasPart: activeCategories().map(c => ({
+            '@type': 'CollectionPage',
+            name: `${c.title} ${c.voice}`,
+            url: absoluteUrl(categoryPath(c)),
+          })),
+        },
+        breadcrumbs([
+          ['Portafolio', '/'],
+          ['Categorías', path],
+        ]),
+      ),
+    };
+  }
+
   const category = /^\/categorias\/([^/]+)$/.exec(path);
 
   if (category) {
@@ -215,6 +244,7 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
         },
         breadcrumbs([
           ['Portafolio', '/'],
+          ['Categorías', '/categorias'],
           [name, path],
         ]),
       ),
@@ -252,6 +282,7 @@ export const metaFor = (pathname: string, photoUrl: PhotoUrl = localPhotoUrl): R
         },
         breadcrumbs([
           ['Portafolio', '/'],
+          ['Categorías', '/categorias'],
           [`${categoryOf(p).title} ${categoryOf(p).voice}`, categoryPath(categoryOf(p))],
           [p.title, path],
         ]),
@@ -268,6 +299,7 @@ export const indexableRoutes = (): Array<string> =>
     '/',
     '/servicios',
     '/cotizar',
+    '/categorias',
     ...activeCategories().map(categoryPath),
     ...projects.map(p => `/proyectos/${p.slug}`),
   ].filter(r => metaFor(r).indexable);
