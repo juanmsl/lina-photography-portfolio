@@ -1,11 +1,12 @@
 import { Typography } from 'polpo/components';
-import { Link, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { ChipLink } from '../components/ChipLink';
 import { ContactSection, Footer } from '../components/ContactSection';
 import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
+import { NeighborLink } from '../components/NeighborLink';
 import { ProjectBlock } from '../components/ProjectBlock';
 import {
   activeCategories,
@@ -14,27 +15,9 @@ import {
   categoryProjects,
   findCategory,
   neighborCategories,
-  type Category,
 } from '../content/projects';
 
 import { NotFoundPage } from './NotFoundPage';
-
-const NeighborLink = ({ c, direction }: { c: Category; direction: 'previous' | 'next' }) => (
-  <Link
-    viewTransition
-    to={categoryPath(c)}
-    rel={direction === 'previous' ? 'prev' : 'next'}
-    className={`group flex flex-col gap-2 md:gap-3 ${direction === 'next' ? 'items-end text-right' : 'items-start'}`}
-  >
-    <Typography variant='small' as='span' noPadding className='font-code m-0 tracking-[0.02em] text-ash'>
-      {direction === 'previous' ? '← Anterior' : 'Siguiente →'}
-      <span className='sr-only'>: {c.title}</span>
-    </Typography>
-    <span className='serif-voice t-serif text-bone decoration-1 md:t-serif-xl underline-offset-[0.12em] group-hover:underline'>
-      {c.voice}
-    </span>
-  </Link>
-);
 
 /** A category: its heading, links to the other categories and all its projects. */
 export const CategoryPage = () => {
@@ -94,8 +77,15 @@ export const CategoryPage = () => {
           aria-label='Otras categorías'
           className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
         >
-          <NeighborLink c={previous} direction='previous' />
-          {next !== previous && <NeighborLink c={next} direction='next' />}
+          <NeighborLink
+            to={categoryPath(previous)}
+            direction='previous'
+            text={previous.voice}
+            srText={previous.title}
+          />
+          {next !== previous && (
+            <NeighborLink to={categoryPath(next)} direction='next' text={next.voice} srText={next.title} />
+          )}
         </nav>
       )}
 

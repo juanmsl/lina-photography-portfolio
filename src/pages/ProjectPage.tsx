@@ -1,6 +1,4 @@
 import { Typography } from 'polpo/components';
-import { cn } from 'polpo/helpers';
-import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
 import { Link, useParams } from 'react-router';
 
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -8,6 +6,7 @@ import { DualTitle } from '../components/DualTitle';
 import { FactSheet } from '../components/FactSheet';
 import { Gallery } from '../components/Gallery';
 import { Navigation } from '../components/Navigation';
+import { NeighborLink } from '../components/NeighborLink';
 import { Photo } from '../components/Photo';
 import { ProjectHeading } from '../components/ProjectHeading';
 import {
@@ -17,38 +16,10 @@ import {
   projectPhotos,
   nextProject,
   previousProject,
-  type Project,
 } from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
-
-/** Link to the previous or next project: its cover, a round arrow, its title and the direction in the second voice. */
-const NeighborProject = ({ p, direction }: { p: Project; direction: 'previous' | 'next' }) => {
-  const isNext = direction === 'next';
-
-  return (
-    <Link
-      viewTransition
-      to={`/proyectos/${p.slug}`}
-      rel={isNext ? 'next' : 'prev'}
-      className={cn('group flex flex-col gap-5 md:gap-6', isNext && 'md:items-end md:text-right')}
-    >
-      <Photo id={p.cover} position={p.coverPosition} className='aspect-[440/280] w-full' />
-      <span className={cn('flex items-center gap-5 md:gap-6', isNext && 'md:flex-row-reverse')}>
-        <span className='grid size-14 shrink-0 place-content-center rounded-full border border-graphite transition-colors group-hover:border-bone md:size-18'>
-          {isNext ? <LuArrowRight size={24} aria-hidden /> : <LuArrowLeft size={24} aria-hidden />}
-        </span>
-        <span className='flex flex-col'>
-          <Typography variant='header2' as='span' noPadding className='m-0'>
-            {p.title}
-          </Typography>
-          <span className='serif-voice -mt-1 t-serif'>{isNext ? 'siguiente proyecto' : 'proyecto anterior'}</span>
-        </span>
-      </span>
-    </Link>
-  );
-};
 
 export const ProjectPage = () => {
   const { slug } = useParams();
@@ -147,13 +118,15 @@ export const ProjectPage = () => {
         </section>
       )}
 
-      <nav
-        aria-label='Otros proyectos'
-        className='grid gap-14 border-t border-graphite px-5 py-12 md:grid-cols-2 md:gap-10 md:px-10 md:py-16'
-      >
-        <NeighborProject p={previous} direction='previous' />
-        <NeighborProject p={next} direction='next' />
-      </nav>
+      {previous !== p && (
+        <nav
+          aria-label='Otros proyectos'
+          className='flex items-start justify-between gap-6 border-t border-graphite px-5 pt-10 pb-16 md:px-10 md:pt-20 md:pb-30'
+        >
+          <NeighborLink to={`/proyectos/${previous.slug}`} direction='previous' text={previous.title} />
+          {next !== previous && <NeighborLink to={`/proyectos/${next.slug}`} direction='next' text={next.title} />}
+        </nav>
+      )}
 
       <ContactSection withText />
       <Footer />
