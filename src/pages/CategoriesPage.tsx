@@ -199,7 +199,7 @@ const Carousel = ({ c }: { c: Category }) => {
             transition: dragging || jumps ? 'none' : undefined,
           };
           const className = cn(
-            'absolute top-1/2 left-1/2 block aspect-[4/5] w-[16.875rem] overflow-hidden will-change-transform md:w-[32.5rem]',
+            'group group/photo absolute top-1/2 left-1/2 block aspect-[4/5] w-[16.875rem] overflow-hidden will-change-transform md:w-[32.5rem]',
             'transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
             opacity === 0 && 'pointer-events-none',
           );
@@ -209,6 +209,9 @@ const Carousel = ({ c }: { c: Category }) => {
            * being) the current photo, so its move is animated like the others;
            * only the layer on top changes: a link to the photo viewer in the
            * middle, a button that brings the photo to the middle on the sides.
+           * The card carries the hover groups (`group`, `group/photo`), so the
+           * zoom and the cyanotype-to-color reveal still react to the pointer
+           * through that top layer.
            */
           return (
             <div key={s.key} data-current={centered || undefined} className={className} style={style}>
@@ -216,7 +219,7 @@ const Carousel = ({ c }: { c: Category }) => {
                 id={s.id}
                 position={s.id === s.p.cover ? s.p.coverPosition : undefined}
                 cyanotype={s.p.cyanotype ? 'reveal' : undefined}
-                className='size-full'
+                className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
               />
               <span
                 aria-hidden
