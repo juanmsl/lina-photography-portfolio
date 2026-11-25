@@ -1,7 +1,7 @@
 import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
 import { useEventListener } from 'polpo/hooks';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LuArrowLeft, LuArrowRight } from 'react-icons/lu';
 import { Link, useSearchParams } from 'react-router';
 
@@ -27,109 +27,182 @@ type Slide = { id: PhotoId; p: Project; n: number };
 const slidesOf = (c: Category): Array<Slide> =>
   categoryProjects(c).flatMap(p => projectPhotos(p).map((id, i) => ({ id, p, n: i + 1 })));
 
+/** Positions along the track: the current photo, then each neighbor further out. `x` is a share of the card width. */
+const STOPS = [
+  { x: 0, scale: 1, dim: 0 },
+  { x: 82, scale: 0.85, dim: 0.38 },
+  { x: 150, scale: 0.66, dim: 0.62 },
+  { x: 200, scale: 0.5, dim: 1 },
+];
+
 /**
- * Where a card sits relative to the current photo: the current one centered
- * and full size, the neighbors smaller and darker towards the sides, one
- * behind the other. `x` is a share of the card width.
+ * Where a card sits for a (possibly fractional, while dragging) distance from
+ * the current photo: interpolated between the stops, so the cards glide
+ * between them. Past the third stop a card is fully faded out.
  */
 const place = (offset: number) => {
-  const d = Math.abs(offset);
-  const side = Math.sign(offset);
+  const d = Math.min(Math.abs(offset), STOPS.length - 1);
+  const i = Math.min(Math.floor(d), STOPS.length - 2);
+  const t = d - i;
+  const lerp = (k: 'x' | 'scale' | 'dim') => STOPS[i][k] + (STOPS[i + 1][k] - STOPS[i][k]) * t;
 
-  if (d === 0) return { x: 0, scale: 1, dim: 0, z: 30, visible: true };
-
-  if (d === 1) return { x: side * 82, scale: 0.85, dim: 0.38, z: 20, visible: true };
-
-  if (d === 2) return { x: side * 150, scale: 0.66, dim: 0.62, z: 10, visible: true };
-
-  return { x: side * 200, scale: 0.5, dim: 1, z: 0, visible: false };
+  return {
+    x: Math.sign(offset) * lerp('x'),
+    scale: lerp('scale'),
+    dim: lerp('dim'),
+    opacity: d > 2 ? 3 - d : 1,
+    z: Math.round(30 - d * 10),
+  };
 };
+
+/** The shortest signed distance from `from` to `to` around a circle of `n` positions. */
+const ringOffset = (to: number, from: number, n: number) => {
+  const d = (((to - from) % n) + n) % n;
+
+  return d > n / 2 ? d - n : d;
+};
+
+/** At least 7 cards are needed so the ring always has photos on both sides: short categories repeat theirs. */
+const MIN_CARDS = 7;
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
 const RoundButton = ({
   label,
-  disabled,
   onClick,
   children,
 }: {
   label: string;
-  disabled: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) => (
   <button
     type='button'
     aria-label={label}
-    disabled={disabled}
     onClick={onClick}
-    className='grid size-12 place-content-center rounded-full border border-graphite text-bone transition-[border-color,opacity] hover:border-bone disabled:pointer-events-none disabled:opacity-35 md:size-14'
+    className='grid size-12 place-content-center rounded-full border border-graphite text-bone transition-colors hover:border-bone md:size-14'
   >
     {children}
   </button>
 );
 
 /**
- * The photos of one category in a carousel: the current one in the middle
- * opens the photo viewer, the neighbors move the carousel. Arrows, the
- * keyboard (← →) and swiping on touch screens move it too. Below: the project
- * the photo belongs to, the place and the position.
+ * The photos of one category in an endless carousel: the current one in the
+ * middle opens the photo viewer, the neighbors move the carousel. Arrows, the
+ * keyboard (← →) and dragging or swiping move it; after the last photo comes
+ * the first again. Below: the project the photo belongs to, the place and the
+ * position.
  */
 const Carousel = ({ c }: { c: Category }) => {
   const slides = slidesOf(c);
-  const [active, setActive] = useState(0);
-  const touchX = useRef<number>(undefined);
-  const current = slides.at(active);
+  const total = slides.length;
+  // Short categories repeat their photos so the ring is never empty on a side.
+  const copies = total ? Math.ceil(MIN_CARDS / total) : 0;
+  const cards = Array.from({ length: copies }, (_, copy) => slides.map(s => ({ ...s, key: `${copy}-${s.id}` }))).flat();
+  const [position, setPosition] = useState(0);
+  const [drag, setDrag] = useState<number>();
+  const start = useRef<{ x: number; width: number; moved: boolean }>(undefined);
+  // The photo that was current on the last screen update, to spot cards that wrap around the ring.
+  const shown = useRef(0);
+  const dragged = useRef(false);
 
-  const go = (i: number) => setActive(Math.min(Math.max(i, 0), slides.length - 1));
+  const step = (by: number) => setPosition(current => current + by);
+  const active = ((position % cards.length) + cards.length) % cards.length;
+  const current = cards[active];
+
+  useEffect(() => {
+    shown.current = active;
+  }, [active]);
 
   useEventListener('keydown', (e: KeyboardEvent) => {
     const target = e.target as HTMLElement | null;
 
     if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
 
-    if (e.key === 'ArrowLeft') go(active - 1);
+    if (e.key === 'ArrowLeft') step(-1);
 
-    if (e.key === 'ArrowRight') go(active + 1);
+    if (e.key === 'ArrowRight') step(1);
   });
 
   if (!current) return null;
 
   const info = photos[current.id];
   const where = [info.region, info.coordinates && formatCoordinates(info.coordinates)].filter(Boolean).join(' · ');
+  const dragging = drag !== undefined;
 
   return (
     <div aria-roledescription='carrusel' aria-label={`Fotos de ${c.title.toLowerCase()} ${c.voice}`}>
       <div
-        className='relative mx-auto h-[23.5rem] overflow-hidden md:h-[44rem]'
-        onTouchStart={e => {
-          touchX.current = e.touches[0]?.clientX;
+        className={cn(
+          'relative mx-auto h-[23.5rem] touch-pan-y overflow-hidden select-none md:h-[44rem]',
+          dragging ? 'cursor-grabbing' : 'cursor-grab',
+        )}
+        onPointerDown={e => {
+          if (e.button !== 0) return;
+
+          dragged.current = false;
+
+          const card = e.currentTarget.querySelector<HTMLElement>('[data-current]');
+
+          start.current = { x: e.clientX, width: (card?.offsetWidth ?? 300) * 0.82, moved: false };
         }}
-        onTouchEnd={e => {
-          const start = touchX.current;
-          const end = e.changedTouches[0]?.clientX;
+        onPointerMove={e => {
+          const s = start.current;
 
-          touchX.current = undefined;
+          if (!s) return;
 
-          if (start === undefined || end === undefined || Math.abs(end - start) < 40) return;
+          const dx = e.clientX - s.x;
 
-          go(end < start ? active + 1 : active - 1);
+          if (!s.moved && Math.abs(dx) < 6) return;
+
+          if (!s.moved) e.currentTarget.setPointerCapture(e.pointerId);
+
+          s.moved = true;
+          setDrag(-dx / s.width);
+        }}
+        onPointerUp={() => {
+          const s = start.current;
+
+          start.current = undefined;
+
+          if (!s?.moved || drag === undefined) return setDrag(undefined);
+
+          dragged.current = true;
+
+          // Snap to the nearest photo; a short flick still moves one.
+          const by = Math.abs(drag) < 0.5 && Math.abs(drag) > 0.12 ? Math.sign(drag) : Math.round(drag);
+
+          setDrag(undefined);
+          step(by);
+        }}
+        onPointerCancel={() => {
+          start.current = undefined;
+          setDrag(undefined);
+        }}
+        onClickCapture={e => {
+          // A drag that ends on a photo is not a click.
+          if (dragged.current) e.preventDefault();
+
+          dragged.current = false;
         }}
       >
-        {slides.map((s, i) => {
-          const offset = i - active;
-
-          // Only the cards that can be seen, plus one on each side so they slide in.
-          if (Math.abs(offset) > 3) return null;
-
-          const { x, scale, dim, z, visible } = place(offset);
+        {cards.map((s, i) => {
+          const offset = ringOffset(i, active, cards.length) - (drag ?? 0);
+          // Cards that wrap around the ring jump to the other side while hidden, without sliding across.
+          const jumps = Math.abs(offset - ringOffset(i, shown.current, cards.length)) > 2;
+          const { x, scale, dim, opacity, z } = place(offset);
+          const centered = Math.round(offset) === 0 && !dragging;
           const style = {
             transform: `translate(-50%, -50%) translateX(${x}%) scale(${scale})`,
             zIndex: z,
-            opacity: visible ? 1 : 0,
+            opacity,
+            transition: dragging || jumps ? 'none' : undefined,
           };
-          const className =
-            'absolute top-1/2 left-1/2 block aspect-[4/5] w-[16.875rem] overflow-hidden transition-[transform,opacity] duration-500 ease-out motion-reduce:transition-none md:w-[32.5rem]';
+          const className = cn(
+            'absolute top-1/2 left-1/2 block aspect-[4/5] w-[16.875rem] overflow-hidden will-change-transform md:w-[32.5rem]',
+            'transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+            opacity === 0 && 'pointer-events-none',
+          );
           const content = (
             <>
               <Photo
@@ -140,17 +213,19 @@ const Carousel = ({ c }: { c: Category }) => {
               />
               <span
                 aria-hidden
-                className='pointer-events-none absolute inset-0 z-10 bg-on-photo-ink transition-opacity duration-500 motion-reduce:transition-none'
-                style={{ opacity: dim }}
+                className='pointer-events-none absolute inset-0 z-10 bg-on-photo-ink transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
+                style={{ opacity: dim, transition: dragging || jumps ? 'none' : undefined }}
               />
             </>
           );
 
-          if (offset === 0) {
+          if (centered) {
             return (
               <Link
-                key={s.id}
+                key={s.key}
+                data-current
                 viewTransition
+                draggable={false}
                 to={`/proyectos/${s.p.slug}/foto/${s.n}`}
                 onPointerEnter={() => preloadPhoto(s.id, 'view')}
                 onFocus={() => preloadPhoto(s.id, 'view')}
@@ -164,12 +239,12 @@ const Carousel = ({ c }: { c: Category }) => {
 
           return (
             <button
-              key={s.id}
+              key={s.key}
               type='button'
               tabIndex={-1}
               aria-hidden
-              onClick={() => go(i)}
-              className={cn(className, !visible && 'pointer-events-none')}
+              onClick={() => step(ringOffset(i, active, cards.length))}
+              className={className}
               style={style}
             >
               {content}
@@ -198,7 +273,7 @@ const Carousel = ({ c }: { c: Category }) => {
         </Typography>
 
         <div className='mt-6 flex items-center gap-5 md:mt-9 md:gap-6'>
-          <RoundButton label='Foto anterior' disabled={active === 0} onClick={() => go(active - 1)}>
+          <RoundButton label='Foto anterior' onClick={() => step(-1)}>
             <LuArrowLeft size={22} aria-hidden />
           </RoundButton>
           <Typography
@@ -208,9 +283,9 @@ const Carousel = ({ c }: { c: Category }) => {
             aria-live='polite'
             className='font-code m-0 min-w-16 tracking-[0.02em] text-ash'
           >
-            {pad(active + 1)} / {pad(slides.length)}
+            {pad((active % total) + 1)} / {pad(total)}
           </Typography>
-          <RoundButton label='Foto siguiente' disabled={active === slides.length - 1} onClick={() => go(active + 1)}>
+          <RoundButton label='Foto siguiente' onClick={() => step(1)}>
             <LuArrowRight size={22} aria-hidden />
           </RoundButton>
         </div>
