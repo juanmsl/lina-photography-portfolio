@@ -320,9 +320,9 @@ export const CategoriesPage = () => {
         {c && (
           <>
             <nav aria-label='Categorías' className='mt-7 md:mt-12'>
-              <ul className='relative m-0 flex list-none gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible md:px-10 [&::-webkit-scrollbar]:hidden'>
+              <ul className='m-0 flex list-none flex-wrap justify-center gap-2 px-5 md:px-10'>
                 {categories.map(o => (
-                  <li key={o.id} className='shrink-0'>
+                  <li key={o.id}>
                     <button
                       type='button'
                       aria-pressed={o === c}
@@ -336,7 +336,7 @@ export const CategoriesPage = () => {
                     </button>
                   </li>
                 ))}
-                <li className='relative shrink-0 md:ml-2'>
+                <li className='md:ml-2'>
                   <ChipLink to={categoryPath(c)}>
                     Ver la categoría →<span className='sr-only'> {`${c.title} ${c.voice}`}</span>
                   </ChipLink>
