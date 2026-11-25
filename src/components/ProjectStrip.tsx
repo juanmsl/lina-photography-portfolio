@@ -26,21 +26,20 @@ const Outline = ({ children, className }: { children: React.ReactNode; className
 /**
  * Where a card sits for its distance from the selected project, as left and
  * width in % of the stage. Desktop: the selected one large on the right of the
- * stage and the two before it as narrow strips on its left; the rest wait
- * hidden further left. Mobile: the selected one in the middle with
+ * stage and the two before it as narrow strips on its left, the second one
+ * cut by the edge of the page; the rest wait hidden further left. Mobile: the selected one in the middle with
  * the neighbors peeking at the sides.
  */
 const place = (offset: number, desktop: boolean) => {
   if (desktop) {
-    if (offset === 0) return { left: 40, width: 60, opacity: 1, dim: 0 };
+    if (offset === 0) return { left: 34.3, width: 65.7, opacity: 1, dim: 0 };
 
-    if (offset === -1) return { left: 20, width: 18, opacity: 1, dim: 0.35 };
+    if (offset === -1) return { left: 8.2, width: 22.3, opacity: 1, dim: 0.35 };
 
-    if (offset === -2) return { left: 0, width: 18, opacity: 1, dim: 0.35 };
+    // The second strip runs off the left edge of the page.
+    if (offset === -2) return { left: -16.4, width: 22.3, opacity: 1, dim: 0.35 };
 
-    if (offset < 0) return { left: -20, width: 18, opacity: 0, dim: 0.35 };
-
-    return { left: 100, width: 0, opacity: 0, dim: 0.35 };
+    return { left: -41, width: 22.3, opacity: 0, dim: 0.35 };
   }
 
   if (offset === 0) return { left: 15, width: 70, opacity: 1, dim: 0 };
@@ -65,9 +64,8 @@ const Round = ({ label, onClick, children }: { label: string; onClick: () => voi
 
 /**
  * Option 1 · the projects of a category as a strip: the selected one large
- * with its title on the cover, the ones before it as narrow strips with their
- * outlined number, and on the right a panel with the big number, the title,
- * the summary, an index of the others and the arrows. It goes round in a ring.
+ * with its outlined number on the cover, the ones before it as narrow strips with their
+ * outlined number, and on the right a panel with the title, the summary, an index of the others and the arrows. It goes round in a ring.
  */
 export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
   const desktop = useIsDesktop();
@@ -98,7 +96,7 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
     ) : null;
 
   return (
-    <section aria-label='Proyectos de la categoría' className='pt-12 pb-10 md:pt-20 md:pb-12'>
+    <section aria-label='Proyectos de la categoría' className='overflow-x-clip pt-12 pb-10 md:pt-20 md:pb-12'>
       {/* Mobile: number and title above the strip. */}
       <div className='flex items-center gap-3.5 px-5 md:hidden'>
         <Outline className='text-[4rem]'>{pad(active + 1)}</Outline>
@@ -110,7 +108,7 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
         </Link>
       </div>
 
-      <div className='mt-6 md:mt-0 md:grid md:grid-cols-[minmax(0,1fr)_25rem] md:gap-16 md:px-10'>
+      <div className='mt-6 md:mt-0 md:grid md:grid-cols-[minmax(0,1fr)_25rem] md:gap-12 md:pr-24 md:pl-10'>
         <div>
           <div
             className='relative h-75 overflow-hidden md:h-[27.5rem] md:overflow-visible'
@@ -149,14 +147,12 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
                         aria-hidden
                         className='absolute inset-0 bg-linear-to-t from-on-photo-ink/75 via-transparent to-transparent'
                       />
-                      <span className='absolute inset-x-7 top-1/2 hidden -translate-y-1/2 flex-col items-end text-right md:flex'>
-                        <Typography variant='header2' as='span' noPadding className='m-0 text-on-photo'>
-                          {q.title}
-                        </Typography>
-                        <span className='serif-voice t-serif text-on-photo/85'>{q.subtitle}</span>
-                      </span>
+                      <span className='sr-only'>{q.title}</span>
+                      <Outline className='absolute -right-2 -bottom-6 hidden text-[9.75rem] opacity-85 md:block'>
+                        {pad(i + 1)}
+                      </Outline>
                       <span className='font-code absolute bottom-4 left-4 t-small tracking-[0.02em] text-on-photo/85 md:bottom-6 md:left-6'>
-                        {projectPhotos(q).length} fotos<span className='sr-only'> · Ver proyecto {q.title}</span>
+                        {projectPhotos(q).length} fotos<span className='sr-only'> · Ver proyecto</span>
                       </span>
                     </Link>
                   ) : (
@@ -176,15 +172,12 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
             })}
           </div>
 
-          {/* Desktop: summary of the selected project under its cover. */}
-          <div className='mt-6 hidden md:ml-[40%] md:flex md:items-start md:justify-between md:gap-8'>
-            <Typography noPadding className='m-0 max-w-[24rem] border-l border-graphite pl-4 text-ash'>
-              {p.summary}
-            </Typography>
+          {/* Desktop: link to the selected project, under the right edge of its cover. */}
+          <div className='mt-6 hidden justify-end md:flex'>
             <Link
               viewTransition
               to={`/proyectos/${p.slug}`}
-              className='flex shrink-0 items-center gap-3.5 t-label font-semibold hover:text-ash'
+              className='flex items-center gap-3.5 t-label font-semibold hover:text-ash'
             >
               <span aria-hidden className='h-px w-10 bg-ash' />
               Ver proyecto →
@@ -194,24 +187,18 @@ export const ProjectStrip = ({ list, active, go, previous, next }: Props) => {
 
         {/* Desktop: side panel. */}
         <div className='hidden md:flex md:flex-col'>
-          <div className='flex items-start gap-6'>
-            <span className='flex items-center gap-3'>
-              <span aria-hidden className='h-px w-12 bg-graphite' />
-              <Outline className='text-[6rem]'>{pad(active + 1)}</Outline>
-            </span>
-            <Link viewTransition to={`/proyectos/${p.slug}`} className='group/title flex flex-col pt-3.5'>
-              <Typography
-                variant='header3'
-                as='span'
-                noPadding
-                className='m-0 decoration-2 underline-offset-[0.12em] group-hover/title:underline'
-              >
-                {p.title}
-              </Typography>
-              <span className='serif-voice t-serif'>{p.subtitle}</span>
-            </Link>
-          </div>
-          <Typography noPadding className='m-0 mt-4 max-w-[15rem] text-ash'>
+          <Link viewTransition to={`/proyectos/${p.slug}`} className='group/title flex flex-col'>
+            <Typography
+              variant='header3'
+              as='span'
+              noPadding
+              className='m-0 text-[3rem]! decoration-2 underline-offset-[0.12em] group-hover/title:underline'
+            >
+              {p.title}
+            </Typography>
+            <span className='serif-voice text-[2.625rem] leading-[1.1]'>{p.subtitle}</span>
+          </Link>
+          <Typography noPadding className='m-0 mt-4 text-ash'>
             {p.summary}
           </Typography>
           {n > 1 && (
