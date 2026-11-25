@@ -74,10 +74,7 @@ export const projects: Array<Project> = [
       ['riverCanoe', 'crescentMoon'],
     ],
     cover: 'riverSunset',
-    gallery: [
-      ['riverHouses', 'riverCanoe'],
-      ['goldenSky', 'crescentMoon'],
-    ],
+    gallery: [['riverHouses', 'riverCanoe', 'goldenSky', 'crescentMoon']],
   },
   {
     slug: 'interiores',

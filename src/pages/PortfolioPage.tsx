@@ -1,4 +1,6 @@
 import { Typography } from 'polpo/components';
+import { Fragment } from 'react';
+import { Link } from 'react-router';
 
 import { CategoryCovers } from '../components/CategoryCovers';
 import { ContactSection, Footer } from '../components/ContactSection';
@@ -7,7 +9,7 @@ import { FactSheet } from '../components/FactSheet';
 import { Navigation } from '../components/Navigation';
 import { Photo } from '../components/Photo';
 import { contact } from '../content/contact';
-import { activeCategories } from '../content/projects';
+import { activeCategories, categoryPath } from '../content/projects';
 
 export const PortfolioPage = () => (
   <>
@@ -34,9 +36,18 @@ export const PortfolioPage = () => (
         <Typography variant='small' noPadding className='font-code m-0 tracking-[0.02em] text-ash'>
           {contact.base} · {contact.baseCoordinates}
         </Typography>
-        <Typography noPadding className='m-0 hidden text-ash md:block'>
-          Paisaje · Naturaleza · Arquitectura · Retrato · Moda · Producto
-        </Typography>
+        <nav aria-label='Categorías del portafolio' className='hidden md:block'>
+          <Typography noPadding className='m-0 text-ash'>
+            {activeCategories().map((c, i) => (
+              <Fragment key={c.id}>
+                {i > 0 && ' · '}
+                <Link viewTransition to={categoryPath(c)} className='transition-colors hover:text-bone'>
+                  {c.label}
+                </Link>
+              </Fragment>
+            ))}
+          </Typography>
+        </nav>
       </div>
     </section>
 
