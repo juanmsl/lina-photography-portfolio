@@ -15,8 +15,8 @@ export const pad = (n: number) => String(n).padStart(2, '0');
  * (after the last comes the first). The arrow keys move it too, unless the
  * focus is in a field.
  */
-export const useProjectSelection = (count: number) => {
-  const [active, setActive] = useState(0);
+export const useProjectSelection = (count: number, initial = 0) => {
+  const [active, setActive] = useState(initial);
   const go = (i: number) => setActive(count ? ((i % count) + count) % count : 0);
 
   useEventListener('keydown', (e: KeyboardEvent) => {
@@ -24,9 +24,15 @@ export const useProjectSelection = (count: number) => {
 
     if (count < 2 || target?.closest('input, textarea, select, [contenteditable="true"]')) return;
 
-    if (e.key === 'ArrowLeft') go(active - 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      go(active - 1);
+    }
 
-    if (e.key === 'ArrowRight') go(active + 1);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      go(active + 1);
+    }
   });
 
   return { active, go, previous: () => go(active - 1), next: () => go(active + 1) };
@@ -50,23 +56,27 @@ export const useIsDesktop = () =>
     () => true,
   );
 
-/** Follows a horizontal swipe on touch screens: left → next, right → previous. */
-export const swipeHandlers = (onPrevious: () => void, onNext: () => void) => {
-  let startX: number | undefined;
+/**
+ * Follows a swipe on touch screens: left (or up, with `axis` "y") → next,
+ * right (or down) → previous.
+ */
+export const swipeHandlers = (onPrevious: () => void, onNext: () => void, axis: 'x' | 'y' = 'x') => {
+  let start: number | undefined;
+  const point = (t?: { clientX: number; clientY: number }) => (axis === 'x' ? t?.clientX : t?.clientY);
 
   return {
     onTouchStart: (e: React.TouchEvent) => {
-      startX = e.touches[0]?.clientX;
+      start = point(e.touches[0]);
     },
     onTouchEnd: (e: React.TouchEvent) => {
-      const end = e.changedTouches[0]?.clientX;
+      const end = point(e.changedTouches[0]);
 
-      if (startX === undefined || end === undefined || Math.abs(end - startX) < 40) return;
+      if (start === undefined || end === undefined || Math.abs(end - start) < 40) return;
 
-      if (end < startX) onNext();
+      if (end < start) onNext();
       else onPrevious();
 
-      startX = undefined;
+      start = undefined;
     },
   };
 };
