@@ -68,10 +68,10 @@ export const ProjectPage = () => {
           <Link
             viewTransition
             to={`${categoryPath(c)}?p=${p.slug}`}
-            className='font-code t-small tracking-[0.02em] text-on-photo uppercase'
+            className='font-brand t-small tracking-[0.02em] text-on-photo uppercase'
           >
             <span aria-hidden>← </span>
-            {c.label} · Resumen
+            Categoría · {c.label}
           </Link>
         </nav>
 
@@ -89,7 +89,7 @@ export const ProjectPage = () => {
 
         <span
           aria-hidden
-          className='absolute right-5 bottom-6 z-10 hidden font-code t-small text-on-photo md:right-10 md:bottom-10 md:block'
+          className='absolute right-5 bottom-6 z-10 hidden font-brand t-small text-on-photo md:right-10 md:bottom-10 md:block'
         >
           DESLIZA ↓
         </span>
