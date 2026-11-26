@@ -77,7 +77,7 @@ export default defineConfig(({ mode }) => {
           globPatterns: ['**/*.{js,css,html,svg}', 'pwa-*.png'],
           navigateFallback: 'index.html',
           // Files that are not pages (sitemap.xml, robots.txt) must reach the server, not the app shell.
-          navigateFallbackDenylist: [/\.(?:xml|txt)$/],
+          navigateFallbackDenylist: [/\.(?:xml|txt)$/, /^\/api\//],
           runtimeCaching: [
             {
               urlPattern: ({ request }) => request.destination === 'font',
