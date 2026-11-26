@@ -22,25 +22,25 @@ type Placement = { id: PhotoId; row: number; slot: Slot; left: boolean };
 
 /** Grid placement of each slot from md up (rows of two) and from 1800px (rows of three). Written out so Tailwind finds them. */
 const MD_SLOT: Record<Slot, string> = {
-  single: 'md:col-span-6 md:col-start-4 md:mt-0 md:[--p:24px]',
-  bigLeft: 'md:col-span-7 md:col-start-1 md:mt-0 md:[--p:24px]',
-  bigRight: 'md:col-span-7 md:col-start-6 md:mt-0 md:[--p:24px]',
-  smallLeft: 'md:col-span-5 md:col-start-1 md:mt-28 md:[--p:90px]',
-  smallRight: 'md:col-span-5 md:col-start-8 md:mt-28 md:[--p:90px]',
-  t0: 'md:col-span-4 md:col-start-1 md:mt-0 md:[--p:24px]',
-  t1: 'md:col-span-4 md:col-start-5 md:mt-24 md:[--p:90px]',
-  t2: 'md:col-span-4 md:col-start-9 md:mt-10 md:[--p:56px]',
+  single: 'md:col-span-6 md:col-start-4 md:mt-0 md:[--p:48px]',
+  bigLeft: 'md:col-span-7 md:col-start-1 md:mt-0 md:[--p:48px]',
+  bigRight: 'md:col-span-7 md:col-start-6 md:mt-0 md:[--p:48px]',
+  smallLeft: 'md:col-span-5 md:col-start-1 md:mt-28 md:[--p:180px]',
+  smallRight: 'md:col-span-5 md:col-start-8 md:mt-28 md:[--p:180px]',
+  t0: 'md:col-span-4 md:col-start-1 md:mt-0 md:[--p:48px]',
+  t1: 'md:col-span-4 md:col-start-5 md:mt-24 md:[--p:180px]',
+  t2: 'md:col-span-4 md:col-start-9 md:mt-10 md:[--p:120px]',
 };
 
 const XL_SLOT: Record<Slot, string> = {
-  single: 'min-[1800px]:col-span-6 min-[1800px]:col-start-4 min-[1800px]:mt-0 min-[1800px]:[--p:24px]',
-  bigLeft: 'min-[1800px]:col-span-7 min-[1800px]:col-start-1 min-[1800px]:mt-0 min-[1800px]:[--p:24px]',
-  bigRight: 'min-[1800px]:col-span-7 min-[1800px]:col-start-6 min-[1800px]:mt-0 min-[1800px]:[--p:24px]',
-  smallLeft: 'min-[1800px]:col-span-5 min-[1800px]:col-start-1 min-[1800px]:mt-28 min-[1800px]:[--p:90px]',
-  smallRight: 'min-[1800px]:col-span-5 min-[1800px]:col-start-8 min-[1800px]:mt-28 min-[1800px]:[--p:90px]',
-  t0: 'min-[1800px]:col-span-4 min-[1800px]:col-start-1 min-[1800px]:mt-0 min-[1800px]:[--p:24px]',
-  t1: 'min-[1800px]:col-span-4 min-[1800px]:col-start-5 min-[1800px]:mt-24 min-[1800px]:[--p:90px]',
-  t2: 'min-[1800px]:col-span-4 min-[1800px]:col-start-9 min-[1800px]:mt-10 min-[1800px]:[--p:56px]',
+  single: 'min-[1800px]:col-span-6 min-[1800px]:col-start-4 min-[1800px]:mt-0 min-[1800px]:[--p:48px]',
+  bigLeft: 'min-[1800px]:col-span-7 min-[1800px]:col-start-1 min-[1800px]:mt-0 min-[1800px]:[--p:48px]',
+  bigRight: 'min-[1800px]:col-span-7 min-[1800px]:col-start-6 min-[1800px]:mt-0 min-[1800px]:[--p:48px]',
+  smallLeft: 'min-[1800px]:col-span-5 min-[1800px]:col-start-1 min-[1800px]:mt-28 min-[1800px]:[--p:180px]',
+  smallRight: 'min-[1800px]:col-span-5 min-[1800px]:col-start-8 min-[1800px]:mt-28 min-[1800px]:[--p:180px]',
+  t0: 'min-[1800px]:col-span-4 min-[1800px]:col-start-1 min-[1800px]:mt-0 min-[1800px]:[--p:48px]',
+  t1: 'min-[1800px]:col-span-4 min-[1800px]:col-start-5 min-[1800px]:mt-24 min-[1800px]:[--p:180px]',
+  t2: 'min-[1800px]:col-span-4 min-[1800px]:col-start-9 min-[1800px]:mt-10 min-[1800px]:[--p:120px]',
 };
 
 /** Width ÷ height of a photo, from the catalog. */
