@@ -249,7 +249,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
               }}
               aria-hidden={!isCurrent && !peeks}
             >
-              {/* Photo and caption zoom as one always-promoted layer, so no edge shows when the hover starts. */}
+              {/* Photo and shade zoom as one always-promoted layer, so no edge shows when the hover starts. */}
               <div className='absolute inset-0 transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.03] motion-reduce:transition-none'>
                 <Photo
                   id={p.cover}
@@ -259,13 +259,10 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                   className='size-full'
                 />
                 {isCurrent && (
-                  <>
-                    <div className='pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2.5 px-4 pb-4 md:gap-3 md:px-6 md:pb-5'>
-                      <p className='m-0 line-clamp-2 max-w-[28rem] text-[0.8125rem] leading-snug text-bone md:text-base'>
-                        {p.summary}
-                      </p>
-                    </div>
-                  </>
+                  <span
+                    aria-hidden
+                    className='pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-ink/70 via-ink/30 to-transparent'
+                  />
                 )}
               </div>
               {centered ? (
@@ -302,7 +299,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
         as='h1'
         title={category.title}
         voice={category.voice}
-        className='pointer-events-none absolute inset-x-0 top-1 z-10 md:top-3'
+        className='pointer-events-none absolute inset-x-0 top-1 z-10 md:top-3 text-shadow-2xs'
       />
 
       {/* Title and second voice, over the left edge of the photo (the soft shade on the photo keeps it readable). */}
@@ -321,6 +318,19 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
         </Typography>
         <span className='serif-voice t-serif block pl-8 md:pl-12'>{selected.subtitle.toLowerCase()}</span>
       </div>
+
+      {/* Description of the selected project, under its photo (the photo peeking below fades out behind it). */}
+      <p
+        key={selected.slug}
+        className='reel-title-in pointer-events-none absolute z-10 m-0 line-clamp-2 bg-linear-to-b from-ink via-ink/90 to-transparent pt-3 pb-6 text-[0.8125rem] leading-snug text-ash md:text-base'
+        style={{
+          top: 'calc(50% + 1rem + var(--card-h) / 2 + 0.5rem)',
+          left: 'calc(50% - var(--card-w) / 2)',
+          width: 'var(--card-w)',
+        }}
+      >
+        {selected.summary}
+      </p>
 
       {/* Categories: bottom left on desktop, a bar at the bottom on mobile. */}
       {others.length > 1 && (
