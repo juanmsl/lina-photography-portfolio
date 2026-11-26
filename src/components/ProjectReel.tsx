@@ -260,9 +260,9 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                 <>
                   <span
                     aria-hidden
-                    className='pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-ink/70 via-ink/30 to-transparent'
+                    className='pointer-events-none absolute -inset-y-px -left-px w-[calc(50%+1px)] bg-linear-to-r from-ink/70 via-ink/30 to-transparent'
                   />
-                  <div className='pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2.5 bg-linear-to-t from-ink/85 via-ink/50 to-transparent px-4 pt-14 pb-4 md:gap-3 md:px-6 md:pb-5'>
+                  <div className='pointer-events-none absolute -inset-x-px -bottom-px flex flex-col gap-2.5 bg-linear-to-t from-ink/85 via-ink/50 to-transparent px-4 pt-14 pb-4 md:gap-3 md:px-6 md:pb-5'>
                     <p className='m-0 line-clamp-2 max-w-[28rem] text-[0.8125rem] leading-snug text-bone md:text-base'>
                       {p.summary}
                     </p>
