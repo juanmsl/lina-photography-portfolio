@@ -69,7 +69,7 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
   const lines = Array.from({ length: Math.ceil(ids.length / 2) }, (_, k) => ids.slice(k * 2, k * 2 + 2));
 
   return (
-    <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-y-24'>
+    <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-x-10 md:gap-y-24'>
       {lines.map((row, k) => {
         // Rows only apply from md up: below it the photos stack in one column, so a shared row would add a column.
         const gridRow = { '--row': k + 1 } as CSSProperties;
