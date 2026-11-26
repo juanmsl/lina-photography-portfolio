@@ -227,14 +227,15 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
            * the selected project, so its move is animated like the others;
            * only the layer on top changes: a link to the project in the
            * middle, a button that brings the project to the middle on the
-           * sides.
+           * sides. The card carries the hover groups (`group`, `group/photo`), so the zoom and the
+           * cyanotype-to-color reveal still react to the pointer through that top layer.
            */
           return (
             <div
               key={key}
               data-current={isCurrent || undefined}
               className={cn(
-                'absolute top-[calc(50%+1rem)] left-1/2 will-change-transform',
+                'group group/photo absolute top-[calc(50%+1rem)] left-1/2 will-change-transform',
                 opacity < 0.05 && 'pointer-events-none',
               )}
               style={{
@@ -253,7 +254,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                 position={p.coverPosition}
                 cyanotype={p.cyanotype ? 'reveal' : undefined}
                 priority={Math.abs(offset) <= 1.5}
-                className='size-full'
+                className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
               />
               {isCurrent && (
                 <>
