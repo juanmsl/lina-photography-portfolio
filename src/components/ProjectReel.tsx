@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { LuArrowDown } from 'react-icons/lu';
 import { Link } from 'react-router';
 
-import { activeCategories, categoryPath, projectPhotos, type Category, type Project } from '../content/projects';
+import { activeCategories, categoryPath, type Category, type Project } from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
 import { pad, ringOffset } from '../projectSelection';
 
@@ -249,7 +249,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
               }}
               aria-hidden={!isCurrent && !peeks}
             >
-              {/* Photo and shading zoom as one layer, always promoted, so no edge shows when the hover starts. */}
+              {/* Photo and caption zoom as one always-promoted layer, so no edge shows when the hover starts. */}
               <div className='absolute inset-0 transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.03] motion-reduce:transition-none'>
                 <Photo
                   id={p.cover}
@@ -260,17 +260,10 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                 />
                 {isCurrent && (
                   <>
-                    <span
-                      aria-hidden
-                      className='pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-linear-to-r from-ink/70 via-ink/30 to-transparent'
-                    />
-                    <div className='pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2.5 bg-linear-to-t from-ink/85 via-ink/50 to-transparent px-4 pt-14 pb-4 md:gap-3 md:px-6 md:pb-5'>
+                    <div className='pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2.5 px-4 pb-4 md:gap-3 md:px-6 md:pb-5'>
                       <p className='m-0 line-clamp-2 max-w-[28rem] text-[0.8125rem] leading-snug text-bone md:text-base'>
                         {p.summary}
                       </p>
-                      <span className='font-brand t-small tracking-[0.02em] text-bone uppercase'>
-                        {projectPhotos(p).length} {projectPhotos(p).length === 1 ? 'foto' : 'fotos'} · Ver proyecto →
-                      </span>
                     </div>
                   </>
                 )}
