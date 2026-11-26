@@ -120,7 +120,7 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
   const byThree = placements(3);
 
   return (
-    <div className='grid grid-cols-1 gap-y-28 md:grid-cols-12 md:items-start md:gap-x-20 md:gap-y-48'>
+    <div className='grid grid-cols-1 gap-y-28 md:grid-cols-12 md:items-start md:gap-x-[min(5.9%,5rem)] md:gap-y-48'>
       {byTwo.map(({ id, row, slot, left }) => {
         const three = byThree.find(item => item.id === id);
         const big = slot === 'bigLeft' || slot === 'bigRight';
