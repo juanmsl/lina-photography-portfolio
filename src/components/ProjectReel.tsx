@@ -322,19 +322,6 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
         <span className='serif-voice t-serif block pl-8 md:pl-12'>{selected.subtitle.toLowerCase()}</span>
       </div>
 
-      {/* Description of the selected project, under its photo (the photo peeking below fades out behind it). */}
-      <p
-        key={selected.slug}
-        className='reel-title-in pointer-events-none absolute z-10 m-0 line-clamp-2 bg-linear-to-b from-ink via-ink/90 to-transparent pt-3 pb-6 text-[0.8125rem] leading-snug text-ash md:text-base'
-        style={{
-          top: 'calc(50% + 1rem + var(--card-h) / 2 + 0.5rem)',
-          left: 'calc(50% - var(--card-w) / 2)',
-          width: 'var(--card-w)',
-        }}
-      >
-        {selected.summary}
-      </p>
-
       {/* Categories: bottom left on desktop, a bar at the bottom on mobile. */}
       {others.length > 1 && (
         <nav
