@@ -19,8 +19,8 @@ type StaggeredGalleryProps = {
 const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[1];
 
 /**
- * The photos of a project, never cropped, in rows of two (the wider one big and the other small and lower) or, when
- * the count is odd, a last row of three. None takes the full width. Each has its title below. On mobile they stack,
+ * The photos of a project, never cropped, in rows of two (the wider one big and the other small and lower); an odd
+ * count ends with one photo alone, centered. None takes the full width. Each has its title below. On mobile they stack,
  * the small ones against the left or right edge.
  */
 export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryProps) => {
@@ -64,15 +64,8 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
     );
   };
 
-  // Rows of two, or of three when the count is odd (the last row), so no photo ever takes the full width.
-  const lines = (() => {
-    if (ids.length < 3) return [ids];
-
-    const pairedCount = ids.length % 2 === 0 ? ids.length : ids.length - 3;
-    const paired = Array.from({ length: pairedCount / 2 }, (_, k) => ids.slice(k * 2, k * 2 + 2));
-
-    return ids.length % 2 === 0 ? paired : [...paired, ids.slice(pairedCount)];
-  })();
+  // Rows of two photos at most; an odd count ends with one photo alone, narrower and centered, never full width.
+  const lines = Array.from({ length: Math.ceil(ids.length / 2) }, (_, k) => ids.slice(k * 2, k * 2 + 2));
 
   return (
     <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-y-24'>
@@ -81,31 +74,14 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
 
         if (row.length === 1) {
           return (
-            <div key={row[0]} className='max-md:w-[62%] md:col-span-7 md:col-start-1' style={gridRow}>
+            <div
+              key={row[0]}
+              className='max-md:w-[62%] max-md:justify-self-center md:col-span-6 md:col-start-4'
+              style={gridRow}
+            >
               {cell(row[0])}
             </div>
           );
-        }
-
-        if (row.length === 3) {
-          // Three of the same width, each one lower or higher than the next.
-          const shifts = ['', 'md:mt-24', 'md:mt-10'];
-          const starts = ['md:col-start-1', 'md:col-start-5', 'md:col-start-9'];
-
-          return row.map((id, j) => (
-            <div
-              key={id}
-              style={gridRow}
-              className={cn(
-                'max-md:w-[62%] md:col-span-4 md:w-[calc(100%-2rem)]',
-                shifts[j],
-                starts[j],
-                j === 1 && 'max-md:justify-self-end',
-              )}
-            >
-              {cell(id)}
-            </div>
-          ));
         }
 
         const [a, b] = row;
