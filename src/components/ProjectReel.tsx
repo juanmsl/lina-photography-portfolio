@@ -2,6 +2,7 @@ import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
 import { useEventListener } from 'polpo/hooks';
 import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { LuArrowDown } from 'react-icons/lu';
 import { Link } from 'react-router';
 
@@ -80,6 +81,8 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
   const total = cards.length;
   const [position, setPosition] = useState(initial);
   const [drag, setDrag] = useState<number>();
+  // Leaving for another category: the photo and title must not morph into the other reel's, only fade.
+  const [switching, setSwitching] = useState(false);
   const start = useRef<{ y: number; size: number; moved: boolean }>(undefined);
   // The card that was selected on the last screen update, to spot cards that wrap around the ring.
   const shown = useRef(0);
@@ -245,7 +248,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                 zIndex: z,
                 opacity,
                 transition: dragging || jumps ? 'none' : `transform 700ms ${EASE}, opacity 700ms ${EASE}`,
-                viewTransitionName: centered ? 'project-cover' : undefined,
+                viewTransitionName: centered && !switching ? 'project-cover' : undefined,
               }}
               aria-hidden={!isCurrent && !peeks}
             >
@@ -299,7 +302,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
         as='h1'
         title={category.title}
         voice={category.voice}
-        className='pointer-events-none absolute inset-x-0 top-1 z-10 md:top-3 text-shadow-2xs'
+        className='pointer-events-none absolute inset-x-0 top-1 z-10 md:top-3'
       />
 
       {/* Title and second voice, over the left edge of the photo (the soft shade on the photo keeps it readable). */}
@@ -308,7 +311,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
         className='reel-title-in pointer-events-none absolute top-1/2 z-10 max-w-[calc(100%-2.5rem)] -translate-y-1/2 text-bone'
         style={{
           left: 'max(1.25rem, calc(50% - var(--card-w) / 2 - var(--title-shift)))',
-          viewTransitionName: 'project-title',
+          viewTransitionName: switching ? undefined : 'project-title',
         }}
       >
         <Typography variant='header3' as='h2' noPadding className='m-0'>
@@ -348,6 +351,10 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                   <Link
                     viewTransition
                     to={categoryPath(o)}
+                    onClick={() => {
+                      // Rendered before the router captures the old page, so the names are already gone.
+                      if (!isCurrent) flushSync(() => setSwitching(true));
+                    }}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={cn(
                       'inline-flex items-center gap-3 t-nav transition-colors hover:text-bone',
