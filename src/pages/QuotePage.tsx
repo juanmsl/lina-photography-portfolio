@@ -1,5 +1,5 @@
 import { Button, DatePicker, Input, Textarea, Typography } from 'polpo/components';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -11,6 +11,10 @@ import { ServiceTilePicker } from '../components/ServiceTilePicker';
 import { openWhatsApp, contact, whatsappMessage } from '../content/contact';
 import { formatMonth, type QuoteRequest } from '../content/quote';
 import { quoteOptions } from '../content/services';
+import { sendQuote } from '../sendQuote';
+
+/** The request plus the hidden field that catches bots. */
+type QuoteForm = QuoteRequest & { website: string };
 
 const preselect = (service?: string) =>
   service ? quoteOptions.filter(o => service.toLowerCase().includes(o.value.toLowerCase())).map(o => o.value) : [];
@@ -19,8 +23,14 @@ export const QuotePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation() as { state?: { service?: string } };
   const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const shownAt = useRef(0);
 
-  const methods = useForm<QuoteRequest>({
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, []);
+
+  const methods = useForm<QuoteForm>({
     defaultValues: {
       services: preselect(state?.service),
       name: '',
@@ -29,6 +39,7 @@ export const QuotePage = () => {
       date: '',
       place: '',
       project: '',
+      website: '',
     },
   });
   const [selectedServices, date] = useWatch({ control: methods.control, name: ['services', 'date'] });
@@ -38,13 +49,17 @@ export const QuotePage = () => {
     date ? formatMonth(date) : undefined,
   );
 
-  const submit = methods.handleSubmit(async data => {
+  const submit = methods.handleSubmit(async ({ website, ...data }) => {
     setSending(true);
-    // Pending: connect to a service that receives the requests (email or form backend).
-    await new Promise(r => {
-      setTimeout(r, 600);
-    });
-    navigate('/cotizar/enviada', { state: data, viewTransition: true });
+    setFailed(false);
+
+    try {
+      await sendQuote(data, { website, elapsed: Date.now() - shownAt.current });
+      navigate('/cotizar/enviada', { state: data, viewTransition: true });
+    } catch {
+      setFailed(true);
+      setSending(false);
+    }
   });
 
   return (
@@ -120,6 +135,14 @@ export const QuotePage = () => {
                 rules={{ required: 'Cuéntame un poco del proyecto.' }}
               />
 
+              {/* Bait for bots: out of sight and of the tab order. */}
+              <div aria-hidden className='absolute -left-[9999px] h-0 w-0 overflow-hidden'>
+                <label>
+                  Sitio web
+                  <input type='text' tabIndex={-1} autoComplete='off' {...methods.register('website')} />
+                </label>
+              </div>
+
               <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6'>
                 <Button type='submit' color='primary' radius='full' isLoading={sending}>
                   Enviar solicitud
@@ -128,6 +151,12 @@ export const QuotePage = () => {
                   Solo uso tus datos para responderte.
                 </Typography>
               </div>
+
+              {failed && (
+                <Typography role='alert' noPadding className='m-0 text-ash'>
+                  No pudimos enviar tu solicitud. Intenta de nuevo o escríbeme por WhatsApp.
+                </Typography>
+              )}
             </form>
           </FormProvider>
 

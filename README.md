@@ -49,6 +49,21 @@ Every push to `main` deploys to production, and every PR gets its own preview UR
    the `google-site-verification` TXT record.
 4. In GitHub: **Settings → Pages → Source: None** (or unpublish) so GitHub Pages stops serving the old copy.
 
+## Quote form (Resend)
+
+The quote page posts to `api/contact.ts`, a Vercel Function that emails the request to Lina with Resend. The Resend
+key stays on the server; the browser only calls `/api/contact` (`src/sendQuote.ts`).
+
+- **Variables** (Vercel → Settings → Environment Variables; `.env.example` lists them): `RESEND_API_KEY` (required),
+  `CONTACT_TO` (default `linamanigo@gmail.com`) and `CONTACT_FROM` (default `Lina Nieto <contacto@linanieto.com>`).
+- **Sender domain:** in Resend → Domains, add `linanieto.com` and create the DNS records it shows (SPF and DKIM).
+  Until the domain is verified, Resend only delivers to the account's own email.
+- **Replying:** the email carries `Reply-To` with the visitor's address, so Lina answers straight to them.
+- **Spam:** a hidden field and a minimum fill time (3 s) drop bots without telling them; the function only accepts
+  posts from the site itself and validates every field. Free plan: 100 emails a day, 3,000 a month.
+- **Locally:** `pnpm dev` does not run the function, so the form just logs the request. Use `vercel dev` (with the
+  variables in `.env.local`) to send a real email.
+
 ## Analytics
 
 `@vercel/analytics` (Web Analytics: visits and page views, without cookies) and `@vercel/speed-insights` (Core Web
@@ -264,4 +279,4 @@ PlateFrame, the cyanotype → color reveal and the row Gallery. Everything else 
   value is optional. Today only "Geografía de un hogar" has it (read from its EXIF); the other exports have no
   camera data, so Lina has to add the values by hand or export again with metadata. The visitor's choice is
   remembered (`src/cameraData.ts`).
-- **Form**: the quote page simulates the submission; it still needs a service that receives the requests.
+- **Quote form**: set the Resend variables in Vercel and verify `linanieto.com` in Resend (see "Quote form (Resend)").
