@@ -19,11 +19,14 @@ type StaggeredGalleryProps = {
 const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[1];
 
 /**
- * The photos of a project, never cropped, two by two in reading order: the wider one big and the other small and
- * lower, each with its number. On mobile they stack, the small ones against the left or right edge.
+ * The photos of a project, never cropped, in rows of two (the wider one big and the other small and lower) or, when
+ * the count is odd, a last row of three. None takes the full width. Each has its title below. On mobile they stack,
+ * the small ones against the left or right edge.
  */
 export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryProps) => {
   const ids = rows.flat();
+
+  if (!ids.length) return null;
 
   const cell = (id: PhotoId) => {
     const box = { aspectRatio: ratio(id) };
@@ -61,18 +64,51 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
     );
   };
 
-  const pairs = Array.from({ length: Math.ceil(ids.length / 2) }, (_, k) => ids.slice(k * 2, k * 2 + 2));
+  // Rows of two, or of three when the count is odd (the last row), so no photo ever takes the full width.
+  const lines = (() => {
+    if (ids.length < 3) return [ids];
+
+    const pairedCount = ids.length % 2 === 0 ? ids.length : ids.length - 3;
+    const paired = Array.from({ length: pairedCount / 2 }, (_, k) => ids.slice(k * 2, k * 2 + 2));
+
+    return ids.length % 2 === 0 ? paired : [...paired, ids.slice(pairedCount)];
+  })();
 
   return (
     <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-y-24'>
-      {pairs.map(([a, b], k) => {
-        if (!b) {
+      {lines.map((row, k) => {
+        const gridRow = { gridRow: k + 1 };
+
+        if (row.length === 1) {
           return (
-            <div key={a} className='md:col-span-12' style={{ gridRow: k + 1 }}>
-              {cell(a)}
+            <div key={row[0]} className='max-md:w-[62%] md:col-span-7 md:col-start-1' style={gridRow}>
+              {cell(row[0])}
             </div>
           );
         }
+
+        if (row.length === 3) {
+          // Three of the same width, each one lower or higher than the next.
+          const shifts = ['', 'md:mt-24', 'md:mt-10'];
+          const starts = ['md:col-start-1', 'md:col-start-5', 'md:col-start-9'];
+
+          return row.map((id, j) => (
+            <div
+              key={id}
+              style={gridRow}
+              className={cn(
+                'max-md:w-[62%] md:col-span-4 md:w-[calc(100%-2rem)]',
+                shifts[j],
+                starts[j],
+                j === 1 && 'max-md:justify-self-end',
+              )}
+            >
+              {cell(id)}
+            </div>
+          ));
+        }
+
+        const [a, b] = row;
 
         // The wider photo of the pair is the big one; the pair keeps its order, left to right.
         const aIsBig = ratio(a) >= ratio(b);
@@ -84,7 +120,7 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
         return slots.map(({ id, big, left }) => (
           <div
             key={id}
-            style={{ gridRow: k + 1 }}
+            style={gridRow}
             className={cn(
               big ? 'md:col-span-7' : 'md:col-span-4 md:mt-28',
               left ? 'md:col-start-1' : big ? 'md:col-start-6' : 'md:col-start-9',
