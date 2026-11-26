@@ -22,7 +22,7 @@ const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[
 /**
  * The photos of a project, never cropped, in rows of two (the wider one big and the other small and lower); an odd
  * count ends with one photo alone, centered. None takes the full width. Each has its title below. On mobile they stack
- * in a zigzag, narrower than the screen.
+ * in a zigzag, narrower than the screen, and full width below 400px.
  */
 export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryProps) => {
   const ids = rows.flat();
@@ -79,7 +79,10 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
           return (
             <div
               key={row[0]}
-              className={cn('max-md:w-[62%] max-md:justify-self-center md:col-span-6 md:col-start-4', inRow)}
+              className={cn(
+                'max-md:w-[62%] max-md:justify-self-center max-[400px]:w-full md:col-span-6 md:col-start-4',
+                inRow,
+              )}
               style={gridRow}
             >
               {cell(row[0])}
@@ -105,6 +108,7 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
               big ? 'md:col-span-7' : 'md:col-span-5 md:mt-28',
               left ? 'md:col-start-1' : big ? 'md:col-start-6' : 'md:col-start-8',
               big ? 'max-md:w-[86%]' : 'max-md:w-[62%]',
+              'max-[400px]:w-full',
               !left && 'max-md:justify-self-end',
             )}
           >
