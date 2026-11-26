@@ -235,7 +235,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
               key={key}
               data-current={isCurrent || undefined}
               className={cn(
-                'group group/photo absolute top-[calc(50%+1rem)] left-1/2 overflow-hidden will-change-transform',
+                'group group/photo absolute top-[calc(50%+1rem)] left-1/2 [clip-path:inset(0)] overflow-hidden bg-ink will-change-transform',
                 opacity < 0.05 && 'pointer-events-none',
               )}
               style={{
@@ -254,7 +254,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
                 position={p.coverPosition}
                 cyanotype={p.cyanotype ? 'reveal' : undefined}
                 priority={Math.abs(offset) <= 1.5}
-                className='size-full transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transition-none'
+                className='size-full group-hover:[&_img]:scale-[1.03]'
               />
               {isCurrent && (
                 <>
