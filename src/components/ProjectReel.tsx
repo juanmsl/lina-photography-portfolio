@@ -9,6 +9,7 @@ import { activeCategories, categoryPath, projectPhotos, type Category, type Proj
 import { preloadPhoto } from '../photoLoader';
 import { pad, ringOffset } from '../projectSelection';
 
+import { DualTitle } from './DualTitle';
 import { Photo } from './Photo';
 
 type ProjectReelProps = {
@@ -298,14 +299,14 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
       {/* Category title, top center; the photo peeking above fades out behind it. */}
       <span
         aria-hidden
-        className='pointer-events-none absolute inset-x-0 top-0 z-[5] h-24 bg-linear-to-b from-ink to-transparent md:h-32'
+        className='pointer-events-none absolute inset-x-0 top-0 z-[5] h-36 bg-linear-to-b from-ink via-ink/70 to-transparent md:h-60'
       />
-      <h1 className='absolute inset-x-0 top-3 z-10 m-0 flex items-baseline justify-center gap-2.5 text-bone md:top-5 md:gap-3'>
-        <Typography variant='header3' as='span' noPadding className='m-0 text-[1.625rem]! md:text-[2.5rem]!'>
-          {category.title}
-        </Typography>
-        <span className='serif-voice text-[1.625rem]! leading-none md:text-[2.5rem]!'>{category.voice}</span>
-      </h1>
+      <DualTitle
+        as='h1'
+        title={category.title}
+        voice={category.voice}
+        className='pointer-events-none absolute inset-x-0 top-1 z-10 md:top-3'
+      />
 
       {/* Title and second voice, over the left edge of the photo (the soft shade on the photo keeps it readable). */}
       <div
