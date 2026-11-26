@@ -58,11 +58,12 @@ export const ProjectPage = () => {
             cyanotype={p.cyanotype ? 'fixed' : undefined}
             className='size-full'
           />
+          {/* Inside the link, so the shade travels and fades with the photo during the page transition. */}
+          <span
+            aria-hidden
+            className='pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-ink/75 to-transparent'
+          />
         </Link>
-        <span
-          aria-hidden
-          className='pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-ink/75 to-transparent'
-        />
 
         <nav aria-label='Ruta' className='absolute top-6 left-5 z-10 md:left-10'>
           <Link
