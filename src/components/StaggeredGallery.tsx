@@ -1,4 +1,5 @@
 import { cn } from 'polpo/helpers';
+import { type CSSProperties } from 'react';
 import { Link } from 'react-router';
 
 import { photos, type PhotoId } from '../content/photos';
@@ -20,8 +21,8 @@ const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[
 
 /**
  * The photos of a project, never cropped, in rows of two (the wider one big and the other small and lower); an odd
- * count ends with one photo alone, centered. None takes the full width. Each has its title below. On mobile they stack,
- * the small ones against the left or right edge.
+ * count ends with one photo alone, centered. None takes the full width. Each has its title below. On mobile they stack
+ * in a zigzag, narrower than the screen.
  */
 export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryProps) => {
   const ids = rows.flat();
@@ -70,13 +71,15 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
   return (
     <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-y-24'>
       {lines.map((row, k) => {
-        const gridRow = { gridRow: k + 1 };
+        // Rows only apply from md up: below it the photos stack in one column, so a shared row would add a column.
+        const gridRow = { '--row': k + 1 } as CSSProperties;
+        const inRow = 'md:[grid-row:var(--row)]';
 
         if (row.length === 1) {
           return (
             <div
               key={row[0]}
-              className='max-md:w-[62%] max-md:justify-self-center md:col-span-6 md:col-start-4'
+              className={cn('max-md:w-[62%] max-md:justify-self-center md:col-span-6 md:col-start-4', inRow)}
               style={gridRow}
             >
               {cell(row[0])}
@@ -98,10 +101,11 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
             key={id}
             style={gridRow}
             className={cn(
-              big ? 'md:col-span-7' : 'md:col-span-4 md:mt-28',
-              left ? 'md:col-start-1' : big ? 'md:col-start-6' : 'md:col-start-9',
-              !big && 'max-md:w-[62%]',
-              !big && !left && 'max-md:justify-self-end',
+              inRow,
+              big ? 'md:col-span-7' : 'md:col-span-5 md:mt-28',
+              left ? 'md:col-start-1' : big ? 'md:col-start-6' : 'md:col-start-8',
+              big ? 'max-md:w-[86%]' : 'max-md:w-[62%]',
+              !left && 'max-md:justify-self-end',
             )}
           >
             {cell(id)}
