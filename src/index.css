@@ -392,3 +392,27 @@
     animation: none;
   }
 }
+
+/*
+ * Gallery parallax (project page): each photo drifts by --p (set per slot) as it crosses the screen, so the big and
+ * the small photo of a row move at different speeds. Scroll-driven animation: browsers without it keep them still.
+ */
+@keyframes gallery-drift {
+  from {
+    translate: 0 var(--p, 0px);
+  }
+
+  to {
+    translate: 0 calc(var(--p, 0px) * -1);
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .parallax {
+      animation: gallery-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
