@@ -43,10 +43,14 @@ const Brand = ({ className, onClick }: { className?: string; onClick?: () => voi
   </Link>
 );
 
-type NavigationProps = { className?: string };
+type NavigationProps = {
+  className?: string;
+  /** Has the ground color and the rule from the start, not only after scrolling (pages that open with a photo). */
+  solid?: boolean;
+};
 
 /** D/Navigation: brand, links and Quote on desktop; brand and menu on mobile. Sticky at the top while scrolling. */
-export const Navigation = ({ className }: NavigationProps) => {
+export const Navigation = ({ className, solid }: NavigationProps) => {
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
   const { width } = useViewport();
@@ -67,7 +71,7 @@ export const Navigation = ({ className }: NavigationProps) => {
     <header
       className={cn(
         'site-header sticky top-0 z-30 flex h-[var(--header-h)] items-center border-b px-5 transition-[background-color,border-color] duration-300 ease-out md:px-10',
-        scrolled ? 'border-graphite bg-ink' : 'border-transparent bg-transparent',
+        solid || scrolled ? 'border-graphite bg-ink' : 'border-transparent bg-transparent',
         className,
       )}
     >

@@ -354,3 +354,41 @@
   font-size: var(--text-small);
   line-height: var(--text-small--line-height, inherit);
 }
+
+/*
+ * Category reel → project: the cover and the title of the selected project
+ * travel to the project page (and back), instead of fading with the page.
+ */
+::view-transition-group(project-cover),
+::view-transition-group(project-title) {
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The title of the reel changes with the selected project. */
+@keyframes reel-title-in {
+  from {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.reel-title-in {
+  animation: reel-title-in 600ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(project-cover),
+  ::view-transition-group(project-title) {
+    animation-duration: 1ms;
+  }
+
+  .reel-title-in {
+    animation: none;
+  }
+}
