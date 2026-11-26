@@ -1,59 +1,119 @@
 import { Typography } from 'polpo/components';
 import { cn } from 'polpo/helpers';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEventListener } from 'polpo/hooks';
+import { useEffect, useRef, useState } from 'react';
 import { LuArrowDown } from 'react-icons/lu';
 import { Link } from 'react-router';
 
 import { activeCategories, categoryPath, projectPhotos, type Category, type Project } from '../content/projects';
 import { preloadPhoto } from '../photoLoader';
-import { pad, ringOffset, swipeHandlers } from '../projectSelection';
+import { pad, ringOffset } from '../projectSelection';
 
 import { Photo } from './Photo';
 
 type ProjectReelProps = {
   category: Category;
   list: Array<Project>;
-  active: number;
-  go: (i: number) => void;
-  previous: () => void;
-  next: () => void;
+  /** Index of the project selected when the reel opens. */
+  initial?: number;
+  /** Called with the slug of the selected project whenever it changes. */
+  onSelect?: (slug: string) => void;
 };
 
 /** Minimum time between two steps of the mouse wheel or trackpad, so one flick moves one project. */
 const WHEEL_LOCK = 750;
 
-/** Offset of every project from the selected one; the one halfway around the ring goes with the direction of travel. */
-const offsets = (count: number, active: number, direction: number) =>
-  Array.from({ length: count }, (_, i) => {
-    const d = ringOffset(i, active, count);
-
-    return count % 2 === 0 && Math.abs(d) === count / 2 && count > 2 ? (direction > 0 ? -d : d) : d;
-  });
+/**
+ * At least 7 cards are needed so the ring always has projects on both sides
+ * (and a card never shows up twice while it is visible): short categories repeat theirs.
+ */
+const MIN_CARDS = 7;
 
 /**
- * The projects of a category as a vertical reel: the selected one in the
- * middle with its title written over the edge of the photo, the previous and
- * the next peeking above and below. The mouse wheel, ↑ ↓, a swipe, the dots
- * and the arrow move it; clicking the photo opens the project (the cover and
- * the title travel to the project page, see `project-cover` and
- * `project-title` in index.css). It is circular, like /categorias.
+ * Positions along the track: the selected card, then each neighbor further
+ * out. `y` is in card heights; the card next to the selected one peeks, the
+ * rest are faded out.
  */
-export const ProjectReel = ({ category, list, active, go, previous, next }: ProjectReelProps) => {
+const STOPS = [
+  { y: 0, scale: 1, opacity: 1 },
+  { y: 0.9, scale: 0.7, opacity: 0.5 },
+  { y: 1.5, scale: 0.55, opacity: 0 },
+  { y: 2, scale: 0.45, opacity: 0 },
+];
+
+/**
+ * Where a card sits for a (possibly fractional, while dragging) distance from
+ * the selected project: interpolated between the stops, so the cards glide
+ * between them like the carousel of /categorias, but vertically.
+ */
+const place = (offset: number) => {
+  const d = Math.min(Math.abs(offset), STOPS.length - 1);
+  const i = Math.min(Math.floor(d), STOPS.length - 2);
+  const t = d - i;
+  const lerp = (k: 'y' | 'scale' | 'opacity') => STOPS[i][k] + (STOPS[i + 1][k] - STOPS[i][k]) * t;
+
+  return {
+    y: Math.sign(offset) * lerp('y'),
+    scale: lerp('scale'),
+    opacity: lerp('opacity'),
+    z: Math.round(30 - d * 10),
+  };
+};
+
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+/**
+ * The projects of a category as a vertical, endless reel (the carousel of
+ * /categorias, turned 90°): the selected one in the middle with its title
+ * written over the edge of the photo, the previous and the next peeking above
+ * and below. The mouse wheel, ↑ ↓, dragging or swiping, the dots and the arrow
+ * move it, gliding from one project to the next; after the last comes the
+ * first. Clicking the photo opens the project (the cover and the title travel
+ * to the project page, see `project-cover` and `project-title` in index.css).
+ */
+export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectReelProps) => {
   const count = list.length;
-  const selected = list[active] ?? list[0];
-  const memory = useRef({ active, direction: 0, offsets: [] as Array<number> });
+  // Short lists repeat their projects so the ring is never empty on a side; a single project stays alone.
+  const copies = count > 1 ? Math.ceil(MIN_CARDS / count) : 1;
+  const cards = Array.from({ length: copies }, (_, copy) => list.map(p => ({ p, key: `${copy}-${p.slug}` }))).flat();
+  const total = cards.length;
+  const [position, setPosition] = useState(initial);
+  const [drag, setDrag] = useState<number>();
+  const start = useRef<{ y: number; size: number; moved: boolean }>(undefined);
+  // The card that was selected on the last screen update, to spot cards that wrap around the ring.
+  const shown = useRef(0);
+  const dragged = useRef(false);
   const wheelAt = useRef(0);
   const stage = useRef<HTMLElement>(null);
 
-  const delta = ringOffset(active, memory.current.active, count);
-  const direction = delta === 0 ? memory.current.direction : Math.sign(delta);
-  const current = offsets(count, active, direction);
+  const step = (by: number) => setPosition(current => current + by);
+  const active = ((position % total) + total) % total;
+  const project = active % count;
+  const selected = list[project];
+  const dragging = drag !== undefined;
 
-  // What the cards were doing before this render, to move the ones that wrapped around without sliding across the stage.
-  const before = memory.current.offsets;
+  useEffect(() => {
+    shown.current = active;
+  }, [active]);
 
-  useLayoutEffect(() => {
-    memory.current = { active, direction, offsets: current };
+  useEffect(() => {
+    if (selected) onSelect?.(selected.slug);
+  }, [selected, onSelect]);
+
+  useEventListener('keydown', (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement | null;
+
+    if (count < 2 || target?.closest('input, textarea, select, [contenteditable="true"]')) return;
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      step(-1);
+    }
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      step(1);
+    }
   });
 
   // The mouse wheel, unless the page itself has to scroll (a very short window).
@@ -72,15 +132,13 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
       if (now - wheelAt.current < WHEEL_LOCK) return;
 
       wheelAt.current = now;
-
-      if (e.deltaY > 0) next();
-      else previous();
+      setPosition(current => current + Math.sign(e.deltaY));
     };
 
     element.addEventListener('wheel', onWheel, { passive: false });
 
     return () => element.removeEventListener('wheel', onWheel);
-  }, [count, next, previous]);
+  }, [count]);
 
   if (!selected) return null;
 
@@ -91,47 +149,111 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
       ref={stage}
       aria-roledescription='carrusel'
       aria-label={`Proyectos de ${category.label}`}
-      {...(count > 1 ? swipeHandlers(previous, next, 'y') : {})}
       style={{ containerType: 'size' }}
       className={cn(
         'relative isolate h-[calc(100dvh-var(--header-h))] min-h-[36rem] overflow-hidden overscroll-contain',
-        // Photo height; width follows (portrait on mobile, 4:3 on desktop) and the title sits a bit to its left.
+        // Photo height; width follows (portrait on mobile, 10:7 on desktop) and the title sits a bit to its left.
         '[--card-h:48cqh] [--card-w:calc(var(--card-h)*3/4)] [--title-shift:2.5rem]',
         'md:[--card-h:50cqh] md:[--card-w:min(calc(var(--card-h)*10/7),46cqw)] md:[--title-shift:11rem]',
       )}
     >
-      <ul className='m-0 list-none p-0'>
-        {list.map((p, i) => {
-          const o = current[i] ?? 0;
-          const isActive = o === 0;
-          const peeks = Math.abs(o) === 1;
-          const jumped = before[i] !== undefined && Math.abs(o - (before[i] ?? 0)) > 2;
+      <div
+        className={cn(
+          'absolute inset-0 touch-pan-x select-none',
+          count > 1 && (dragging ? 'cursor-grabbing' : 'cursor-grab'),
+        )}
+        onPointerDown={e => {
+          if (e.button !== 0 || count < 2) return;
 
+          dragged.current = false;
+
+          const card = e.currentTarget.querySelector<HTMLElement>('[data-current]');
+
+          start.current = { y: e.clientY, size: (card?.offsetHeight ?? 400) * STOPS[1].y, moved: false };
+        }}
+        onPointerMove={e => {
+          const s = start.current;
+
+          if (!s) return;
+
+          const dy = e.clientY - s.y;
+
+          if (!s.moved && Math.abs(dy) < 6) return;
+
+          if (!s.moved) e.currentTarget.setPointerCapture(e.pointerId);
+
+          s.moved = true;
+          setDrag(-dy / s.size);
+        }}
+        onPointerUp={() => {
+          const s = start.current;
+
+          start.current = undefined;
+
+          if (!s?.moved || drag === undefined) return setDrag(undefined);
+
+          dragged.current = true;
+
+          // Snap to the nearest project; a short flick still moves one.
+          const by = Math.abs(drag) < 0.5 && Math.abs(drag) > 0.12 ? Math.sign(drag) : Math.round(drag);
+
+          setDrag(undefined);
+          step(by);
+        }}
+        onPointerCancel={() => {
+          start.current = undefined;
+          setDrag(undefined);
+        }}
+        onClickCapture={e => {
+          // A drag that ends on a photo is not a click.
+          if (dragged.current) e.preventDefault();
+
+          dragged.current = false;
+        }}
+      >
+        {cards.map(({ p, key }, i) => {
+          const offset = ringOffset(i, active, total) - (drag ?? 0);
+          // Cards that wrap around the ring jump to the other side while hidden, without sliding across.
+          const jumps = Math.abs(offset - ringOffset(i, shown.current, total)) > 2;
+          const { y, scale, opacity, z } = place(offset);
+          const isCurrent = Math.round(offset) === 0;
+          const centered = isCurrent && !dragging;
+          const peeks = Math.abs(Math.round(offset)) === 1;
+
+          /*
+           * The card stays the same element when it becomes (or stops being)
+           * the selected project, so its move is animated like the others;
+           * only the layer on top changes: a link to the project in the
+           * middle, a button that brings the project to the middle on the
+           * sides.
+           */
           return (
-            <li
-              key={p.slug}
-              className='absolute top-[calc(50%+1rem)] left-1/2'
+            <div
+              key={key}
+              data-current={isCurrent || undefined}
+              className={cn(
+                'absolute top-[calc(50%+1rem)] left-1/2 will-change-transform',
+                opacity < 0.05 && 'pointer-events-none',
+              )}
               style={{
                 width: 'var(--card-w)',
                 height: 'var(--card-h)',
-                transform: `translate(-50%, -50%) translateY(calc(${Math.max(-2, Math.min(2, o))} * var(--card-h) * 0.9)) scale(${isActive ? 1 : 0.7})`,
-                opacity: isActive ? 1 : peeks ? 0.5 : 0,
-                transition: jumped
-                  ? 'opacity 700ms cubic-bezier(0.22,1,0.36,1)'
-                  : 'transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 700ms cubic-bezier(0.22,1,0.36,1)',
-                viewTransitionName: isActive ? 'project-cover' : undefined,
-                pointerEvents: isActive || peeks ? 'auto' : 'none',
+                transform: `translate(-50%, -50%) translateY(calc(${y} * var(--card-h))) scale(${scale})`,
+                zIndex: z,
+                opacity,
+                transition: dragging || jumps ? 'none' : `transform 700ms ${EASE}, opacity 700ms ${EASE}`,
+                viewTransitionName: centered ? 'project-cover' : undefined,
               }}
-              aria-hidden={!isActive && !peeks}
+              aria-hidden={!isCurrent && !peeks}
             >
               <Photo
                 id={p.cover}
                 position={p.coverPosition}
                 cyanotype={p.cyanotype ? 'reveal' : undefined}
-                priority={Math.abs(o) <= 1}
+                priority={Math.abs(offset) <= 1.5}
                 className='size-full'
               />
-              {isActive ? (
+              {isCurrent && (
                 <>
                   <span
                     aria-hidden
@@ -145,29 +267,32 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
                       {projectPhotos(p).length} {projectPhotos(p).length === 1 ? 'foto' : 'fotos'} · Ver proyecto →
                     </span>
                   </div>
-                  {!p.cyanotype && (
-                    <Link
-                      viewTransition
-                      to={`/proyectos/${p.slug}`}
-                      aria-label={`Abrir el proyecto ${p.title}`}
-                      onPointerEnter={() => preloadPhoto(p.cover, 'thumb')}
-                      className='absolute inset-0'
-                    />
-                  )}
                 </>
+              )}
+              {centered ? (
+                !p.cyanotype && (
+                  <Link
+                    viewTransition
+                    draggable={false}
+                    to={`/proyectos/${p.slug}`}
+                    aria-label={`Abrir el proyecto ${p.title}`}
+                    onPointerEnter={() => preloadPhoto(p.cover, 'thumb')}
+                    className='absolute inset-0'
+                  />
+                )
               ) : (
                 <button
                   type='button'
                   tabIndex={peeks ? 0 : -1}
                   aria-label={`Ir al proyecto ${p.title}`}
-                  onClick={() => go(i)}
+                  onClick={() => step(ringOffset(i, active, total))}
                   className='absolute inset-0 cursor-pointer'
                 />
               )}
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
 
       {/* Category title, top center; the photo peeking above fades out behind it. */}
       <span
@@ -236,11 +361,11 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
           <div className='absolute right-5 bottom-28 z-20 font-code t-small text-bone md:right-10 md:bottom-10 md:flex md:flex-col md:items-end md:gap-1'>
             <span aria-live='polite'>
               <span className='sr-only'>Proyecto </span>
-              {pad(active + 1)} / {pad(count)}
+              {pad(project + 1)} / {pad(count)}
             </span>
             <button
               type='button'
-              onClick={next}
+              onClick={() => step(1)}
               aria-label='Proyecto siguiente'
               className='mt-3 hidden size-11 cursor-pointer place-content-center rounded-full border border-bone text-bone transition-colors hover:bg-bone hover:text-ink md:grid'
             >
@@ -253,16 +378,16 @@ export const ProjectReel = ({ category, list, active, go, previous, next }: Proj
               <li key={p.slug}>
                 <button
                   type='button'
-                  onClick={() => go(i)}
+                  onClick={() => step(ringOffset(i, project, count))}
                   aria-label={`Ir al proyecto ${p.title}`}
-                  aria-current={i === active ? 'true' : undefined}
+                  aria-current={i === project ? 'true' : undefined}
                   className='grid size-4 cursor-pointer place-content-center'
                 >
                   <span
                     aria-hidden
                     className={cn(
                       'rounded-full bg-bone transition-all duration-500',
-                      i === active ? 'size-2' : 'size-1.5 opacity-40',
+                      i === project ? 'size-2' : 'size-1.5 opacity-40',
                     )}
                   />
                 </button>

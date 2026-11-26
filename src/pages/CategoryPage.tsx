@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 
 import { Navigation } from '../components/Navigation';
 import { ProjectReel } from '../components/ProjectReel';
 import { categoryProjects, findCategory, type Category } from '../content/projects';
-import { useProjectSelection } from '../projectSelection';
 
 import { NotFoundPage } from './NotFoundPage';
 
@@ -19,12 +18,8 @@ const CategoryReel = ({ c }: { c: Category }) => {
     0,
     list.findIndex(p => p.slug === params.get('p')),
   );
-  const selection = useProjectSelection(list.length, initial);
-  const slug = list[selection.active]?.slug;
 
-  useEffect(() => {
-    if (!slug) return;
-
+  const remember = useCallback((slug: string) => {
     const url = new URL(window.location.href);
 
     if (url.searchParams.get('p') === slug) return;
@@ -32,9 +27,9 @@ const CategoryReel = ({ c }: { c: Category }) => {
     url.searchParams.set('p', slug);
     // Not through the router: a step of the reel is not a page change. The history entry keeps its state.
     window.history.replaceState(window.history.state, '', url);
-  }, [slug]);
+  }, []);
 
-  return <ProjectReel category={c} list={list} {...selection} />;
+  return <ProjectReel category={c} list={list} initial={initial} onSelect={remember} />;
 };
 
 /** A category: all its projects as a vertical reel; the selected one opens its page. */
