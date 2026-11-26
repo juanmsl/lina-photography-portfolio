@@ -235,7 +235,7 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
               key={key}
               data-current={isCurrent || undefined}
               className={cn(
-                'group group/photo absolute top-[calc(50%+1rem)] left-1/2 will-change-transform',
+                'group group/photo absolute top-[calc(50%+1rem)] left-1/2 overflow-hidden will-change-transform',
                 opacity < 0.05 && 'pointer-events-none',
               )}
               style={{
