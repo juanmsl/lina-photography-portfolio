@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 import { photos, type PhotoId } from '../content/photos';
 import { preloadPhoto } from '../photoLoader';
-import { pad } from '../projectSelection';
 
 import { Photo } from './Photo';
 
@@ -25,9 +24,8 @@ const ratio = (id: PhotoId) => photos[id].dimensions[0] / photos[id].dimensions[
  */
 export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryProps) => {
   const ids = rows.flat();
-  const total = ids.length;
 
-  const cell = (id: PhotoId, i: number) => {
+  const cell = (id: PhotoId) => {
     const box = { aspectRatio: ratio(id) };
 
     const photo = cyanotype ? (
@@ -58,24 +56,20 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
     return (
       <>
         {photo}
-        <span className='mt-3 block font-code t-small text-ash'>
-          {pad(i + 1)} / {pad(total)}
-        </span>
+        <span className='mt-3 block font-code t-small text-ash'>{photos[id].title}</span>
       </>
     );
   };
 
-  const pairs = Array.from({ length: Math.ceil(total / 2) }, (_, k) => ids.slice(k * 2, k * 2 + 2));
+  const pairs = Array.from({ length: Math.ceil(ids.length / 2) }, (_, k) => ids.slice(k * 2, k * 2 + 2));
 
   return (
     <div className='grid grid-cols-1 gap-y-14 md:grid-cols-12 md:items-start md:gap-y-24'>
       {pairs.map(([a, b], k) => {
-        const first = k * 2;
-
         if (!b) {
           return (
             <div key={a} className='md:col-span-12' style={{ gridRow: k + 1 }}>
-              {cell(a, first)}
+              {cell(a)}
             </div>
           );
         }
@@ -83,11 +77,11 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
         // The wider photo of the pair is the big one; the pair keeps its order, left to right.
         const aIsBig = ratio(a) >= ratio(b);
         const slots = [
-          { id: a, i: first, big: aIsBig, left: true },
-          { id: b, i: first + 1, big: !aIsBig, left: false },
+          { id: a, big: aIsBig, left: true },
+          { id: b, big: !aIsBig, left: false },
         ];
 
-        return slots.map(({ id, i, big, left }) => (
+        return slots.map(({ id, big, left }) => (
           <div
             key={id}
             style={{ gridRow: k + 1 }}
@@ -98,7 +92,7 @@ export const StaggeredGallery = ({ rows, project, cyanotype }: StaggeredGalleryP
               !big && !left && 'max-md:justify-self-end',
             )}
           >
-            {cell(id, i)}
+            {cell(id)}
           </div>
         ));
       })}
