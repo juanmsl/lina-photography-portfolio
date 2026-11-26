@@ -159,7 +159,8 @@ export const ProjectReel = ({ category, list, initial = 0, onSelect }: ProjectRe
     >
       <div
         className={cn(
-          'absolute inset-0 touch-pan-x select-none',
+          // z-0 keeps the cards' own stacking (see `place`) below the titles, the fade and the controls.
+          'absolute inset-0 z-0 touch-pan-x select-none',
           count > 1 && (dragging ? 'cursor-grabbing' : 'cursor-grab'),
         )}
         onPointerDown={e => {
